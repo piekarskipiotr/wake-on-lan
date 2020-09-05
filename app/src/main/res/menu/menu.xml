@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboard"
+            android:icon="@drawable/rocket"
+            android:title="Panel nawigacyjny"/>
+        <item
+            android:id="@+id/groups"
+            android:icon="@drawable/card_grouped"
+            android:title="Moje grupy"/>
+        <item
+            android:id="@+id/events"
+            android:icon="@drawable/clock"
+            android:title="Zaplanowane"/>
+        <item
+            android:id="@+id/help"
+            android:icon="@drawable/guide_dog"
+            android:title="Pomoc"/>
+    </group>
+
+
+</menu>
