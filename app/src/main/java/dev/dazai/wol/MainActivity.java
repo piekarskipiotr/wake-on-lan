@@ -38,12 +38,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-
-//        NetworkScanner networkScanner = new NetworkScanner(getApplicationContext());
-//        networkScanner.delegate = this;
-//        //first ip, last ip, timeout
-//        networkScanner.execute(0, 50, 200);
-
     }
 
     @Override
