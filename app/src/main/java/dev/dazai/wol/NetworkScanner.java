@@ -1,25 +1,27 @@
 package dev.dazai.wol;
 
-import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.View;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.WIFI_SERVICE;
 
 public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     private static final String TAG = "Network Scanner";
-    private WeakReference<Context> contextRef;
-    public NetworkScannerResults delegate = null;
+    private WeakReference<DashboardFragment> weakReference;
 
-    public NetworkScanner(Context context) {
-        contextRef = new WeakReference<>(context);
+
+    public NetworkScanner(DashboardFragment fragment) {
+        weakReference = new WeakReference<>(fragment);
     }
 
     @Override
@@ -32,7 +34,8 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     protected List<String> doInBackground(Integer... integers) {
         List<String> networkList = new ArrayList<>();
         try {
-            WifiManager wifiManager = (WifiManager) contextRef.get().getApplicationContext().getSystemService(WIFI_SERVICE);
+
+            WifiManager wifiManager = (WifiManager) Objects.requireNonNull(weakReference.get().getActivity()).getApplicationContext().getSystemService(WIFI_SERVICE);
             @SuppressWarnings("deprecation")
             String deviceIP = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
             String mask = deviceIP.substring(0, deviceIP.lastIndexOf(".") + 1);
@@ -40,14 +43,15 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
             for (int i = integers[0]; i <= integers[1]; i++) {
                 String createdIP = mask + i;
                 InetAddress address = InetAddress.getByName(createdIP);
-                boolean reachable = address.isReachable(integers[2]);
                 String hostName = address.getCanonicalHostName();
+
                 if(hostName.matches("") || hostName.contains(mask)){
-                    hostName = "";
+                    continue;
                 }else{
                     hostName = hostName.substring(0, hostName.lastIndexOf("."));
                 }
-                Log.i(TAG,"IP: " + createdIP + "(" + hostName  + ")");
+                boolean reachable = address.isReachable(integers[2]);
+                Log.i(TAG,hostName + " (" + createdIP  + ")");
 
                 if(reachable){
                     networkList.add(hostName);
@@ -66,16 +70,18 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
 
     @Override
     protected void onProgressUpdate(String... values) {
-        Log.i(TAG, values[0] + " ("+ values[1] + ") is reachable and has been added to the list!");
+        Log.i(TAG, values[0] + " (" + values[1] + ") is reachable and has been added to the list!");
+        weakReference.get().dialogNetworkScanningBinding.test.append(values[0] + " (" + values[1] + ")\n");
         super.onProgressUpdate(values);
     }
 
     @Override
     protected void onPostExecute(List<String> strings) {
-        delegate.processFinish(strings);
-
-
+        super.onPostExecute(strings);
+        weakReference.get().dialogNetworkScanningBinding.progressCircular.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.VISIBLE);
     }
-
 
 }
