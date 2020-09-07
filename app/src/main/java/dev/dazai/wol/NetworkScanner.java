@@ -5,11 +5,12 @@ import android.os.AsyncTask;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,10 +25,17 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference = new WeakReference<>(fragment);
     }
 
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         Log.i(TAG,"scanning...");
+        weakReference.get().dialogNetworkScanningBinding.progressCircular.setVisibility(View.VISIBLE);
+        weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.VISIBLE);
+        weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.VISIBLE);
+        weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.test.setText("");
+
     }
 
     @Override
@@ -51,6 +59,7 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
                     hostName = hostName.substring(0, hostName.lastIndexOf("."));
                 }
                 boolean reachable = address.isReachable(integers[2]);
+
                 Log.i(TAG,hostName + " (" + createdIP  + ")");
 
                 if(reachable){
@@ -78,6 +87,15 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     @Override
     protected void onPostExecute(List<String> strings) {
         super.onPostExecute(strings);
+        weakReference.get().dialogNetworkScanningBinding.progressCircular.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
         weakReference.get().dialogNetworkScanningBinding.progressCircular.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);

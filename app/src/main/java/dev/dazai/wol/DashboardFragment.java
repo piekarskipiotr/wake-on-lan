@@ -17,9 +17,10 @@ import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment{
-    FragmentDashboardBinding binding;
+    NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
-    DashboardNewDeviceDialogBinding dialogBinding;
+    FragmentDashboardBinding binding;
+        DashboardNewDeviceDialogBinding dialogBinding;
     DialogNetworkScanningBinding dialogNetworkScanningBinding;
 
     @Override
@@ -41,13 +42,30 @@ public class DashboardFragment extends Fragment{
 
                         dialogNetworkScanningBinding = DialogNetworkScanningBinding.inflate(getLayoutInflater());
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
-                        NetworkScanner networkScanner = new NetworkScanner(DashboardFragment.this);
+                        networkScanner = new NetworkScanner(DashboardFragment.this);
                         //first ip, last ip, timeout
                         networkScanner.execute(0, 50, 200);
+
+                        dialogNetworkScanningBinding.stopNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                networkScanner.cancel(true);
+                            }
+                        });
+
+                        dialogNetworkScanningBinding.reNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                networkScanner = new NetworkScanner(DashboardFragment.this);
+                                networkScanner.execute(0, 50, 200);
+                            }
+                        });
 
                     }
 
                 });
+
+
 
 
             }
