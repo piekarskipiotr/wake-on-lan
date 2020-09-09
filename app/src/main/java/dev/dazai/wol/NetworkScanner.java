@@ -1,30 +1,26 @@
 package dev.dazai.wol;
 
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Scanner;
 
-import static android.content.Context.WIFI_SERVICE;
 
 public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     private static final String TAG = "Network Scanner";
     private WeakReference<DashboardFragment> weakReference;
 
-
     public NetworkScanner(DashboardFragment fragment) {
         weakReference = new WeakReference<>(fragment);
     }
-
 
     @Override
     protected void onPreExecute() {
@@ -38,50 +34,60 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected List<String> doInBackground(Integer... integers) {
-        List<String> networkList = new ArrayList<>();
+        List<String> reachableDevices = new ArrayList<>();
+        InetAddress inetAddress;
+        String ipAddress;
+        String macAddress;
+        String deviceName;
+
+
         try {
+            Scanner fileReader = new Scanner(new File("/proc/net/arp"));
+            fileReader.nextLine();
+            while(fileReader.hasNext()){
+                String[] line = fileReader.nextLine().split(" +");
+                if(line != null && line.length >= 4){
+                    ipAddress = line[0];
+                    macAddress = line[3];
+                    if (macAddress.matches("..:..:..:..:..:..") && !macAddress.matches("00:00:00:00:00:00")) {
+                        Log.d(TAG, ipAddress+" | "+macAddress);
+                        inetAddress = InetAddress.getByName(ipAddress);
 
-            WifiManager wifiManager = (WifiManager) Objects.requireNonNull(weakReference.get().getActivity()).getApplicationContext().getSystemService(WIFI_SERVICE);
-            @SuppressWarnings("deprecation")
-            String deviceIP = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
-            String mask = deviceIP.substring(0, deviceIP.lastIndexOf(".") + 1);
+                        deviceName = inetAddress.getCanonicalHostName();
+                        deviceName = deviceName.substring(0, deviceName.lastIndexOf("."));
 
-            for (int i = integers[0]; i <= integers[1]; i++) {
-                String createdIP = mask + i;
-                InetAddress address = InetAddress.getByName(createdIP);
-                String hostName = address.getCanonicalHostName();
+                        boolean reachable = inetAddress.isReachable(200);
 
-                if(hostName.matches("") || hostName.contains(mask)){
-                    continue;
-                }else{
-                    hostName = hostName.substring(0, hostName.lastIndexOf("."));
+                        if(reachable){
+                            reachableDevices.add(deviceName);
+                            reachableDevices.add(macAddress);
+                            reachableDevices.add(ipAddress);
+                            publishProgress(deviceName, macAddress, ipAddress);
+
+                        }
+                    }
                 }
-                boolean reachable = address.isReachable(integers[2]);
-
-                Log.i(TAG,hostName + " (" + createdIP  + ")");
-
-                if(reachable){
-                    networkList.add(hostName);
-                    networkList.add(createdIP);
-                    publishProgress(hostName, createdIP);
-
-                }
-
             }
+
+        } catch (FileNotFoundException | UnknownHostException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return networkList;
+
+        return reachableDevices;
     }
 
     @Override
     protected void onProgressUpdate(String... values) {
-        Log.i(TAG, values[0] + " (" + values[1] + ") is reachable and has been added to the list!");
-        weakReference.get().dialogNetworkScanningBinding.test.append(values[0] + " (" + values[1] + ")\n");
         super.onProgressUpdate(values);
+        Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ") is reachable and has been added to the list!");
+        weakReference.get().dialogNetworkScanningBinding.test.append(values[0] + "[" + values[1] + "] (" + values[2] + ")\n");
+
     }
 
     @Override
@@ -91,7 +97,9 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.VISIBLE);
+
     }
+
 
     @Override
     protected void onCancelled() {
@@ -100,6 +108,7 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.VISIBLE);
+
     }
 
 }

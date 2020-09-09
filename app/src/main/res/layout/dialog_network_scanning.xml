@@ -44,7 +44,8 @@
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:cardBackgroundColor="@color/colorPrimaryLight">
             <TextView
                 android:layout_width="200dp"
@@ -67,7 +68,7 @@
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
             app:cardBackgroundColor="@color/colorPrimaryLight">
             <TextView
                 android:layout_width="200dp"

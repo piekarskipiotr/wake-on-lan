@@ -44,7 +44,7 @@ public class DashboardFragment extends Fragment{
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
                         networkScanner = new NetworkScanner(DashboardFragment.this);
                         //first ip, last ip, timeout
-                        networkScanner.execute(0, 50, 200);
+                        networkScanner.execute(1, 255, 200);
 
                         dialogNetworkScanningBinding.stopNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -57,7 +57,7 @@ public class DashboardFragment extends Fragment{
                             @Override
                             public void onClick(View v) {
                                 networkScanner = new NetworkScanner(DashboardFragment.this);
-                                networkScanner.execute(0, 50, 200);
+                                networkScanner.execute(500);
                             }
                         });
 
