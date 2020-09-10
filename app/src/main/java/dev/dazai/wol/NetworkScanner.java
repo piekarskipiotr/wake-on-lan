@@ -4,20 +4,16 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     private static final String TAG = "Network Scanner";
     private WeakReference<DashboardFragment> weakReference;
-
     public NetworkScanner(DashboardFragment fragment) {
         weakReference = new WeakReference<>(fragment);
     }
@@ -30,13 +26,13 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.VISIBLE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.VISIBLE);
         weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.GONE);
-        weakReference.get().dialogNetworkScanningBinding.test.setText("");
 
     }
 
     @SuppressWarnings("deprecation")
     @Override
     protected List<String> doInBackground(Integer... integers) {
+        int TIME_OUT = integers[0];
         List<String> reachableDevices = new ArrayList<>();
         InetAddress inetAddress;
         String ipAddress;
@@ -59,7 +55,7 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
                         deviceName = inetAddress.getCanonicalHostName();
                         deviceName = deviceName.substring(0, deviceName.lastIndexOf("."));
 
-                        boolean reachable = inetAddress.isReachable(200);
+                        boolean reachable = inetAddress.isReachable(TIME_OUT);
 
                         if(reachable){
                             reachableDevices.add(deviceName);
@@ -72,8 +68,6 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
                 }
             }
 
-        } catch (FileNotFoundException | UnknownHostException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +80,9 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
         Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ") is reachable and has been added to the list!");
-        weakReference.get().dialogNetworkScanningBinding.test.append(values[0] + "[" + values[1] + "] (" + values[2] + ")\n");
+        weakReference.get().insertDevice(values[0], values[2], values[1]);
+
+
 
     }
 

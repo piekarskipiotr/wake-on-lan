@@ -3,25 +3,26 @@ package dev.dazai.wol;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment{
+    ArrayList<Device> devicesList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
     FragmentDashboardBinding binding;
-        DashboardNewDeviceDialogBinding dialogBinding;
+    DashboardNewDeviceDialogBinding dialogBinding;
     DialogNetworkScanningBinding dialogNetworkScanningBinding;
+    NetworkScannerListAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -42,9 +43,14 @@ public class DashboardFragment extends Fragment{
 
                         dialogNetworkScanningBinding = DialogNetworkScanningBinding.inflate(getLayoutInflater());
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
+                        adapter = new NetworkScannerListAdapter(devicesList);
+                        dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        dialogNetworkScanningBinding.devicesScanRecyclerView.setHasFixedSize(true);
+                        dialogNetworkScanningBinding.devicesScanRecyclerView.setAdapter(adapter);
+
                         networkScanner = new NetworkScanner(DashboardFragment.this);
                         //first ip, last ip, timeout
-                        networkScanner.execute(1, 255, 200);
+                        networkScanner.execute(500);
 
                         dialogNetworkScanningBinding.stopNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -56,6 +62,7 @@ public class DashboardFragment extends Fragment{
                         dialogNetworkScanningBinding.reNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                devicesList.clear();
                                 networkScanner = new NetworkScanner(DashboardFragment.this);
                                 networkScanner.execute(500);
                             }
@@ -65,12 +72,14 @@ public class DashboardFragment extends Fragment{
 
                 });
 
-
-
-
             }
         });
 
+    }
+
+    public void insertDevice(String deviceName, String deviceIp, String deviceMac){
+        devicesList.add(new Device(deviceName, deviceIp, deviceMac));
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -89,7 +98,3 @@ public class DashboardFragment extends Fragment{
 
 }
 
-//        NetworkScanner networkScanner = new NetworkScanner(getApplicationContext());
-//        networkScanner.delegate = this;
-//        //first ip, last ip, timeout
-//        networkScanner.execute(0, 50, 200);
