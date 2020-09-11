@@ -1,5 +1,6 @@
 package dev.dazai.wol;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +44,7 @@ public class DashboardFragment extends Fragment{
 
                         dialogNetworkScanningBinding = DialogNetworkScanningBinding.inflate(getLayoutInflater());
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
-                        adapter = new NetworkScannerListAdapter(devicesList);
+                        adapter = new NetworkScannerListAdapter(getContext(), devicesList);
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setHasFixedSize(true);
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setAdapter(adapter);
@@ -72,14 +73,25 @@ public class DashboardFragment extends Fragment{
 
                 });
 
+                bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        devicesList.clear();
+                    }
+                });
             }
         });
 
     }
 
     public void insertDevice(String deviceName, String deviceIp, String deviceMac){
-        devicesList.add(new Device(deviceName, deviceIp, deviceMac));
+        if(devicesList.size()==0)
+            dialogNetworkScanningBinding.line.setVisibility(View.VISIBLE);
+
+        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
         adapter.notifyDataSetChanged();
+//        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
+//        adapter.notifyItemInserted(0);
 
     }
 

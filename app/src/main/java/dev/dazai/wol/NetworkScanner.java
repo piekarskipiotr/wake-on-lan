@@ -26,44 +26,43 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.VISIBLE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.VISIBLE);
         weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.GONE);
+        weakReference.get().dialogNetworkScanningBinding.manualInputNetworkScanningButton.setVisibility(View.GONE);
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected List<String> doInBackground(Integer... integers) {
-        int TIME_OUT = integers[0];
-        List<String> reachableDevices = new ArrayList<>();
+//        int TIME_OUT = integers[0];
+        //used to be reachableDevices list
+        List<String> availableDevices = new ArrayList<>();
         InetAddress inetAddress;
         String ipAddress;
         String macAddress;
         String deviceName;
-
 
         try {
             Scanner fileReader = new Scanner(new File("/proc/net/arp"));
             fileReader.nextLine();
             while(fileReader.hasNext()){
                 String[] line = fileReader.nextLine().split(" +");
-                if(line != null && line.length >= 4){
+                if(line.length >= 4){
                     ipAddress = line[0];
                     macAddress = line[3];
                     if (macAddress.matches("..:..:..:..:..:..") && !macAddress.matches("00:00:00:00:00:00")) {
-                        Log.d(TAG, ipAddress+" | "+macAddress);
                         inetAddress = InetAddress.getByName(ipAddress);
 
                         deviceName = inetAddress.getCanonicalHostName();
                         deviceName = deviceName.substring(0, deviceName.lastIndexOf("."));
 
-                        boolean reachable = inetAddress.isReachable(TIME_OUT);
+//                        boolean reachable = inetAddress.isReachable(TIME_OUT);
 
-                        if(reachable){
-                            reachableDevices.add(deviceName);
-                            reachableDevices.add(macAddress);
-                            reachableDevices.add(ipAddress);
-                            publishProgress(deviceName, macAddress, ipAddress);
+//                        if(reachable){
+                        availableDevices.add(deviceName);
+                        availableDevices.add(macAddress);
+                        availableDevices.add(ipAddress);
+                        publishProgress(deviceName, macAddress, ipAddress);
 
-                        }
+//                        }
                     }
                 }
             }
@@ -73,13 +72,14 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         }
 
 
-        return reachableDevices;
+        return availableDevices;
     }
 
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ") is reachable and has been added to the list!");
+//        Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ") is reachable and has been added to the list!");
+        Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ")");
         weakReference.get().insertDevice(values[0], values[2], values[1]);
 
 
@@ -93,6 +93,7 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.VISIBLE);
+        weakReference.get().dialogNetworkScanningBinding.manualInputNetworkScanningButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -104,6 +105,7 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         weakReference.get().dialogNetworkScanningBinding.progressText.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.stopNetworkScanningButton.setVisibility(View.GONE);
         weakReference.get().dialogNetworkScanningBinding.reNetworkScanningButton.setVisibility(View.VISIBLE);
+        weakReference.get().dialogNetworkScanningBinding.manualInputNetworkScanningButton.setVisibility(View.VISIBLE);
 
     }
 

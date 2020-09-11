@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Source of this code: https://github.com/aws1994/RecyclerViewSeries/blob/master/app/src/main/res/anim/fade_scale_animation.xml-->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <alpha android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="700" />
+
+    <scale android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:toXScale="1.0"
+        android:toYScale="1.0"
+        android:duration="700"
+        android:fillBefore="false" />
+
+
+
+
+</set>
