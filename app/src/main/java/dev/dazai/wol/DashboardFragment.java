@@ -89,9 +89,9 @@ public class DashboardFragment extends Fragment{
             dialogNetworkScanningBinding.line.setVisibility(View.VISIBLE);
 
         devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemInserted(0);
 //        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
-//        adapter.notifyItemInserted(0);
+//        adapter.notifyDataSetChanged();
 
     }
 
