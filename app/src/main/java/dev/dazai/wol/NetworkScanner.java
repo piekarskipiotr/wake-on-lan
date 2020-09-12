@@ -1,6 +1,9 @@
 package dev.dazai.wol;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import java.io.File;
@@ -39,6 +42,20 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
         String ipAddress;
         String macAddress;
         String deviceName;
+
+        //quick fix for network, it's for ping every IP in our mask so arp can get it
+        WifiManager wifiManager = (WifiManager)
+                weakReference.get().getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        String ip = Formatter.formatIpAddress(wifiManager.getDhcpInfo().serverAddress);
+        ip = ip.substring(0, ip.lastIndexOf(".")+1);
+        for(int i = 1; i < 255; i++){
+            try {
+                InetAddress.getByName(ip+i).isReachable(1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         try {
             Scanner fileReader = new Scanner(new File("/proc/net/arp"));
