@@ -2,6 +2,7 @@ package dev.dazai.wol;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -14,34 +15,50 @@ import dev.dazai.wol.databinding.NetworkScannerListItemBinding;
 public class NetworkScannerListAdapter extends RecyclerView.Adapter<NetworkScannerListAdapter.MyViewHolder> {
 
     private Context mContext;
-    private ArrayList<Device> devicesList;
+    protected ArrayList<Device> devicesList;
+    private OnDeviceListener mOnDeviceListener;
 
 
-    public NetworkScannerListAdapter(Context context, ArrayList<Device> devices){
+    public NetworkScannerListAdapter(Context context, ArrayList<Device> devices, OnDeviceListener onDeviceListener){
         mContext = context;
         devicesList = devices;
+        mOnDeviceListener = onDeviceListener;
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView headerText, secondaryText;
-        private CardView itemContainer;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView headerText, secondaryText;
+        CardView itemContainer;
+        OnDeviceListener onDeviceListener;
 
-        public MyViewHolder(@NonNull NetworkScannerListItemBinding itemBinding) {
+        public MyViewHolder(@NonNull NetworkScannerListItemBinding itemBinding, OnDeviceListener onDeviceListener) {
             super(itemBinding.getRoot());
             itemContainer = itemBinding.itemContainer;
             headerText = itemBinding.headerText;
             secondaryText = itemBinding.secondaryText;
+            this.onDeviceListener = onDeviceListener;
 
+            itemContainer.setOnClickListener(this);
 
         }
+
+        @Override
+        public void onClick(View v) {
+            onDeviceListener.onDeviceClick(getAdapterPosition());
+
+        }
+    }
+
+    public interface OnDeviceListener{
+        void onDeviceClick(int position);
+
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         NetworkScannerListItemBinding binding = NetworkScannerListItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
-        return new MyViewHolder(binding);
+        return new MyViewHolder(binding, mOnDeviceListener);
 
     }
 
