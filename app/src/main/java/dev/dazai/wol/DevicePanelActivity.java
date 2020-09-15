@@ -1,30 +1,26 @@
 package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.os.Bundle;
 import android.view.View;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import dev.dazai.wol.databinding.ActionChooseDialogBinding;
+import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionInputDialogBinding;
 import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
-import dev.dazai.wol.databinding.ChooseDialogItemBinding;
 
 public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
     String deviceName, deviceIpAddress, deviceMacAddress;
     BottomSheetDialog bottomSheetDialog;
     ActionInputDialogBinding actionInputDialogBinding;
-    ActionChooseDialogBinding actionChooseDialogBinding;
+    ActionChooseIconDialogBinding actionChooseIconDialogBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityBinding = ActivityDevicePanelBinding.inflate(getLayoutInflater());
         actionInputDialogBinding = ActionInputDialogBinding.inflate(getLayoutInflater());
-        actionChooseDialogBinding = ActionChooseDialogBinding.inflate(getLayoutInflater());
+        actionChooseIconDialogBinding = ActionChooseIconDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
@@ -49,6 +45,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
                 bottomSheetDialog.show();
+                actionInputDialogBinding.titleText.setText("Adres IP");
 
             }
         });
@@ -58,6 +55,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
                 bottomSheetDialog.show();
+                actionInputDialogBinding.titleText.setText("Adres Mac");
 
             }
         });
@@ -65,10 +63,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.portContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.setContentView(actionChooseDialogBinding.getRoot());
-                bottomSheetDialog.show();
-//                ChooseDialogItemBinding chooseDialogItemBinding = ChooseDialogItemBinding.inflate(getLayoutInflater());
-//                actionChooseDialogBinding.gridLayout.addView(chooseDialogItemBinding.itemContainer);
+
+
 
             }
         });
@@ -76,6 +72,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.iconContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bottomSheetDialog.setContentView(actionChooseIconDialogBinding.getRoot());
+                bottomSheetDialog.show();
 
             }
         });
@@ -93,6 +91,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
                 bottomSheetDialog.show();
+                actionInputDialogBinding.titleText.setText("IP router'a");
             }
         });
 
@@ -101,6 +100,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
                 bottomSheetDialog.show();
+                actionInputDialogBinding.titleText.setText("SecureOn");
             }
         });
 

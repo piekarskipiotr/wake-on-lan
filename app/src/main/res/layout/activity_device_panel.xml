@@ -36,7 +36,7 @@
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
             android:fontFamily="@font/lato_regular"
-            android:text="DDDDDDDDDDDDDDDD"
+            android:text="Nazwa Urządzenia*"
             android:breakStrategy="high_quality"
             android:textColor="@android:color/white"
             android:textSize="32sp"
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="192.168.1.11"
+                        android:text="Brak*"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="EC-AA-A0-14-CF-C2"
+                        android:text="Brak*"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="9"
+                        android:text="Brak*"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -271,7 +271,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="0.0.0.0"
+                        android:text="Brak"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -316,7 +316,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="00:00:00:00:00:00"
+                        android:text="Brak"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 

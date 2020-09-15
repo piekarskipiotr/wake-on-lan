@@ -19,7 +19,15 @@
         android:layout_marginBottom="30dp"
         app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardElevation="7dp"/>
-
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/lato_regular"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        />
     <androidx.cardview.widget.CardView
         android:clickable="true"
         android:focusable="true"
@@ -49,6 +57,7 @@
                 android:textSize="20sp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 
     <LinearLayout
         android:id="@+id/line"

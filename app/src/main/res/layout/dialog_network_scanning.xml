@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Wyszukiwanie urządzeń"
+            android:fontFamily="@font/lato_regular"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             />
