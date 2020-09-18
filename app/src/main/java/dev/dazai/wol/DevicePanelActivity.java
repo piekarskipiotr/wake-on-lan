@@ -37,33 +37,13 @@ public class DevicePanelActivity extends AppCompatActivity {
 
         //init device info
         activityBinding.deviceNameText.setText(deviceName);
-        activityBinding.ipText.setText(deviceIpAddress);
-        activityBinding.macText.setText(deviceMacAddress);
+        activityBinding.ipTextInput.setText(deviceIpAddress);
+        activityBinding.macTextInput.setText(deviceMacAddress);
 
-        activityBinding.ipContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
-                bottomSheetDialog.show();
-                actionInputDialogBinding.titleText.setText("Adres IP");
-
-            }
-        });
-
-        activityBinding.macContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
-                bottomSheetDialog.show();
-                actionInputDialogBinding.titleText.setText("Adres Mac");
-
-            }
-        });
 
         activityBinding.portContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
             }
@@ -95,19 +75,12 @@ public class DevicePanelActivity extends AppCompatActivity {
             }
         });
 
-        activityBinding.secureOnContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
-                bottomSheetDialog.show();
-                actionInputDialogBinding.titleText.setText("SecureOn");
-            }
-        });
 
         activityBinding.turnOnDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ipAddressValid();
+                macAddressValid();
             }
         });
 
@@ -132,5 +105,27 @@ public class DevicePanelActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean ipAddressValid(){
+        String ip = activityBinding.ipTextInput.getText().toString().trim();
+        if(ip.isEmpty()){
+            activityBinding.ipTextInput.setError("Pole nie może być puste!");
+            return false;
+        }else{
+            activityBinding.ipTextInput.setError(null);
+            return true;
+        }
+    }
+
+    private boolean macAddressValid(){
+        String ip = activityBinding.macTextInput.getText().toString().trim();
+        if(ip.isEmpty()){
+            activityBinding.macTextInput.setError("Pole nie może być puste!");
+            return false;
+        }else{
+            activityBinding.macTextInput.setError(null);
+            return true;
+        }
     }
 }
