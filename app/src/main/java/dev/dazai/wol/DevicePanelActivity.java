@@ -1,6 +1,8 @@
 package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -32,13 +34,16 @@ public class DevicePanelActivity extends AppCompatActivity {
             deviceName = extras.getString("DEVICE_NAME");
             deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
             deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
+            activityBinding.ipTextInputLayout.setHint(null);
+            activityBinding.macTextInputLayout.setHint(null);
 
+            //init device info
+            activityBinding.deviceNameTextInput.setText(deviceName);
+            activityBinding.ipTextInput.setText(deviceIpAddress);
+            activityBinding.macTextInput.setText(deviceMacAddress);
         }
 
-        //init device info
-        activityBinding.deviceNameText.setText(deviceName);
-        activityBinding.ipTextInput.setText(deviceIpAddress);
-        activityBinding.macTextInput.setText(deviceMacAddress);
+
 
 
         activityBinding.portContainer.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +84,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.turnOnDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ipAddressValid();
-                macAddressValid();
+                deviceValid();
             }
         });
 
@@ -106,6 +110,16 @@ public class DevicePanelActivity extends AppCompatActivity {
         });
 
     }
+    private boolean deviceNameValid(){
+        String ip = activityBinding.deviceNameTextInput.getText().toString().trim();
+        if(ip.isEmpty()){
+            activityBinding.deviceNameTextInput.setError("Pole nie może być puste!");
+            return false;
+        }else{
+            activityBinding.deviceNameTextInput.setError(null);
+            return true;
+        }
+    }
 
     private boolean ipAddressValid(){
         String ip = activityBinding.ipTextInput.getText().toString().trim();
@@ -127,5 +141,25 @@ public class DevicePanelActivity extends AppCompatActivity {
             activityBinding.macTextInput.setError(null);
             return true;
         }
+    }
+
+    private boolean portValid(){
+        if(activityBinding.portText.getText().toString().trim().isEmpty()){
+            activityBinding.portText.setHintTextColor(Color.RED);
+            return false;
+        }else{
+            activityBinding.portText.setHintTextColor(getResources().getColor(R.color.colorPrimaryLight));
+            return true;
+        }
+
+
+    }
+
+    private boolean deviceValid(){
+        if(deviceNameValid() | ipAddressValid() | macAddressValid() | portValid())
+            return true;
+        else
+            return false;
+
     }
 }

@@ -25,26 +25,32 @@
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/deviceNameText"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_width="200dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/deviceNameTextInputLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:fontFamily="@font/lato_regular"
-            android:text="Nazwa Urządzenia*"
-            android:breakStrategy="high_quality"
-            android:textColor="@android:color/white"
-            android:textSize="32sp"
-            android:maxLines="3"
-            android:maxLength="24"
-            android:backgroundTint="@android:color/transparent"
-            android:cursorVisible="false"/>
-
+            app:hintEnabled="false"
+            app:errorEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/deviceNameTextInput"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:fontFamily="@font/lato_regular"
+                android:breakStrategy="high_quality"
+                android:text="Nazwa Urządzenia*"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:maxLines="3"
+                android:maxLength="24"
+                android:inputType="textMultiLine"
+                android:imeOptions="actionDone"/>
+        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -68,16 +74,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="Adres IP:"
+                        android:text="Adres IP*"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/ipTextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Brak*"
                         android:layout_marginTop="0.5dp"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/colorAccent"
+                        android:hint="np. 192.168.10.1"
                         app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/ipTextInput"
@@ -87,7 +93,11 @@
                             android:gravity="end|center_vertical"
                             android:fontFamily="@font/lato_regular"
                             android:textColor="@android:color/white"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            android:maxLines="1"
+                            android:inputType="none"
+                            android:imeOptions="actionNext"
+                            />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -103,16 +113,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="Adres MAC:"
+                        android:text="Adres MAC*"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/macTextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Brak*"
                         android:layout_marginTop="0.5dp"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/colorAccent"
+                        android:hint="np. 00:00:00:00:00:00"
                         app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/macTextInput"
@@ -122,7 +132,11 @@
                             android:gravity="end|center_vertical"
                             android:fontFamily="@font/lato_regular"
                             android:textColor="@android:color/white"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            android:maxLines="1"
+                            android:inputType="none"
+                            android:imeOptions="actionDone"
+                            />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -140,7 +154,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="Port:"
+                        android:text="Port*"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <TextView
@@ -149,7 +163,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="Brak*"
+                        android:hint="nie ustawiono"
+                        android:textColorHint="@color/colorAccent"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -186,7 +201,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="Ikona:"
+                        android:text="Ikona"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <TextView
@@ -195,8 +210,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="Brak"
-                        android:textColor="@android:color/white"
+                        android:hint="nie ustawiono"
+                        android:textColorHint="@color/colorAccent"
                         android:textSize="20sp"/>
 
 
@@ -231,7 +246,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="Grupa:"
+                        android:text="Grupa"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <TextView
@@ -240,7 +255,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="Brak"
+                        android:hint="nie ustawiono"
+                        android:textColorHint="@color/colorAccent"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -276,7 +292,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="IP router'a:"
+                        android:text="IP router'a"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <TextView
@@ -285,7 +301,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:textAlignment="textEnd"
-                        android:text="Brak"
+                        android:hint="nie ustawiono"
+                        android:textColorHint="@color/colorAccent"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
 
@@ -319,16 +336,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="SecureOn:"
+                        android:text="SecureOn"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/secureOnTextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Brak"
                         android:layout_marginTop="1dp"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/colorAccent"
+                        android:hint="np. 00:00:00:00:00:00"
+                        android:imeOptions="actionDone"
                         app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/secureOnTextInput"
@@ -338,7 +356,10 @@
                             android:gravity="end|center_vertical"
                             android:fontFamily="@font/lato_regular"
                             android:textColor="@android:color/white"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            android:maxLines="1"
+                            android:inputType="none"
+                            android:imeOptions="actionDone"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
 
