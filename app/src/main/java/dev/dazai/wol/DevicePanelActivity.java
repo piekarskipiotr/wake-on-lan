@@ -1,28 +1,39 @@
 package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.GridLayout;
+import android.widget.TextView;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
-import dev.dazai.wol.databinding.ActionInputDialogBinding;
+import dev.dazai.wol.databinding.ActionGroupDialogBinding;
+import dev.dazai.wol.databinding.ActionPortDialogBinding;
+import dev.dazai.wol.databinding.ActionRouterIpDialogBinding;
 import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
 
 public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
     String deviceName, deviceIpAddress, deviceMacAddress;
     BottomSheetDialog bottomSheetDialog;
-    ActionInputDialogBinding actionInputDialogBinding;
+    ActionPortDialogBinding actionPortDialogBinding;
     ActionChooseIconDialogBinding actionChooseIconDialogBinding;
+    ActionRouterIpDialogBinding actionRouterIpDialogBinding;
+    ActionGroupDialogBinding actionGroupDialogBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityBinding = ActivityDevicePanelBinding.inflate(getLayoutInflater());
-        actionInputDialogBinding = ActionInputDialogBinding.inflate(getLayoutInflater());
+        actionPortDialogBinding = ActionPortDialogBinding.inflate(getLayoutInflater());
         actionChooseIconDialogBinding = ActionChooseIconDialogBinding.inflate(getLayoutInflater());
+        actionRouterIpDialogBinding = ActionRouterIpDialogBinding.inflate(getLayoutInflater());
+        actionGroupDialogBinding = ActionGroupDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
@@ -31,6 +42,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         if(extras!=null){
             activityBinding.deleteDeviceButton.setVisibility(View.GONE);
             activityBinding.saveDeviceButton.setVisibility(View.VISIBLE);
+            activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
+
             deviceName = extras.getString("DEVICE_NAME");
             deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
             deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
@@ -44,11 +57,26 @@ public class DevicePanelActivity extends AppCompatActivity {
         }
 
 
-
-
         activityBinding.portContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bottomSheetDialog.setContentView(actionPortDialogBinding.getRoot());
+                bottomSheetDialog.show();
+                actionPortDialogBinding.portSeven.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activityBinding.portText.setText(getTextContent(v));
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+
+                actionPortDialogBinding.portNine.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activityBinding.portText.setText(getTextContent(v));
+                        bottomSheetDialog.dismiss();
+                    }
+                });
 
 
             }
@@ -59,6 +87,18 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomSheetDialog.setContentView(actionChooseIconDialogBinding.getRoot());
                 bottomSheetDialog.show();
+                GridLayout gridLayout = (GridLayout)actionChooseIconDialogBinding.getRoot().getChildAt(1);
+
+                for(int i = 0; i <= gridLayout.getChildCount()-1; i++){
+                    gridLayout.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            activityBinding.iconShowField.setText(getTextContent(v));
+                            bottomSheetDialog.dismiss();
+
+                        }
+                    });
+                }
 
             }
         });
@@ -67,16 +107,20 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.groupContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(activityBinding.groupText.getText().toString().trim().isEmpty()){
 
+                }else{
+                    bottomSheetDialog.setContentView(actionGroupDialogBinding.getRoot());
+                    bottomSheetDialog.show();
+                }
             }
         });
 
         activityBinding.routerIpContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.setContentView(actionInputDialogBinding.getRoot());
+                bottomSheetDialog.setContentView(actionRouterIpDialogBinding.getRoot());
                 bottomSheetDialog.show();
-                actionInputDialogBinding.titleText.setText("IP router'a");
             }
         });
 
@@ -162,4 +206,12 @@ public class DevicePanelActivity extends AppCompatActivity {
             return false;
 
     }
+
+    public String getTextContent(View v){
+        CardView cardView = (CardView)v;
+        TextView text = (TextView)cardView.getChildAt(0);
+        return text.getText().toString().trim();
+
+    }
+
 }

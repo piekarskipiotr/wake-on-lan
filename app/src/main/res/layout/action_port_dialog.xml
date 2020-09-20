@@ -19,15 +19,60 @@
         android:layout_marginBottom="30dp"
         app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardElevation="7dp"/>
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/portSeven"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/lato_regular"
-        android:textAlignment="center"
-        android:textColor="@color/colorAccent"
-        />
+        android:layout_marginBottom="15dp"
+        app:cardBackgroundColor="@color/colorPrimaryLight">
+        <TextView
+            android:gravity="center"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:text="7"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/portNine"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorPrimaryLight">
+        <TextView
+            android:gravity="center"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:text="9"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="150dp"
+        android:layout_height="2dp"
+        android:layout_margin="15dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="horizontal"/>
     <androidx.cardview.widget.CardView
         android:clickable="true"
         android:focusable="true"
@@ -51,6 +96,8 @@
                 android:paddingBottom="10dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:hint="port WAN: 0-6999"
+                android:textColorHint="@color/colorAccent"
                 android:fontFamily="@font/lato_regular"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
@@ -60,7 +107,7 @@
 
 
     <LinearLayout
-        android:id="@+id/line"
+        android:id="@+id/line2"
         android:layout_width="150dp"
         android:layout_height="2dp"
         android:layout_margin="15dp"
