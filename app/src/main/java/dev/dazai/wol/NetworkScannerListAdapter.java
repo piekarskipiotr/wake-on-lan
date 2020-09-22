@@ -15,13 +15,13 @@ import dev.dazai.wol.databinding.NetworkScannerListItemBinding;
 public class NetworkScannerListAdapter extends RecyclerView.Adapter<NetworkScannerListAdapter.MyViewHolder> {
 
     private Context mContext;
-    protected ArrayList<Device> devicesList;
+    protected ArrayList<DeviceInNetwork> devicesList;
     private OnDeviceListener mOnDeviceListener;
 
 
-    public NetworkScannerListAdapter(Context context, ArrayList<Device> devices, OnDeviceListener onDeviceListener){
+    public NetworkScannerListAdapter(Context context, ArrayList<DeviceInNetwork> deviceInNetworks, OnDeviceListener onDeviceListener){
         mContext = context;
-        devicesList = devices;
+        devicesList = deviceInNetworks;
         mOnDeviceListener = onDeviceListener;
 
     }
@@ -64,10 +64,10 @@ public class NetworkScannerListAdapter extends RecyclerView.Adapter<NetworkScann
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Device device = devicesList.get(position);
+        DeviceInNetwork deviceInNetwork = devicesList.get(position);
         holder.itemContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale));
-        holder.headerText.setText(device.getName());
-        holder.secondaryText.setText("(" + device.getIpAddress() + ")");
+        holder.headerText.setText(deviceInNetwork.getName());
+        holder.secondaryText.setText("(" + deviceInNetwork.getIpAddress() + ")");
 
 
 

@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener{
-    ArrayList<Device> devicesList = new ArrayList<>();
+    ArrayList<DeviceInNetwork> devicesList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
     FragmentDashboardBinding binding;
@@ -108,7 +107,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         if(devicesList.size()==0)
             dialogNetworkScanningBinding.line.setVisibility(View.VISIBLE);
 
-        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
+        devicesList.add(0, new DeviceInNetwork(deviceName, deviceIp, deviceMac));
         adapter.notifyItemInserted(0);
 //        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
 //        adapter.notifyDataSetChanged();
