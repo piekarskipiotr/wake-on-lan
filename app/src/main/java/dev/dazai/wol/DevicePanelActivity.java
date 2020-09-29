@@ -3,14 +3,18 @@ package dev.dazai.wol;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
-
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.List;
+
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
 import dev.dazai.wol.databinding.ActionPortDialogBinding;
@@ -21,6 +25,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
     String deviceName, deviceIpAddress, deviceMacAddress;
     BottomSheetDialog bottomSheetDialog;
+    DeviceDatabase deviceDatabase;
     ActionPortDialogBinding actionPortDialogBinding;
     ActionChooseIconDialogBinding actionChooseIconDialogBinding;
     ActionRouterIpDialogBinding actionRouterIpDialogBinding;
@@ -35,6 +40,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         actionRouterIpDialogBinding = ActionRouterIpDialogBinding.inflate(getLayoutInflater());
         actionGroupDialogBinding = ActionGroupDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
+
+        deviceDatabase = DeviceDatabase.getInstance(this);
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
@@ -56,6 +63,32 @@ public class DevicePanelActivity extends AppCompatActivity {
             activityBinding.macTextInput.setText(deviceMacAddress);
         }
 
+        activityBinding.ipContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityBinding.ipTextInput.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(activityBinding.ipTextInput, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        activityBinding.macContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityBinding.macTextInput.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(activityBinding.macTextInput, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        activityBinding.secureOnContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityBinding.secureOnTextInput.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(activityBinding.secureOnTextInput, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
 
         activityBinding.portContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,12 +162,14 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deviceValid();
+
             }
         });
 
         activityBinding.saveDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addDeviceToDatabase();
 
             }
         });
@@ -207,11 +242,28 @@ public class DevicePanelActivity extends AppCompatActivity {
 
     }
 
-    public String getTextContent(View v){
+    private String getTextContent(View v){
         CardView cardView = (CardView)v;
         TextView text = (TextView)cardView.getChildAt(0);
         return text.getText().toString().trim();
 
+    }
+
+    private void addDeviceToDatabase(){
+        Device device = new Device();
+        device.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
+        device.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
+        device.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
+        device.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+        device.setDeviceWanPort(null);
+        device.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
+        device.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+        device.setDeviceRouterIp(activityBinding.routerIpText.getText().toString().trim());
+        device.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
+
+        deviceDatabase.deviceDao().insert(device);
+        List<Device> d = deviceDatabase.deviceDao().getAll();
+        Log.d("CGHUYJ", "addDeviceToDatabase: "+d.get(0));
     }
 
 }
