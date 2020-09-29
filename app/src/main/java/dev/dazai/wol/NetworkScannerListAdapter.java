@@ -57,8 +57,8 @@ public class NetworkScannerListAdapter extends RecyclerView.Adapter<NetworkScann
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        NetworkScannerListItemBinding binding = NetworkScannerListItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
-        return new MyViewHolder(binding, mOnDeviceListener);
+        NetworkScannerListItemBinding itemBinding = NetworkScannerListItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        return new MyViewHolder(itemBinding, mOnDeviceListener);
 
     }
 

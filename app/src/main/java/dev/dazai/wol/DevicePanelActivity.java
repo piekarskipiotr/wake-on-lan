@@ -30,7 +30,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActionChooseIconDialogBinding actionChooseIconDialogBinding;
     ActionRouterIpDialogBinding actionRouterIpDialogBinding;
     ActionGroupDialogBinding actionGroupDialogBinding;
-    InputMethodManager imm;
+    InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         actionRouterIpDialogBinding = ActionRouterIpDialogBinding.inflate(getLayoutInflater());
         actionGroupDialogBinding = ActionGroupDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
-        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
@@ -68,7 +68,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 activityBinding.ipTextInput.requestFocus();
-                imm.showSoftInput(activityBinding.ipTextInput, InputMethodManager.SHOW_IMPLICIT);
+                inputMethodManager.showSoftInput(activityBinding.ipTextInput, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
@@ -76,7 +76,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 activityBinding.macTextInput.requestFocus();
-                imm.showSoftInput(activityBinding.macTextInput, InputMethodManager.SHOW_IMPLICIT);
+                inputMethodManager.showSoftInput(activityBinding.macTextInput, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
@@ -84,7 +84,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 activityBinding.secureOnTextInput.requestFocus();
-                imm.showSoftInput(activityBinding.secureOnTextInput, InputMethodManager.SHOW_IMPLICIT);
+                inputMethodManager.showSoftInput(activityBinding.secureOnTextInput, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
@@ -260,8 +260,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         device.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
 
         deviceDatabase.deviceDao().insert(device);
-        List<Device> d = deviceDatabase.deviceDao().getAll();
-        Log.d("CGHUYJ", "addDeviceToDatabase: "+d.get(0));
+
     }
+
 
 }
