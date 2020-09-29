@@ -30,6 +30,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActionChooseIconDialogBinding actionChooseIconDialogBinding;
     ActionRouterIpDialogBinding actionRouterIpDialogBinding;
     ActionGroupDialogBinding actionGroupDialogBinding;
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         actionRouterIpDialogBinding = ActionRouterIpDialogBinding.inflate(getLayoutInflater());
         actionGroupDialogBinding = ActionGroupDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
-
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
@@ -67,7 +68,6 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 activityBinding.ipTextInput.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(activityBinding.ipTextInput, InputMethodManager.SHOW_IMPLICIT);
             }
         });
@@ -76,7 +76,6 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 activityBinding.macTextInput.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(activityBinding.macTextInput, InputMethodManager.SHOW_IMPLICIT);
             }
         });
@@ -85,7 +84,6 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 activityBinding.secureOnTextInput.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(activityBinding.secureOnTextInput, InputMethodManager.SHOW_IMPLICIT);
             }
         });
