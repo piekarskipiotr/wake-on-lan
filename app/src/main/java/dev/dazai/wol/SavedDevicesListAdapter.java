@@ -5,20 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
+import java.util.List;
 
 import dev.dazai.wol.databinding.DeviceListItemBinding;
 
 public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesListAdapter.MyViewHolder>  {
     private Context mContext;
-    protected ArrayList<Device> mDevicesList;
+    protected List<Device> mDevicesList;
     private OnMyDeviceListener mOnDeviceListener;
 
-    public SavedDevicesListAdapter(Context context, ArrayList<Device> devicesList, OnMyDeviceListener onDeviceListener){
+    public SavedDevicesListAdapter(Context context, List<Device> devicesList, OnMyDeviceListener onDeviceListener){
         mContext = context;
         mDevicesList = devicesList;
         mOnDeviceListener = onDeviceListener;

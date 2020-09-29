@@ -7,28 +7,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
-public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener{
+public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener{
     ArrayList<DeviceInNetwork> devicesList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
     FragmentDashboardBinding binding;
     DashboardNewDeviceDialogBinding dialogBinding;
     DialogNetworkScanningBinding dialogNetworkScanningBinding;
-    NetworkScannerListAdapter adapter;
+    NetworkScannerListAdapter nAdapter;
+    SavedDevicesListAdapter sAdapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(getContext());
+        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getAll(), DashboardFragment.this);
+        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.devicesRecyclerView.setHasFixedSize(true);
+        binding.devicesRecyclerView.setAdapter(sAdapter);
+
         binding.newDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,10 +64,10 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
                         dialogNetworkScanningBinding = DialogNetworkScanningBinding.inflate(getLayoutInflater());
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
-                        adapter = new NetworkScannerListAdapter(getContext(), devicesList, DashboardFragment.this);
-                        dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        nAdapter = new NetworkScannerListAdapter(getContext(), devicesList, DashboardFragment.this);
+                        dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setHasFixedSize(true);
-                        dialogNetworkScanningBinding.devicesScanRecyclerView.setAdapter(adapter);
+                        dialogNetworkScanningBinding.devicesScanRecyclerView.setAdapter(nAdapter);
 
                         networkScanner = new NetworkScanner(DashboardFragment.this);
                         //first ip, last ip, timeout
@@ -107,7 +117,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             dialogNetworkScanningBinding.line.setVisibility(View.VISIBLE);
 
         devicesList.add(0, new DeviceInNetwork(deviceName, deviceIp, deviceMac));
-        adapter.notifyItemInserted(0);
+        nAdapter.notifyItemInserted(0);
 //        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
 //        adapter.notifyDataSetChanged();
 
