@@ -159,7 +159,9 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.turnOnDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deviceValid();
+                if(deviceValid()){
+
+                }
 
             }
         });

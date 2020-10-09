@@ -7,14 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
@@ -29,15 +26,17 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     DialogNetworkScanningBinding dialogNetworkScanningBinding;
     NetworkScannerListAdapter nAdapter;
     SavedDevicesListAdapter sAdapter;
+    DeviceDatabase deviceDatabase;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(getContext());
-        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getAll(), DashboardFragment.this);
-        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.devicesRecyclerView.setHasFixedSize(true);
-        binding.devicesRecyclerView.setAdapter(sAdapter);
+
+        //init database
+        deviceDatabase = DeviceDatabase.getInstance(getContext());
+
+        //getDevices();
+        getActiveDevices();
 
         binding.newDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,5 +148,23 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         startActivity(i);
 
     }
+
+    private void getDevices(){
+        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getAll(), DashboardFragment.this);
+        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.devicesRecyclerView.setHasFixedSize(true);
+        binding.devicesRecyclerView.setAdapter(sAdapter);
+
+    }
+
+    private void getActiveDevices(){
+        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getActive(), DashboardFragment.this);
+        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.devicesRecyclerView.setHasFixedSize(true);
+        binding.devicesRecyclerView.setAdapter(sAdapter);
+
+    }
+
+
 }
 

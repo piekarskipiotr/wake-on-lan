@@ -14,6 +14,8 @@ public interface DeviceDao {
     @Query("SELECT * FROM device")
     List<Device> getAll();
 
+    @Query("SELECT * FROM device WHERE is_reachable")
+    List<Device> getActive();
 
     @Update
     void update(Device device);

@@ -43,6 +43,17 @@ public class Device {
     @ColumnInfo(name = "device_secure_on")
     public String deviceSecureOn;
 
+    @ColumnInfo(name = "is_reachable")
+    public Boolean isReachable;
+
+    public Boolean getReachable() {
+        return isReachable;
+    }
+
+    public void setReachable(Boolean reachable) {
+        isReachable = reachable;
+    }
+
     public int getDeviceId() {
         return deviceId;
     }
