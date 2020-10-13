@@ -255,7 +255,6 @@ public class DevicePanelActivity extends AppCompatActivity {
         device.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
         device.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
         device.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
-        device.setDeviceWanPort(null);
         device.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
         device.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
         device.setDeviceRouterIp(activityBinding.routerIpText.getText().toString().trim());

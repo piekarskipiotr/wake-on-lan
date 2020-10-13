@@ -14,7 +14,10 @@ public interface DeviceDao {
     @Query("SELECT * FROM device")
     List<Device> getAll();
 
-    @Query("SELECT * FROM device WHERE is_reachable")
+    @Query("SELECT * FROM device WHERE is_reachable == 0")
+    List<Device> getNonActive();
+
+    @Query("SELECT * FROM device WHERE is_reachable == 1")
     List<Device> getActive();
 
     @Update

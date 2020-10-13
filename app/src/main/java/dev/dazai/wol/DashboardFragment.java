@@ -7,17 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
-public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener{
+public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener, ActiveDevicesListAdapter.OnMyActiveDeviceListener{
     ArrayList<DeviceInNetwork> devicesList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
@@ -26,16 +29,15 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     DialogNetworkScanningBinding dialogNetworkScanningBinding;
     NetworkScannerListAdapter nAdapter;
     SavedDevicesListAdapter sAdapter;
+    ActiveDevicesListAdapter aAdapter;
     DeviceDatabase deviceDatabase;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //init database
         deviceDatabase = DeviceDatabase.getInstance(getContext());
 
-        //getDevices();
+        getDevices();
         getActiveDevices();
 
         binding.newDeviceButton.setOnClickListener(new View.OnClickListener() {
@@ -150,21 +152,31 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     }
 
     private void getDevices(){
-        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getAll(), DashboardFragment.this);
+        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getNonActive(), DashboardFragment.this);
         binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.devicesRecyclerView.setHasFixedSize(true);
         binding.devicesRecyclerView.setAdapter(sAdapter);
-
     }
 
     private void getActiveDevices(){
-        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getActive(), DashboardFragment.this);
-        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.devicesRecyclerView.setHasFixedSize(true);
-        binding.devicesRecyclerView.setAdapter(sAdapter);
+        aAdapter = new ActiveDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getActive(), DashboardFragment.this);
+        binding.activeDevicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.activeDevicesRecyclerView.setHasFixedSize(true);
+        binding.activeDevicesRecyclerView.setAdapter(aAdapter);
+    }
 
+    @Override
+    public void onActiveDeviceClick(int position) {
+        String name = devicesList.get(position).getName();
+        String ipAddress = devicesList.get(position).getIpAddress();
+        String macAddress = devicesList.get(position).getMacAddress();
+
+        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
+        i.putExtra("DEVICE_NAME", name);
+        i.putExtra("DEVICE_IP_ADDRESS", ipAddress);
+        i.putExtra("DEVICE_MAC_ADDRESS", macAddress);
+        startActivity(i);
     }
 
 
 }
-
