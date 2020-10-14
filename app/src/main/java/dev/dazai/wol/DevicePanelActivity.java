@@ -147,13 +147,6 @@ public class DevicePanelActivity extends AppCompatActivity {
             }
         });
 
-        activityBinding.routerIpContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.setContentView(actionRouterIpDialogBinding.getRoot());
-                bottomSheetDialog.show();
-            }
-        });
 
 
         activityBinding.turnOnDeviceButton.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +250,6 @@ public class DevicePanelActivity extends AppCompatActivity {
         device.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
         device.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
         device.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
-        device.setDeviceRouterIp(activityBinding.routerIpText.getText().toString().trim());
         device.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
 
         deviceDatabase.deviceDao().insert(device);

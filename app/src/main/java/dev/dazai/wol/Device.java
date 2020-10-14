@@ -28,17 +28,11 @@ public class Device {
     @ColumnInfo(name = "device_lan_port")
     public String deviceLanPort;
 
-    @ColumnInfo(name = "device_wan_port")
-    public String deviceWanPort;
-
     @ColumnInfo(name = "device_icon")
     public String deviceIcon;
 
     @ColumnInfo(name = "device_group")
     public String deviceGroup;
-
-    @ColumnInfo(name = "device_router_ip")
-    public String deviceRouterIp;
 
     @ColumnInfo(name = "device_secure_on")
     public String deviceSecureOn;
@@ -98,14 +92,6 @@ public class Device {
         this.deviceLanPort = deviceLanPort;
     }
 
-    public String getDeviceWanPort() {
-        return deviceWanPort;
-    }
-
-    public void setDeviceWanPort(String deviceWanPort) {
-        this.deviceWanPort = deviceWanPort;
-    }
-
     public String getDeviceIcon() {
         return deviceIcon;
     }
@@ -120,14 +106,6 @@ public class Device {
 
     public void setDeviceGroup(String deviceGroup) {
         this.deviceGroup = deviceGroup;
-    }
-
-    public String getDeviceRouterIp() {
-        return deviceRouterIp;
-    }
-
-    public void setDeviceRouterIp(String deviceRouterIp) {
-        this.deviceRouterIp = deviceRouterIp;
     }
 
     public String getDeviceSecureOn() {
