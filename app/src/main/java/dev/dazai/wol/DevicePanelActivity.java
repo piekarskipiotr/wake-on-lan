@@ -48,10 +48,11 @@ public class DevicePanelActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            activityBinding.deleteDeviceButton.setVisibility(View.GONE);
-            activityBinding.saveDeviceButton.setVisibility(View.VISIBLE);
+            activityBinding.deleteDeviceButton.setVisibility(View.VISIBLE);
+            activityBinding.saveDeviceButton.setVisibility(View.GONE);
             activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
 
+            Log.d("CHUJ", String.valueOf(extras.size()));
             deviceName = extras.getString("DEVICE_NAME");
             deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
             deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");

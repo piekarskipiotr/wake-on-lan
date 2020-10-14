@@ -14,9 +14,9 @@ import dev.dazai.wol.databinding.ActiveDeviceListItemBinding;
 public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevicesListAdapter.MyViewHolder>  {
     private Context mContext;
     protected List<Device> mActiveDevicesList;
-    private OnMyActiveDeviceListener mOnActiveDeviceListener;
+    private onDeviceClick mOnActiveDeviceListener;
 
-    public ActiveDevicesListAdapter(Context context, List<Device> devicesList, OnMyActiveDeviceListener onDeviceListener){
+    public ActiveDevicesListAdapter(Context context, List<Device> devicesList, onDeviceClick onDeviceListener){
         mContext = context;
         mActiveDevicesList = devicesList;
         mOnActiveDeviceListener = onDeviceListener;
@@ -46,9 +46,9 @@ public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevices
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        OnMyActiveDeviceListener onDeviceListener;
+        onDeviceClick onDeviceListener;
         TextView name, icon;
-        public MyViewHolder(@NonNull ActiveDeviceListItemBinding itemView, OnMyActiveDeviceListener onDeviceListener) {
+        public MyViewHolder(@NonNull ActiveDeviceListItemBinding itemView, onDeviceClick onDeviceListener) {
             super(itemView.getRoot());
             name = itemView.name;
             icon = itemView.icon;
@@ -57,12 +57,12 @@ public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevices
 
         @Override
         public void onClick(View v) {
-            onDeviceListener.onActiveDeviceClick(getAdapterPosition());
+            onDeviceListener.onDeviceClick(getAdapterPosition());
         }
     }
 
-    public interface OnMyActiveDeviceListener{
-        void onActiveDeviceClick(int position);
+    public interface onDeviceClick {
+        void onDeviceClick(int position);
 
     }
 

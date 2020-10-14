@@ -8,19 +8,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
-public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener, ActiveDevicesListAdapter.OnMyActiveDeviceListener{
+public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener, ActiveDevicesListAdapter.onDeviceClick {
     ArrayList<DeviceInNetwork> devicesList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
@@ -137,20 +135,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         dialogBinding = null;
     }
 
-    @Override
-    public void onDeviceClick(int position) {
-        String name = devicesList.get(position).getName();
-        String ipAddress = devicesList.get(position).getIpAddress();
-        String macAddress = devicesList.get(position).getMacAddress();
-
-        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
-        i.putExtra("DEVICE_NAME", name);
-        i.putExtra("DEVICE_IP_ADDRESS", ipAddress);
-        i.putExtra("DEVICE_MAC_ADDRESS", macAddress);
-        startActivity(i);
-
-    }
-
     private void getDevices(){
         sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getNonActive(), DashboardFragment.this);
         binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -166,7 +150,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     }
 
     @Override
-    public void onActiveDeviceClick(int position) {
+    public void onDeviceClick(int position) {
         String name = devicesList.get(position).getName();
         String ipAddress = devicesList.get(position).getIpAddress();
         String macAddress = devicesList.get(position).getMacAddress();
@@ -176,7 +160,9 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         i.putExtra("DEVICE_IP_ADDRESS", ipAddress);
         i.putExtra("DEVICE_MAC_ADDRESS", macAddress);
         startActivity(i);
+
     }
+
 
 
 }

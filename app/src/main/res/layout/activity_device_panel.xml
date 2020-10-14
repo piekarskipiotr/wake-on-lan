@@ -48,7 +48,7 @@
                 android:textSize="32sp"
                 android:maxLines="3"
                 android:maxLength="24"
-                android:inputType="textMultiLine"
+                android:inputType="text"
                 android:imeOptions="actionDone"/>
         </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
@@ -358,7 +358,6 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/saveDeviceButton"
-            android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -382,6 +381,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/deleteDeviceButton"
+            android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackgroundBorderless"
