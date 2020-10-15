@@ -44,13 +44,13 @@ public class NetworkScannerListAdapter extends RecyclerView.Adapter<NetworkScann
 
         @Override
         public void onClick(View v) {
-            onDeviceListener.onDeviceClick(getAdapterPosition());
+            onDeviceListener.onNewDeviceClick(getAdapterPosition());
 
         }
     }
 
     public interface OnDeviceListener{
-        void onDeviceClick(int position);
+        void onNewDeviceClick(int position);
 
     }
 

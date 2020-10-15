@@ -19,7 +19,7 @@ import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener, ActiveDevicesListAdapter.onDeviceClick {
-    ArrayList<DeviceInNetwork> devicesList = new ArrayList<>();
+    ArrayList<DeviceInNetwork> devicesInNetworkList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
     FragmentDashboardBinding binding;
@@ -63,7 +63,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
                         dialogNetworkScanningBinding = DialogNetworkScanningBinding.inflate(getLayoutInflater());
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
-                        nAdapter = new NetworkScannerListAdapter(getContext(), devicesList, DashboardFragment.this);
+                        nAdapter = new NetworkScannerListAdapter(getContext(), devicesInNetworkList, DashboardFragment.this);
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setHasFixedSize(true);
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setAdapter(nAdapter);
@@ -90,7 +90,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                         dialogNetworkScanningBinding.reNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                devicesList.clear();
+                                devicesInNetworkList.clear();
                                 networkScanner = new NetworkScanner(DashboardFragment.this);
                                 networkScanner.execute(500);
                             }
@@ -103,7 +103,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                 bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        devicesList.clear();
+                        devicesInNetworkList.clear();
                     }
                 });
             }
@@ -112,10 +112,10 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     }
 
     public void insertDevice(String deviceName, String deviceIp, String deviceMac){
-        if(devicesList.size()==0)
+        if(devicesInNetworkList.size()==0)
             dialogNetworkScanningBinding.line.setVisibility(View.VISIBLE);
 
-        devicesList.add(0, new DeviceInNetwork(deviceName, deviceIp, deviceMac));
+        devicesInNetworkList.add(0, new DeviceInNetwork(deviceName, deviceIp, deviceMac));
         nAdapter.notifyItemInserted(0);
 //        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
 //        adapter.notifyDataSetChanged();
@@ -140,6 +140,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.devicesRecyclerView.setHasFixedSize(true);
         binding.devicesRecyclerView.setAdapter(sAdapter);
+
     }
 
     private void getActiveDevices(){
@@ -147,18 +148,26 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         binding.activeDevicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.activeDevicesRecyclerView.setHasFixedSize(true);
         binding.activeDevicesRecyclerView.setAdapter(aAdapter);
-    }
 
+    }
     @Override
-    public void onDeviceClick(int position) {
-        String name = devicesList.get(position).getName();
-        String ipAddress = devicesList.get(position).getIpAddress();
-        String macAddress = devicesList.get(position).getMacAddress();
+    public void onNewDeviceClick(int position) {
+        String name = devicesInNetworkList.get(position).getName();
+        String ipAddress = devicesInNetworkList.get(position).getIpAddress();
+        String macAddress = devicesInNetworkList.get(position).getMacAddress();
 
         Intent i = new Intent(getActivity(), DevicePanelActivity.class);
         i.putExtra("DEVICE_NAME", name);
         i.putExtra("DEVICE_IP_ADDRESS", ipAddress);
         i.putExtra("DEVICE_MAC_ADDRESS", macAddress);
+        startActivity(i);
+    }
+
+    //TODO ogarnąć najlepszą drogę do przesłania tam danych 
+    @Override
+    public void onDeviceClick(int position) {
+        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
+        i.putExtra("ID", deviceDatabase.deviceDao().getAll().get(position).getDeviceId());
         startActivity(i);
 
     }
