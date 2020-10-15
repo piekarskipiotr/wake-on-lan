@@ -163,7 +163,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         startActivity(i);
     }
 
-    //TODO ogarnąć najlepszą drogę do przesłania tam danych 
     @Override
     public void onDeviceClick(int position) {
         Intent i = new Intent(getActivity(), DevicePanelActivity.class);

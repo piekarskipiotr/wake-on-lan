@@ -34,7 +34,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActionRouterIpDialogBinding actionRouterIpDialogBinding;
     ActionGroupDialogBinding actionGroupDialogBinding;
     InputMethodManager inputMethodManager;
-
+    IpAddressValidator validator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +46,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         setContentView(activityBinding.getRoot());
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
+        validator = new IpAddressValidator();
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
@@ -208,8 +209,8 @@ public class DevicePanelActivity extends AppCompatActivity {
 
     }
     private boolean deviceNameValid(){
-        String ip = activityBinding.deviceNameTextInput.getText().toString().trim();
-        if(ip.isEmpty()){
+        String name = activityBinding.deviceNameTextInput.getText().toString().trim();
+        if(name.isEmpty()){
             activityBinding.deviceNameTextInput.setError("Pole nie może być puste!");
             return false;
         }else{
@@ -223,6 +224,9 @@ public class DevicePanelActivity extends AppCompatActivity {
         if(ip.isEmpty()){
             activityBinding.ipTextInput.setError("Pole nie może być puste!");
             return false;
+        }else if(!validator.isValid(ip)){
+            activityBinding.ipTextInput.setError("Adres Ip jest niepoprawny!");
+            return false;
         }else{
             activityBinding.ipTextInput.setError(null);
             return true;
@@ -230,9 +234,13 @@ public class DevicePanelActivity extends AppCompatActivity {
     }
 
     private boolean macAddressValid(){
-        String ip = activityBinding.macTextInput.getText().toString().trim();
-        if(ip.isEmpty()){
+        String mac = activityBinding.macTextInput.getText().toString().trim();
+        String[] hex = mac.split("(\\:|\\-)");
+        if(mac.isEmpty()){
             activityBinding.macTextInput.setError("Pole nie może być puste!");
+            return false;
+        }else if(hex.length != 6){
+            activityBinding.macTextInput.setError("Adres Mac jest niepoprawny!");
             return false;
         }else{
             activityBinding.macTextInput.setError(null);
