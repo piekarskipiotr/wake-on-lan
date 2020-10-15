@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
@@ -23,7 +25,8 @@ import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
 
 public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
-    String deviceName, deviceIpAddress, deviceMacAddress;
+    String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceGroup, deviceSecureOn;
+    Boolean deviceReachable = false;
     BottomSheetDialog bottomSheetDialog;
     DeviceDatabase deviceDatabase;
     ActionPortDialogBinding actionPortDialogBinding;
@@ -31,7 +34,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActionRouterIpDialogBinding actionRouterIpDialogBinding;
     ActionGroupDialogBinding actionGroupDialogBinding;
     InputMethodManager inputMethodManager;
-
+    IpAddressValidator validator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +46,34 @@ public class DevicePanelActivity extends AppCompatActivity {
         setContentView(activityBinding.getRoot());
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
+        validator = new IpAddressValidator();
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
         Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            activityBinding.deleteDeviceButton.setVisibility(View.VISIBLE);
-            activityBinding.saveDeviceButton.setVisibility(View.GONE);
-            activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
+        if(extras != null){
+            if(extras.size() == 1){
+                activityBinding.deleteDeviceButton.setVisibility(View.VISIBLE);
+                activityBinding.saveDeviceButton.setVisibility(View.GONE);
+                activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
 
-            deviceName = extras.getString("DEVICE_NAME");
-            deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
-            deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
+                Device device = deviceDatabase.deviceDao().getById(extras.getInt("ID"));
+                deviceName = device.getDeviceName();
+                deviceIpAddress = device.getDeviceIpAddress();
+                deviceMacAddress = device.getDeviceMacAddress();
+                devicePort = device.getDeviceLanPort();
+                deviceIcon = device.getDeviceIcon();
+                deviceGroup = device.getDeviceGroup();
+                deviceSecureOn = device.getDeviceSecureOn();
+
+            }else{
+                deviceName = extras.getString("DEVICE_NAME");
+                deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
+                deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
+                deviceReachable = true;
+
+            }
+
             activityBinding.ipTextInputLayout.setHint(null);
             activityBinding.macTextInputLayout.setHint(null);
 
@@ -62,6 +81,10 @@ public class DevicePanelActivity extends AppCompatActivity {
             activityBinding.deviceNameTextInput.setText(deviceName);
             activityBinding.ipTextInput.setText(deviceIpAddress);
             activityBinding.macTextInput.setText(deviceMacAddress);
+            activityBinding.portText.setText(devicePort);
+            activityBinding.iconShowField.setText(deviceIcon);
+            activityBinding.groupText.setText(deviceGroup);
+            activityBinding.secureOnTextInput.setText(deviceSecureOn);
         }
 
         activityBinding.ipContainer.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +185,10 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.saveDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addDeviceToDatabase();
+                if(deviceValid()){
+                    addDeviceToDatabase();
+                }
+
 
             }
         });
@@ -183,8 +209,8 @@ public class DevicePanelActivity extends AppCompatActivity {
 
     }
     private boolean deviceNameValid(){
-        String ip = activityBinding.deviceNameTextInput.getText().toString().trim();
-        if(ip.isEmpty()){
+        String name = activityBinding.deviceNameTextInput.getText().toString().trim();
+        if(name.isEmpty()){
             activityBinding.deviceNameTextInput.setError("Pole nie może być puste!");
             return false;
         }else{
@@ -198,6 +224,9 @@ public class DevicePanelActivity extends AppCompatActivity {
         if(ip.isEmpty()){
             activityBinding.ipTextInput.setError("Pole nie może być puste!");
             return false;
+        }else if(!validator.isValid(ip)){
+            activityBinding.ipTextInput.setError("Adres Ip jest niepoprawny!");
+            return false;
         }else{
             activityBinding.ipTextInput.setError(null);
             return true;
@@ -205,9 +234,13 @@ public class DevicePanelActivity extends AppCompatActivity {
     }
 
     private boolean macAddressValid(){
-        String ip = activityBinding.macTextInput.getText().toString().trim();
-        if(ip.isEmpty()){
+        String mac = activityBinding.macTextInput.getText().toString().trim();
+        String[] hex = mac.split("(\\:|\\-)");
+        if(mac.isEmpty()){
             activityBinding.macTextInput.setError("Pole nie może być puste!");
+            return false;
+        }else if(hex.length != 6){
+            activityBinding.macTextInput.setError("Adres Mac jest niepoprawny!");
             return false;
         }else{
             activityBinding.macTextInput.setError(null);
@@ -243,16 +276,18 @@ public class DevicePanelActivity extends AppCompatActivity {
     }
 
     private void addDeviceToDatabase(){
-        Device device = new Device();
-        device.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
-        device.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
-        device.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
-        device.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
-        device.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
-        device.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
-        device.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
+        Device mDevice = new Device();
+        mDevice.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
+        mDevice.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
+        mDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
+        mDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+        mDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
+        mDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+        mDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
+        mDevice.setReachable(deviceReachable);
 
-        deviceDatabase.deviceDao().insert(device);
+        deviceDatabase.deviceDao().insert(mDevice);
+        Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();
 
     }
 
