@@ -22,6 +22,9 @@ public interface DeviceDao {
     @Query("SELECT * FROM device WHERE deviceId == :id")
     Device getById(int id);
 
+    @Query("SELECT * FROM device WHERE device_name == :name")
+    Device getByName(String name);
+
     @Update
     void update(Device device);
 

@@ -35,6 +35,8 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActionGroupDialogBinding actionGroupDialogBinding;
     InputMethodManager inputMethodManager;
     IpAddressValidator validator;
+    MagicPacket magicPacket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
         validator = new IpAddressValidator();
+        magicPacket = new MagicPacket();
 
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
@@ -176,6 +179,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(deviceValid()){
+                    magicPacket.send(deviceIpAddress, deviceMacAddress, Integer.parseInt(devicePort));
 
                 }
 
@@ -196,6 +200,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.deleteDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Device device = deviceDatabase.deviceDao().getByName(deviceName);
+                deviceDatabase.deviceDao().delete(device);
 
             }
         });
