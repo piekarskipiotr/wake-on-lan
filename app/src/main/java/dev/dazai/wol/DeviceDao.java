@@ -1,5 +1,6 @@
 package dev.dazai.wol;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,13 +12,13 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface DeviceDao {
     @Query("SELECT * FROM device")
-    List<Device> getAll();
+    LiveData<List<Device>> getAll();
 
     @Query("SELECT * FROM device WHERE is_reachable == 0")
-    List<Device> getNonActive();
+    LiveData<List<Device>>getNonActive();
 
     @Query("SELECT * FROM device WHERE is_reachable == 1")
-    List<Device> getActive();
+    LiveData<List<Device>> getActive();
 
     @Query("SELECT * FROM device WHERE deviceId == :id")
     Device getById(int id);
