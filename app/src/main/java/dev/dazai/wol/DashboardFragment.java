@@ -6,13 +6,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
@@ -29,14 +31,27 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     SavedDevicesListAdapter sAdapter;
     ActiveDevicesListAdapter aAdapter;
     DeviceDatabase deviceDatabase;
+    private DeviceViewModel deviceViewModel;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        deviceViewModel.getAllDevices().observe(this, new Observer<List<Device>>() {
+            @Override
+            public void onChanged(List<Device> devices) {
+
+            }
+        });
+
+
+
+
+
         deviceDatabase = DeviceDatabase.getInstance(getContext());
 
-        getDevices();
-        getActiveDevices();
+//        getDevices();
+//        getActiveDevices();
 
         binding.newDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,21 +150,22 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         dialogBinding = null;
     }
 
-    private void getDevices(){
-        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getNonActive(), DashboardFragment.this);
-        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.devicesRecyclerView.setHasFixedSize(true);
-        binding.devicesRecyclerView.setAdapter(sAdapter);
+//    private void getDevices(){
+//        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getNonActive(), DashboardFragment.this);
+//        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+//        binding.devicesRecyclerView.setHasFixedSize(true);
+//        binding.devicesRecyclerView.setAdapter(sAdapter);
+//
+//    }
+//
+//    private void getActiveDevices(){
+//        aAdapter = new ActiveDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getActive(), DashboardFragment.this);
+//        binding.activeDevicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+//        binding.activeDevicesRecyclerView.setHasFixedSize(true);
+//        binding.activeDevicesRecyclerView.setAdapter(aAdapter);
+//
+//    }
 
-    }
-
-    private void getActiveDevices(){
-        aAdapter = new ActiveDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getActive(), DashboardFragment.this);
-        binding.activeDevicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.activeDevicesRecyclerView.setHasFixedSize(true);
-        binding.activeDevicesRecyclerView.setAdapter(aAdapter);
-
-    }
     @Override
     public void onNewDeviceClick(int position) {
         String name = devicesInNetworkList.get(position).getName();
