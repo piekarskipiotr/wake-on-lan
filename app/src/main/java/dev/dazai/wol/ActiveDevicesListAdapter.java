@@ -16,9 +16,8 @@ public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevices
     protected List<Device> mActiveDevicesList;
     private onDeviceClick mOnActiveDeviceListener;
 
-    public ActiveDevicesListAdapter(Context context, List<Device> devicesList, onDeviceClick onDeviceListener){
+    public ActiveDevicesListAdapter(Context context, onDeviceClick onDeviceListener){
         mContext = context;
-        mActiveDevicesList = devicesList;
         mOnActiveDeviceListener = onDeviceListener;
 
     }
@@ -59,6 +58,12 @@ public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevices
         public void onClick(View v) {
             onDeviceListener.onDeviceClick(getAdapterPosition());
         }
+    }
+
+    public void setActiveDevices(List<Device> devices){
+        this.mActiveDevicesList = devices;
+        notifyDataSetChanged();
+
     }
 
     public interface onDeviceClick {

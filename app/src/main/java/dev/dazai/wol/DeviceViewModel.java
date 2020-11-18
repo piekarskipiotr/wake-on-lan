@@ -11,11 +11,15 @@ import java.util.List;
 public class DeviceViewModel extends AndroidViewModel {
     private DeviceRepository repository;
     private LiveData<List<Device>> allDevices;
+    private LiveData<List<Device>> savedDevices;
+    private LiveData<List<Device>> activeDevices;
 
     public DeviceViewModel(@NonNull Application application) {
         super(application);
         repository = new DeviceRepository(application);
         allDevices = repository.getAllDevices();
+        savedDevices = repository.getActive();
+        savedDevices = repository.getNonActive();
 
     }
 
@@ -36,6 +40,16 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public LiveData<List<Device>> getAllDevices(){
         return allDevices;
+
+    }
+
+    public LiveData<List<Device>> getSavedDevices(){
+        return savedDevices;
+
+    }
+
+    public LiveData<List<Device>> getActiveDevices(){
+        return activeDevices;
 
     }
 

@@ -37,21 +37,27 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-        deviceViewModel.getAllDevices().observe(this, new Observer<List<Device>>() {
+        deviceViewModel.getSavedDevices().observe(this, new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
+                sAdapter.setSavedDevices(devices);
+
+            }
+        });
+
+        deviceViewModel.getActiveDevices().observe(this, new Observer<List<Device>>() {
+            @Override
+            public void onChanged(List<Device> devices) {
+                aAdapter.setActiveDevices(devices);
 
             }
         });
 
 
-
-
-
         deviceDatabase = DeviceDatabase.getInstance(getContext());
 
-//        getDevices();
-//        getActiveDevices();
+        setSavedDevicesAdapter();
+        setActiveDevicesAdapter();
 
         binding.newDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,21 +156,21 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         dialogBinding = null;
     }
 
-//    private void getDevices(){
-//        sAdapter = new SavedDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getNonActive(), DashboardFragment.this);
-//        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-//        binding.devicesRecyclerView.setHasFixedSize(true);
-//        binding.devicesRecyclerView.setAdapter(sAdapter);
-//
-//    }
-//
-//    private void getActiveDevices(){
-//        aAdapter = new ActiveDevicesListAdapter(getContext(), deviceDatabase.deviceDao().getActive(), DashboardFragment.this);
-//        binding.activeDevicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-//        binding.activeDevicesRecyclerView.setHasFixedSize(true);
-//        binding.activeDevicesRecyclerView.setAdapter(aAdapter);
-//
-//    }
+    private void setSavedDevicesAdapter(){
+        sAdapter = new SavedDevicesListAdapter(getContext(), DashboardFragment.this);
+        binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.devicesRecyclerView.setHasFixedSize(true);
+        binding.devicesRecyclerView.setAdapter(sAdapter);
+
+    }
+
+    private void setActiveDevicesAdapter(){
+        aAdapter = new ActiveDevicesListAdapter(getContext(), DashboardFragment.this);
+        binding.activeDevicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.activeDevicesRecyclerView.setHasFixedSize(true);
+        binding.activeDevicesRecyclerView.setAdapter(aAdapter);
+
+    }
 
     @Override
     public void onNewDeviceClick(int position) {
@@ -182,7 +188,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     @Override
     public void onDeviceClick(int position) {
         Intent i = new Intent(getActivity(), DevicePanelActivity.class);
-        i.putExtra("ID", deviceDatabase.deviceDao().getAll().get(position).getDeviceId());
+        i.putExtra("ID", deviceDatabase.deviceDao().getAll().getValue().get(position).getDeviceId());
         startActivity(i);
 
     }

@@ -17,9 +17,8 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
     protected List<Device> mDevicesList;
     private OnMyDeviceListener mOnDeviceListener;
 
-    public SavedDevicesListAdapter(Context context, List<Device> devicesList, OnMyDeviceListener onDeviceListener){
+    public SavedDevicesListAdapter(Context context, OnMyDeviceListener onDeviceListener){
         mContext = context;
-        mDevicesList = devicesList;
         mOnDeviceListener = onDeviceListener;
 
     }
@@ -60,6 +59,11 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
         public void onClick(View v) {
             onDeviceListener.onDeviceClick(getAdapterPosition());
         }
+    }
+
+    public void setSavedDevices(List<Device> devices){
+        this.mDevicesList = devices;
+        notifyDataSetChanged();
     }
 
     public interface OnMyDeviceListener{
