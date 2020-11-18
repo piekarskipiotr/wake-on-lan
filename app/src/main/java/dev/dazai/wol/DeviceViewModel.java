@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class DeviceViewModel extends AndroidViewModel {
         repository = new DeviceRepository(application);
         allDevices = repository.getAllDevices();
         savedDevices = repository.getActive();
-        savedDevices = repository.getNonActive();
+        activeDevices = repository.getNonActive();
 
     }
 

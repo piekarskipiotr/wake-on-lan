@@ -16,6 +16,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
     private Context mContext;
     protected List<Device> mDevicesList;
     private OnMyDeviceListener mOnDeviceListener;
+    private int size = 0;
 
     public SavedDevicesListAdapter(Context context, OnMyDeviceListener onDeviceListener){
         mContext = context;
@@ -42,7 +43,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
 
     @Override
     public int getItemCount() {
-        return mDevicesList.size();
+        return size;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -63,6 +64,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
 
     public void setSavedDevices(List<Device> devices){
         this.mDevicesList = devices;
+        size = mDevicesList.size();
         notifyDataSetChanged();
     }
 

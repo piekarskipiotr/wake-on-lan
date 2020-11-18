@@ -15,7 +15,7 @@ public class DeviceRepository {
 
     public DeviceRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
-        deviceDatabase.deviceDao();
+        deviceDao = deviceDatabase.deviceDao();
 
         allDevices = deviceDao.getAll();
         nonReachableDevices = deviceDao.getNonActive();

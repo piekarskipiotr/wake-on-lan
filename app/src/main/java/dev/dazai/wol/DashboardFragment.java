@@ -36,8 +36,8 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-        deviceViewModel.getSavedDevices().observe(this, new Observer<List<Device>>() {
+        deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        deviceViewModel.getSavedDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 sAdapter.setSavedDevices(devices);
@@ -45,7 +45,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
-        deviceViewModel.getActiveDevices().observe(this, new Observer<List<Device>>() {
+        deviceViewModel.getActiveDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 aAdapter.setActiveDevices(devices);
@@ -64,7 +64,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             public void onClick(View v) {
                 dialogBinding = DashboardNewDeviceDialogBinding.inflate(getLayoutInflater());
 
-                bottomSheetDialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()), R.style.BottomSheetDialogTheme);
+                bottomSheetDialog = new BottomSheetDialog(requireActivity(), R.style.BottomSheetDialogTheme);
                 bottomSheetDialog.setContentView(dialogBinding.getRoot());
                 bottomSheetDialog.show();
 
