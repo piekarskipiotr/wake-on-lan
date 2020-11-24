@@ -2,7 +2,6 @@ package dev.dazai.wol;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -40,6 +39,7 @@ public abstract class DeviceDatabase extends RoomDatabase {
 
         private PopulateDbAsyncTask(DeviceDatabase deviceDatabase){
             deviceDao = deviceDatabase.deviceDao();
+
         }
 
         @Override

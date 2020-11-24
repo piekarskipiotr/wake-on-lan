@@ -38,16 +38,14 @@ public class DeviceRepository {
     }
 
     public void update(Device device){
-        new UpdateDeviceAsyncTask(deviceDao).equals(device);
+        new UpdateDeviceAsyncTask(deviceDao).execute(device);
     }
 
     public void insert(Device device){
-        new InsertDeviceAsyncTask(deviceDao).equals(device);
-
-    }
+        new InsertDeviceAsyncTask(deviceDao).execute(device); }
 
     public void delete(Device device){
-        new DeleteDeviceAsyncTask(deviceDao).equals(device);
+        new DeleteDeviceAsyncTask(deviceDao).execute(device);
     }
 
     private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
@@ -38,7 +39,9 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        deviceDatabase = DeviceDatabase.getInstance(getContext());
+        deviceViewModel = ViewModelProviders.of(getActivity()).get(DeviceViewModel.class);
+//        deviceViewModel = ViewModelProvider(DashboardFragment.class).get(DeviceViewModel.class);
         deviceViewModel.getSavedDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
@@ -55,15 +58,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
-        Device x = new Device();
-        x.setReachable(true);
-        x.setDeviceIpAddress("192.168.1.10");
-        x.setDeviceMacAddress("00:00:00:00:00:00");
-        x.setDeviceLanPort("7");
-        x.setDeviceName("CHUJEK1");
-        deviceViewModel.insert(x);
-
-        deviceDatabase = DeviceDatabase.getInstance(getContext());
 
         setSavedDevicesAdapter();
         setActiveDevicesAdapter();
@@ -189,6 +183,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         String ipAddress = devicesInNetworkList.get(position).getIpAddress();
         String macAddress = devicesInNetworkList.get(position).getMacAddress();
 
+        bottomSheetDialog.dismiss();
         Intent i = new Intent(getActivity(), DevicePanelActivity.class);
         i.putExtra("DEVICE_NAME", name);
         i.putExtra("DEVICE_IP_ADDRESS", ipAddress);
