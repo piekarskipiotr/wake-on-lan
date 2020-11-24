@@ -38,24 +38,23 @@ public class DeviceRepository {
     }
 
     public void update(Device device){
-        new UpdateNoteAsyncTask(deviceDao).equals(device);
+        new UpdateDeviceAsyncTask(deviceDao).equals(device);
     }
 
     public void insert(Device device){
-        new InsertNoteAsyncTask(deviceDao).equals(device);
+        new InsertDeviceAsyncTask(deviceDao).equals(device);
 
     }
 
     public void delete(Device device){
-        new DeleteNoteAsyncTask(deviceDao).equals(device);
+        new DeleteDeviceAsyncTask(deviceDao).equals(device);
     }
 
-    private static class UpdateNoteAsyncTask extends AsyncTask<Device, Void, Void> {
+    private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
         private DeviceDao deviceDao;
-        private UpdateNoteAsyncTask(DeviceDao deviceDao){
+        private UpdateDeviceAsyncTask(DeviceDao deviceDao){
             this.deviceDao = deviceDao;
         }
-
 
         @Override
         protected Void doInBackground(Device... devices) {
@@ -64,9 +63,9 @@ public class DeviceRepository {
         }
     }
 
-    private static class InsertNoteAsyncTask extends AsyncTask<Device, Void, Void> {
+    private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
         private DeviceDao deviceDao;
-        private InsertNoteAsyncTask(DeviceDao deviceDao){
+        private InsertDeviceAsyncTask(DeviceDao deviceDao){
             this.deviceDao = deviceDao;
         }
 
@@ -79,10 +78,9 @@ public class DeviceRepository {
     }
 
 
-
-    private static class DeleteNoteAsyncTask extends AsyncTask<Device, Void, Void> {
+    private static class DeleteDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
         private DeviceDao deviceDao;
-        private DeleteNoteAsyncTask(DeviceDao deviceDao){
+        private DeleteDeviceAsyncTask(DeviceDao deviceDao){
             this.deviceDao = deviceDao;
         }
 

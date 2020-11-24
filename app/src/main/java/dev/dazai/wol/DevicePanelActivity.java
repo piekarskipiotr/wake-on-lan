@@ -2,8 +2,10 @@ package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -292,7 +294,6 @@ public class DevicePanelActivity extends AppCompatActivity {
         mDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         mDevice.setReachable(deviceReachable);
 
-        deviceDatabase.deviceDao().insert(mDevice);
         Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();
 
     }

@@ -54,6 +54,7 @@ public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevices
             name = itemView.name;
             icon = itemView.icon;
             this.onDeviceListener = onDeviceListener;
+
         }
 
         @Override
@@ -63,7 +64,7 @@ public class ActiveDevicesListAdapter extends RecyclerView.Adapter<ActiveDevices
     }
 
     public void setActiveDevices(List<Device> devices){
-        this.mActiveDevicesList = devices;
+        mActiveDevicesList = devices;
         size = mActiveDevicesList.size();
         notifyDataSetChanged();
 

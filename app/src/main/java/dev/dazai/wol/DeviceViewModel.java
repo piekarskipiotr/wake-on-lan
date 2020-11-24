@@ -20,8 +20,8 @@ public class DeviceViewModel extends AndroidViewModel {
         super(application);
         repository = new DeviceRepository(application);
         allDevices = repository.getAllDevices();
-        savedDevices = repository.getActive();
-        activeDevices = repository.getNonActive();
+        savedDevices = repository.getNonActive();
+        activeDevices = repository.getActive();
 
     }
 
