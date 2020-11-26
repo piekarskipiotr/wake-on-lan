@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Device {
 
-    @PrimaryKey(autoGenerate = true)
     @NonNull
+    @PrimaryKey(autoGenerate = true)
     public int deviceId;
 
     @NonNull

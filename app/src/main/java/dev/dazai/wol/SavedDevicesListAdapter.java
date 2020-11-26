@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,10 @@ import dev.dazai.wol.databinding.DeviceListItemBinding;
 public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesListAdapter.MyViewHolder>  {
     private Context mContext;
     protected List<Device> mDevicesList;
-    private OnMyDeviceListener mOnDeviceListener;
+    private onDeviceClick mOnDeviceListener;
     private int size = 0;
 
-    public SavedDevicesListAdapter(Context context, OnMyDeviceListener onDeviceListener){
+    public SavedDevicesListAdapter(Context context, onDeviceClick onDeviceListener){
         mContext = context;
         mOnDeviceListener = onDeviceListener;
 
@@ -48,19 +49,23 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        OnMyDeviceListener onDeviceListener;
+        onDeviceClick onDeviceListener;
         TextView name, icon;
-        public MyViewHolder(@NonNull DeviceListItemBinding itemView, OnMyDeviceListener onDeviceListener) {
+        CardView itemContainer;
+        public MyViewHolder(@NonNull DeviceListItemBinding itemView, onDeviceClick onDeviceListener) {
             super(itemView.getRoot());
             name = itemView.name;
             icon = itemView.icon;
+            itemContainer = itemView.itemContainer;
             this.onDeviceListener = onDeviceListener;
+
+            itemContainer.setOnClickListener(this);
 
         }
 
         @Override
         public void onClick(View v) {
-            onDeviceListener.onDeviceClick(getAdapterPosition());
+            onDeviceListener.onDeviceCardClick(mDevicesList.get(getAdapterPosition()));
         }
     }
 
@@ -71,10 +76,9 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
 
     }
 
-    public interface OnMyDeviceListener{
-        void onDeviceClick(int position);
+    public interface onDeviceClick{
+        void onDeviceCardClick(Device device);
 
     }
-
 
 }

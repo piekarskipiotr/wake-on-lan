@@ -23,7 +23,7 @@ import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
-public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.OnMyDeviceListener, ActiveDevicesListAdapter.onDeviceClick {
+public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.onDeviceClick, ActiveDevicesListAdapter.onDeviceClick {
     ArrayList<DeviceInNetwork> devicesInNetworkList = new ArrayList<>();
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
@@ -40,8 +40,11 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         deviceDatabase = DeviceDatabase.getInstance(getContext());
-        deviceViewModel = ViewModelProviders.of(getActivity()).get(DeviceViewModel.class);
-//        deviceViewModel = ViewModelProvider(DashboardFragment.class).get(DeviceViewModel.class);
+        setSavedDevicesAdapter();
+        setActiveDevicesAdapter();
+
+        deviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel.class);
+        //deviceViewModel = ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         deviceViewModel.getSavedDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
@@ -58,9 +61,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
-
-        setSavedDevicesAdapter();
-        setActiveDevicesAdapter();
 
         binding.newDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +135,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
+
     }
 
     public void insertDevice(String deviceName, String deviceIp, String deviceMac){
@@ -143,8 +144,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
         devicesInNetworkList.add(0, new DeviceInNetwork(deviceName, deviceIp, deviceMac));
         nAdapter.notifyItemInserted(0);
-//        devicesList.add(0, new Device(deviceName, deviceIp, deviceMac));
-//        adapter.notifyDataSetChanged();
 
     }
 
@@ -159,6 +158,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         super.onDestroyView();
         binding = null;
         dialogBinding = null;
+
     }
 
     private void setSavedDevicesAdapter(){
@@ -191,14 +191,14 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         startActivity(i);
     }
 
+
     @Override
-    public void onDeviceClick(int position) {
+    public void onDeviceCardClick(Device device) {
         Intent i = new Intent(getActivity(), DevicePanelActivity.class);
-        i.putExtra("ID", deviceDatabase.deviceDao().getAll().getValue().get(position).getDeviceId());
+        i.putExtra("ID", device.getDeviceId());
         startActivity(i);
 
     }
-
 
 
 }

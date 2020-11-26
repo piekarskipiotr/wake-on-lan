@@ -2,23 +2,15 @@ package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.util.List;
-
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
 import dev.dazai.wol.databinding.ActionPortDialogBinding;
