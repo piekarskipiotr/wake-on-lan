@@ -20,10 +20,10 @@ public interface DeviceDao {
     @Query("SELECT * FROM device WHERE is_reachable = 1")
     LiveData<List<Device>> getActive();
 
-    @Query("SELECT * FROM device WHERE deviceId == :id")
-    Device getById(int id);
+    @Query("SELECT * FROM device WHERE deviceId LIKE :id")
+    LiveData<Device> getById(int id);
 
-    @Query("SELECT * FROM device WHERE device_name == :name")
+    @Query("SELECT * FROM device WHERE device_name LIKE :name")
     Device getByName(String name);
 
     @Update

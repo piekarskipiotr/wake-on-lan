@@ -2,15 +2,24 @@ package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.List;
+
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
 import dev.dazai.wol.databinding.ActionPortDialogBinding;
@@ -20,6 +29,7 @@ import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
 public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
     String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceGroup, deviceSecureOn;
+    int deviceId;
     Boolean deviceReachable = false;
     BottomSheetDialog bottomSheetDialog;
     DeviceDatabase deviceDatabase;
@@ -30,6 +40,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     InputMethodManager inputMethodManager;
     IpAddressValidator validator;
     MagicPacket magicPacket;
+    DevicePanelViewModel devicePanelViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,44 +55,44 @@ public class DevicePanelActivity extends AppCompatActivity {
         deviceDatabase = DeviceDatabase.getInstance(this);
         validator = new IpAddressValidator();
         magicPacket = new MagicPacket();
-
+        deviceDatabase = DeviceDatabase.getInstance(getApplicationContext());
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             if(extras.size() == 1){
+                deviceId = extras.getInt("ID");
                 activityBinding.deleteDeviceButton.setVisibility(View.VISIBLE);
                 activityBinding.saveDeviceButton.setVisibility(View.GONE);
                 activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
+                devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
+                //devicePanelViewModel = new ViewModelProvider(this).get(DevicePanelViewModel.class);
 
-                Device device = deviceDatabase.deviceDao().getById(extras.getInt("ID"));
-                deviceName = device.getDeviceName();
-                deviceIpAddress = device.getDeviceIpAddress();
-                deviceMacAddress = device.getDeviceMacAddress();
-                devicePort = device.getDeviceLanPort();
-                deviceIcon = device.getDeviceIcon();
-                deviceGroup = device.getDeviceGroup();
-                deviceSecureOn = device.getDeviceSecureOn();
+                devicePanelViewModel.getDeviceById(deviceId).observe(this, new Observer<Device>() {
+                    @Override
+                    public void onChanged(Device device) {
+                        deviceName = device.getDeviceName();
+                        deviceIpAddress = device.getDeviceIpAddress();
+                        deviceMacAddress = device.getDeviceMacAddress();
+                        devicePort = device.getDeviceLanPort();
+                        deviceIcon = device.getDeviceIcon();
+                        deviceGroup = device.getDeviceGroup();
+                        deviceSecureOn = device.getDeviceSecureOn();
+                        fillFields();
+
+                    }
+                });
 
             }else{
                 deviceName = extras.getString("DEVICE_NAME");
                 deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
                 deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
                 deviceReachable = true;
+                fillFields();
 
             }
 
-            activityBinding.ipTextInputLayout.setHint(null);
-            activityBinding.macTextInputLayout.setHint(null);
 
-            //init device info
-            activityBinding.deviceNameTextInput.setText(deviceName);
-            activityBinding.ipTextInput.setText(deviceIpAddress);
-            activityBinding.macTextInput.setText(deviceMacAddress);
-            activityBinding.portText.setText(devicePort);
-            activityBinding.iconShowField.setText(deviceIcon);
-            activityBinding.groupText.setText(deviceGroup);
-            activityBinding.secureOnTextInput.setText(deviceSecureOn);
         }
 
         activityBinding.ipContainer.setOnClickListener(new View.OnClickListener() {
@@ -194,8 +205,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.deleteDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Device device = deviceDatabase.deviceDao().getByName(deviceName);
-                deviceDatabase.deviceDao().delete(device);
+
 
             }
         });
@@ -286,8 +296,24 @@ public class DevicePanelActivity extends AppCompatActivity {
         mDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         mDevice.setReachable(deviceReachable);
 
+        devicePanelViewModel.insert(mDevice);
         Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void fillFields(){
+        //clear hint
+        activityBinding.ipTextInputLayout.setHint(null);
+        activityBinding.macTextInputLayout.setHint(null);
+
+        //init device info
+        activityBinding.deviceNameTextInput.setText(deviceName);
+        activityBinding.ipTextInput.setText(deviceIpAddress);
+        activityBinding.macTextInput.setText(deviceMacAddress);
+        activityBinding.portText.setText(devicePort);
+        activityBinding.iconShowField.setText(deviceIcon);
+        activityBinding.groupText.setText(deviceGroup);
+        activityBinding.secureOnTextInput.setText(deviceSecureOn);
     }
 
 
