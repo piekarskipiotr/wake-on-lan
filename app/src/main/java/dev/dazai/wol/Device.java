@@ -3,9 +3,11 @@ package dev.dazai.wol;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = {@Index(value = {"device_name"},
+        unique = true)})
 public class Device {
 
     @NonNull

@@ -40,6 +40,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     InputMethodManager inputMethodManager;
     IpAddressValidator validator;
     MagicPacket magicPacket;
+    Device nDevice;
     DevicePanelViewModel devicePanelViewModel;
 
     @Override
@@ -66,7 +67,7 @@ public class DevicePanelActivity extends AppCompatActivity {
                 activityBinding.saveDeviceButton.setVisibility(View.GONE);
                 activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
                 devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
-                //devicePanelViewModel = new ViewModelProvider(this).get(DevicePanelViewModel.class);
+//                devicePanelViewModel = new ViewModelProvider(this).get(DevicePanelViewModel.class);
 
                 devicePanelViewModel.getDeviceById(deviceId).observe(this, new Observer<Device>() {
                     @Override
@@ -80,6 +81,7 @@ public class DevicePanelActivity extends AppCompatActivity {
                         deviceSecureOn = device.getDeviceSecureOn();
                         fillFields();
 
+
                     }
                 });
 
@@ -88,6 +90,7 @@ public class DevicePanelActivity extends AppCompatActivity {
                 deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
                 deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
                 deviceReachable = true;
+                devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
                 fillFields();
 
             }
@@ -196,6 +199,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(deviceValid()){
                     addDeviceToDatabase();
+
                 }
 
 
@@ -286,17 +290,17 @@ public class DevicePanelActivity extends AppCompatActivity {
     }
 
     private void addDeviceToDatabase(){
-        Device mDevice = new Device();
-        mDevice.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
-        mDevice.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
-        mDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
-        mDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
-        mDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
-        mDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
-        mDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
-        mDevice.setReachable(deviceReachable);
+        nDevice = new Device();
+        nDevice.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
+        nDevice.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
+        nDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
+        nDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+        nDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
+        nDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+        nDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
+        nDevice.setReachable(deviceReachable);
+        devicePanelViewModel.insert(nDevice);
 
-        devicePanelViewModel.insert(mDevice);
         Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();
 
     }

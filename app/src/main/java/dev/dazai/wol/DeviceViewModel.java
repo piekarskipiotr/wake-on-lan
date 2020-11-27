@@ -30,5 +30,9 @@ public class DeviceViewModel extends AndroidViewModel {
 
     }
 
+    public void insert(Device device){
+        repository.insert(device);
+    }
+
 
 }
