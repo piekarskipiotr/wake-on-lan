@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,24 +13,25 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
 import dev.dazai.wol.databinding.ActionPortDialogBinding;
 import dev.dazai.wol.databinding.ActionRouterIpDialogBinding;
 import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
+import dev.dazai.wol.databinding.DeviceQuestionDialogBinding;
 
 public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
     String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceGroup, deviceSecureOn;
     int deviceId;
-    Boolean deviceReachable = false;
+    Boolean deviceReachable = false, isThisNewDevice = false;
     BottomSheetDialog bottomSheetDialog;
     DeviceDatabase deviceDatabase;
     ActionPortDialogBinding actionPortDialogBinding;
     ActionChooseIconDialogBinding actionChooseIconDialogBinding;
     ActionRouterIpDialogBinding actionRouterIpDialogBinding;
     ActionGroupDialogBinding actionGroupDialogBinding;
+    DeviceQuestionDialogBinding deviceUpdateDialogBinding;
     InputMethodManager inputMethodManager;
     IpAddressValidator validator;
     MagicPacket magicPacket;
@@ -46,6 +46,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         actionChooseIconDialogBinding = ActionChooseIconDialogBinding.inflate(getLayoutInflater());
         actionRouterIpDialogBinding = ActionRouterIpDialogBinding.inflate(getLayoutInflater());
         actionGroupDialogBinding = ActionGroupDialogBinding.inflate(getLayoutInflater());
+        deviceUpdateDialogBinding = DeviceQuestionDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
@@ -89,6 +90,7 @@ public class DevicePanelActivity extends AppCompatActivity {
                 deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
                 deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
                 deviceReachable = true;
+                isThisNewDevice = true;
                 devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
                 fillFields();
 
@@ -319,6 +321,60 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.iconShowField.setText(deviceIcon);
         activityBinding.groupText.setText(deviceGroup);
         activityBinding.secureOnTextInput.setText(deviceSecureOn);
+
     }
 
+    private Boolean isThereAnyChanges(){
+        Boolean name = activityBinding.deviceNameTextInput.getText().toString().trim().equals(deviceName);
+        Boolean ipAddress = activityBinding.ipTextInput.getText().toString().trim().equals(deviceIpAddress);
+        Boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
+        Boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
+        Boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
+        Boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
+        Boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
+
+        if(name && ipAddress && macAddress && port && icon && group && secure)
+            return false;
+        else
+            return true;
+
+    }
+
+    private void updateDevice(){
+        bottomSheetDialog.setContentView(deviceUpdateDialogBinding.getRoot());
+        bottomSheetDialog.show();
+        deviceUpdateDialogBinding.headerText.setText("Zapisać zmiany?");
+
+        deviceUpdateDialogBinding.acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+                devicePanelViewModel.update(currentDevice);
+                bottomSheetDialog.dismiss();
+                DevicePanelActivity.this.finish();
+
+            }
+        });
+
+        deviceUpdateDialogBinding.declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                DevicePanelActivity.this.finish();
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isThereAnyChanges() && !isThisNewDevice)
+            updateDevice();
+        else
+            super.onBackPressed();
+
+
+
+
+    }
 }
