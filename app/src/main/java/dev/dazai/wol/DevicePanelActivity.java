@@ -2,23 +2,18 @@ package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.util.List;
 
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
@@ -40,7 +35,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     InputMethodManager inputMethodManager;
     IpAddressValidator validator;
     MagicPacket magicPacket;
-    Device nDevice;
+    Device currentDevice;
     DevicePanelViewModel devicePanelViewModel;
 
     @Override
@@ -69,18 +64,22 @@ public class DevicePanelActivity extends AppCompatActivity {
                 devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
 //                devicePanelViewModel = new ViewModelProvider(this).get(DevicePanelViewModel.class);
 
+
                 devicePanelViewModel.getDeviceById(deviceId).observe(this, new Observer<Device>() {
                     @Override
                     public void onChanged(Device device) {
-                        deviceName = device.getDeviceName();
-                        deviceIpAddress = device.getDeviceIpAddress();
-                        deviceMacAddress = device.getDeviceMacAddress();
-                        devicePort = device.getDeviceLanPort();
-                        deviceIcon = device.getDeviceIcon();
-                        deviceGroup = device.getDeviceGroup();
-                        deviceSecureOn = device.getDeviceSecureOn();
-                        fillFields();
+                        if(device != null){
+                            currentDevice = device;
+                            deviceName = device.getDeviceName();
+                            deviceIpAddress = device.getDeviceIpAddress();
+                            deviceMacAddress = device.getDeviceMacAddress();
+                            devicePort = device.getDeviceLanPort();
+                            deviceIcon = device.getDeviceIcon();
+                            deviceGroup = device.getDeviceGroup();
+                            deviceSecureOn = device.getDeviceSecureOn();
+                            fillFields();
 
+                        }
 
                     }
                 });
@@ -199,6 +198,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(deviceValid()){
                     addDeviceToDatabase();
+                    onBackPressed();
 
                 }
 
@@ -209,7 +209,8 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.deleteDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                devicePanelViewModel.delete(currentDevice);
+                onBackPressed();
 
             }
         });
@@ -290,16 +291,16 @@ public class DevicePanelActivity extends AppCompatActivity {
     }
 
     private void addDeviceToDatabase(){
-        nDevice = new Device();
-        nDevice.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
-        nDevice.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
-        nDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
-        nDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
-        nDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
-        nDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
-        nDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
-        nDevice.setReachable(deviceReachable);
-        devicePanelViewModel.insert(nDevice);
+        currentDevice = new Device();
+        currentDevice.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
+        currentDevice.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
+        currentDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
+        currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+        currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
+        currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+        currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
+        currentDevice.setReachable(deviceReachable);
+        devicePanelViewModel.insert(currentDevice);
 
         Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();
 
@@ -319,6 +320,5 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.groupText.setText(deviceGroup);
         activityBinding.secureOnTextInput.setText(deviceSecureOn);
     }
-
 
 }

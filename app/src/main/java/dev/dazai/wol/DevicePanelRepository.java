@@ -72,7 +72,6 @@ public class DevicePanelRepository {
             this.deviceDao = deviceDao;
         }
 
-
         @Override
         protected Void doInBackground(Device... devices) {
             deviceDao.delete(devices[0]);
