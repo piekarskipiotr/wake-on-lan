@@ -24,7 +24,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
     String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceGroup, deviceSecureOn;
     int deviceId;
-    Boolean deviceReachable = false, isThisNewDevice = false;
+    boolean deviceReachable = false, isThisNewDevice = false;
     BottomSheetDialog bottomSheetDialog;
     DeviceDatabase deviceDatabase;
     ActionPortDialogBinding actionPortDialogBinding;
@@ -324,22 +324,6 @@ public class DevicePanelActivity extends AppCompatActivity {
 
     }
 
-    private Boolean isThereAnyChanges(){
-        Boolean name = activityBinding.deviceNameTextInput.getText().toString().trim().equals(deviceName);
-        Boolean ipAddress = activityBinding.ipTextInput.getText().toString().trim().equals(deviceIpAddress);
-        Boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
-        Boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
-        Boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
-        Boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
-        Boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
-
-        if(name && ipAddress && macAddress && port && icon && group && secure)
-            return false;
-        else
-            return true;
-
-    }
-
     private void deleteDevice(){
         bottomSheetDialog.setContentView(deviceUpdateDialogBinding.getRoot());
         bottomSheetDialog.show();
@@ -364,6 +348,54 @@ public class DevicePanelActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isThereAnyChanges(){
+        boolean name = activityBinding.deviceNameTextInput.getText().toString().trim().equals(deviceName);
+        boolean ipAddress = activityBinding.ipTextInput.getText().toString().trim().equals(deviceIpAddress);
+        boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
+        boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
+        boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
+        boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
+        boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
+
+        if(name && ipAddress && macAddress && port && icon && group && secure)
+            return false;
+        else
+            return true;
+
+    }
+
+    private void setNewData(){
+        boolean name = activityBinding.deviceNameTextInput.getText().toString().trim().equals(deviceName);
+        boolean ipAddress = activityBinding.ipTextInput.getText().toString().trim().equals(deviceIpAddress);
+        boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
+        boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
+        boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
+        boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
+        boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
+
+        if(!name){
+            currentDevice.setDeviceName(activityBinding.deviceNameTextInput.getText().toString().trim());
+        }
+        if(!ipAddress){
+            currentDevice.setDeviceIpAddress(activityBinding.ipTextInput.getText().toString().trim());
+        }
+        if(!macAddress){
+            currentDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
+        }
+        if(!port){
+            currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+        }
+        if(!icon){
+            currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
+        }
+        if(!group){
+            currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+        }
+        if(!secure){
+            currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
+        }
+    }
+
     private void updateDevice(){
         bottomSheetDialog.setContentView(deviceUpdateDialogBinding.getRoot());
         bottomSheetDialog.show();
@@ -372,7 +404,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         deviceUpdateDialogBinding.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
+                setNewData();
                 devicePanelViewModel.update(currentDevice);
                 bottomSheetDialog.dismiss();
                 DevicePanelActivity.this.finish();
