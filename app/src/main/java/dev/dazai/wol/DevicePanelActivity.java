@@ -211,8 +211,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.deleteDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                devicePanelViewModel.delete(currentDevice);
-                onBackPressed();
+                deleteDevice();
 
             }
         });
@@ -221,6 +220,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+
             }
         });
 
@@ -338,6 +338,30 @@ public class DevicePanelActivity extends AppCompatActivity {
         else
             return true;
 
+    }
+
+    private void deleteDevice(){
+        bottomSheetDialog.setContentView(deviceUpdateDialogBinding.getRoot());
+        bottomSheetDialog.show();
+        deviceUpdateDialogBinding.headerText.setText("Czy na pewno chcesz usunąć urządzenie?");
+
+        deviceUpdateDialogBinding.acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devicePanelViewModel.delete(currentDevice);
+                bottomSheetDialog.dismiss();
+                DevicePanelActivity.this.finish();
+
+            }
+        });
+
+        deviceUpdateDialogBinding.declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+
+            }
+        });
     }
 
     private void updateDevice(){
