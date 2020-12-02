@@ -4,16 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.List;
-
 import dev.dazai.wol.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if(binding.drawerLayout.isDrawerOpen(GravityCompat.END)){
             binding.drawerLayout.closeDrawer(GravityCompat.END);
-        }else{
-            super.onBackPressed();
         }
 
     }

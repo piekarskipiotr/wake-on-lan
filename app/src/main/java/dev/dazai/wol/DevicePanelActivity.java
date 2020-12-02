@@ -55,6 +55,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         deviceDatabase = DeviceDatabase.getInstance(getApplicationContext());
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
+
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             if(extras.size() == 1){
@@ -188,6 +189,7 @@ public class DevicePanelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(deviceValid()){
+                    Toast.makeText(getApplicationContext(), "Uruchamianie...", Toast.LENGTH_SHORT).show();
                     magicPacket.send(deviceIpAddress, deviceMacAddress, Integer.parseInt(devicePort));
 
                 }
@@ -278,7 +280,7 @@ public class DevicePanelActivity extends AppCompatActivity {
     }
 
     private boolean deviceValid(){
-        if(deviceNameValid() | ipAddressValid() | macAddressValid() | portValid())
+        if(deviceNameValid() && ipAddressValid() && macAddressValid() && portValid())
             return true;
         else
             return false;
