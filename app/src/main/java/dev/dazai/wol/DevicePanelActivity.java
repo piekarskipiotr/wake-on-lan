@@ -303,7 +303,6 @@ public class DevicePanelActivity extends AppCompatActivity {
         currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
         currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
         currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
-        currentDevice.setReachable(deviceReachable);
         devicePanelViewModel.insert(currentDevice);
 
         Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();

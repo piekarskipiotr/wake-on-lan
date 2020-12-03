@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
-    private static final String TAG = "Network Scanner";
+    private static final String TAG = "Network Scanner: ";
     private WeakReference<DashboardFragment> weakReference;
     public NetworkScanner(DashboardFragment fragment) {
         weakReference = new WeakReference<>(fragment);

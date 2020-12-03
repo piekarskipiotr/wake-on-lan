@@ -9,10 +9,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
@@ -41,6 +48,18 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
         deviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel.class);
         //deviceViewModel = ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
+        deviceViewModel.getAllDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+            @Override
+            public void onChanged(List<Device> devices) {
+                if(devices != null){
+                    DeviceReachableHandler x = new DeviceReachableHandler(DashboardFragment.this, devices);
+                    x.execute();
+                }
+
+            }
+        });
+
         deviceViewModel.getSavedDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
@@ -197,5 +216,9 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
     }
 
+    public void updateDeviceReachableStatus(Device device){
+        deviceViewModel.update(device);
+
+    }
 
 }
