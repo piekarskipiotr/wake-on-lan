@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import dev.dazai.wol.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.onDeviceClick, ActiveDevicesListAdapter.onDeviceClick{
     ArrayList<DeviceInNetwork> devicesInNetworkList = new ArrayList<>();
+    List<Device> allDevices;
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
     FragmentDashboardBinding binding;
@@ -38,6 +40,8 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     ActiveDevicesListAdapter aAdapter;
     DeviceDatabase deviceDatabase;
     private DeviceViewModel deviceViewModel;
+    private DeviceReachableHandler deviceReachableHandler;
+    private Handler handler = new Handler();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -53,8 +57,9 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             @Override
             public void onChanged(List<Device> devices) {
                 if(devices != null){
-                    DeviceReachableHandler x = new DeviceReachableHandler(DashboardFragment.this, devices);
-                    x.execute();
+                    allDevices = devices;
+                    runReachableCheck.run();
+
                 }
 
             }
@@ -153,6 +158,17 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
 
     }
+
+    private Runnable runReachableCheck = new Runnable() {
+        @Override
+        public void run() {
+            deviceReachableHandler = new DeviceReachableHandler(DashboardFragment.this, allDevices);
+            deviceReachableHandler.execute();
+            //repeat every 5 minutes ^
+            handler.postDelayed(this, 300000);
+
+        }
+    };
 
     public void insertDevice(String deviceName, String deviceIp, String deviceMac){
         if(devicesInNetworkList.size()==0)

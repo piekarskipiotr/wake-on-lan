@@ -58,7 +58,6 @@ public class DeviceReachableHandler extends AsyncTask<Void, Void, Void> {
                     else
                         currentDeviceReachableStatus = false;
 
-                    Log.d("CHUJ", preDeviceReachableStatus + " "  + currentDeviceReachableStatus);
                     if(preDeviceReachableStatus != currentDeviceReachableStatus){
                         device.setReachable(currentDeviceReachableStatus);
                         weakReference.get().updateDeviceReachableStatus(device);
