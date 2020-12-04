@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.util.Log;
@@ -156,6 +157,16 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                handler.removeCallbacks(runReachableCheck);
+                runReachableCheck.run();
+                binding.swipeRefresh.setRefreshing(false);
+
+            }
+        });
+
 
     }
 
@@ -164,6 +175,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         public void run() {
             deviceReachableHandler = new DeviceReachableHandler(DashboardFragment.this, allDevices);
             deviceReachableHandler.execute();
+
             //repeat every 5 minutes ^
             handler.postDelayed(this, 300000);
 
