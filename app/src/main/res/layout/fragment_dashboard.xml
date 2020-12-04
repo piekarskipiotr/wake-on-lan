@@ -37,7 +37,14 @@
                 android:text="Aktywne urządzenia"
                 android:textColor="@android:color/white"
                 android:textSize="26sp"/>
+            <ProgressBar
+                android:id="@+id/activeDevicesProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"/>
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/activeDevicesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +68,14 @@
                 android:text="Dostępne urządzenia"
                 android:textColor="@android:color/white"
                 android:textSize="26sp"/>
+            <ProgressBar
+                android:id="@+id/devicesProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"/>
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/devicesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

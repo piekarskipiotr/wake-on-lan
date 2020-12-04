@@ -2,6 +2,7 @@ package dev.dazai.wol;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -23,6 +24,10 @@ public class DeviceReachableHandler extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.i(TAG,"checking...");
+        weakReference.get().binding.activeDevicesRecyclerView.setVisibility(View.GONE);
+        weakReference.get().binding.devicesRecyclerView.setVisibility(View.GONE);
+        weakReference.get().binding.activeDevicesProgressBar.setVisibility(View.VISIBLE);
+        weakReference.get().binding.devicesProgressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -75,6 +80,10 @@ public class DeviceReachableHandler extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        weakReference.get().binding.activeDevicesRecyclerView.setVisibility(View.VISIBLE);
+        weakReference.get().binding.devicesRecyclerView.setVisibility(View.VISIBLE);
+        weakReference.get().binding.activeDevicesProgressBar.setVisibility(View.GONE);
+        weakReference.get().binding.devicesProgressBar.setVisibility(View.GONE);
 
     }
 
