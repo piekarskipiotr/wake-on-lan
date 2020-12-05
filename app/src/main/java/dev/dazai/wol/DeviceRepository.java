@@ -6,17 +6,17 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class DeviceRepository {
-    private DeviceDao deviceDao;
+    private DataDao dataDao;
     private LiveData<List<Device>> allDevices;
     private LiveData<List<Device>> nonReachableDevices;
     private LiveData<List<Device>> reachableDevices;
 
     public DeviceRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
-        deviceDao = deviceDatabase.deviceDao();
-        allDevices = deviceDao.getAll();
-        nonReachableDevices = deviceDao.getNonActive();
-        reachableDevices = deviceDao.getActive();
+        dataDao = deviceDatabase.dataDao();
+        allDevices = dataDao.getAll();
+        nonReachableDevices = dataDao.getNonActive();
+        reachableDevices = dataDao.getActive();
 
     }
 
@@ -35,19 +35,19 @@ public class DeviceRepository {
     }
 
     public void update(Device device){
-        new DeviceRepository.UpdateDeviceAsyncTask(deviceDao).execute(device);
+        new DeviceRepository.UpdateDeviceAsyncTask(dataDao).execute(device);
 
     }
 
     private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDao;
-        private UpdateDeviceAsyncTask(DeviceDao deviceDao){
-            this.deviceDao = deviceDao;
+        private DataDao dataDao;
+        private UpdateDeviceAsyncTask(DataDao dataDao){
+            this.dataDao = dataDao;
         }
 
         @Override
         protected Void doInBackground(Device... devices) {
-            deviceDao.update(devices[0]);
+            dataDao.update(devices[0]);
             return null;
         }
 

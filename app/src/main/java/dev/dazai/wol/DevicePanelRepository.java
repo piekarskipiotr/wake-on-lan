@@ -5,76 +5,74 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.List;
-
 public class DevicePanelRepository {
-    private DeviceDao deviceDao;
+    private DataDao dataDao;
     private LiveData<Device> deviceById;
 
 
     public DevicePanelRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
-        deviceDao = deviceDatabase.deviceDao();
+        dataDao = deviceDatabase.dataDao();
         
     }
 
     public LiveData<Device> getDeviceById(int id){
-        deviceById = deviceDao.getById(id);
+        deviceById = dataDao.getById(id);
         return deviceById;
     }
 
     public void insert(Device device){
-        new InsertDeviceAsyncTask(deviceDao).execute(device);
+        new InsertDeviceAsyncTask(dataDao).execute(device);
 
     }
 
     public void update(Device device){
-        new UpdateDeviceAsyncTask(deviceDao).execute(device);
+        new UpdateDeviceAsyncTask(dataDao).execute(device);
 
     }
 
     public void delete(Device device){
-        new DeleteDeviceAsyncTask(deviceDao).execute(device);
+        new DeleteDeviceAsyncTask(dataDao).execute(device);
 
     }
 
     private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDao;
-        private InsertDeviceAsyncTask(DeviceDao deviceDao){
-            this.deviceDao = deviceDao;
+        private DataDao dataDao;
+        private InsertDeviceAsyncTask(DataDao dataDao){
+            this.dataDao = dataDao;
         }
 
         @Override
         protected Void doInBackground(Device... devices) {
-            deviceDao.insert(devices[0]);
+            dataDao.insert(devices[0]);
             return null;
         }
 
     }
 
     private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDao;
-        private UpdateDeviceAsyncTask(DeviceDao deviceDao){
-            this.deviceDao = deviceDao;
+        private DataDao dataDao;
+        private UpdateDeviceAsyncTask(DataDao dataDao){
+            this.dataDao = dataDao;
         }
 
         @Override
         protected Void doInBackground(Device... devices) {
-            deviceDao.update(devices[0]);
+            dataDao.update(devices[0]);
             return null;
         }
 
     }
 
     private static class DeleteDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDao;
-        private DeleteDeviceAsyncTask(DeviceDao deviceDao){
-            this.deviceDao = deviceDao;
+        private DataDao dataDao;
+        private DeleteDeviceAsyncTask(DataDao dataDao){
+            this.dataDao = dataDao;
         }
 
         @Override
         protected Void doInBackground(Device... devices) {
-            deviceDao.delete(devices[0]);
+            dataDao.delete(devices[0]);
             return null;
         }
     }

@@ -8,11 +8,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Device.class}, version = 1)
+@Database(entities = {Device.class, Group.class}, version = 1, exportSchema = false)
 public abstract class DeviceDatabase extends RoomDatabase {
     private static DeviceDatabase instance;
     private static String DATABASE_NAME = "device_database";
-    public abstract DeviceDao deviceDao();
+    public abstract DataDao dataDao();
 
     public synchronized static DeviceDatabase getInstance(Context context){
         if(instance == null){
@@ -35,10 +35,10 @@ public abstract class DeviceDatabase extends RoomDatabase {
     };
 
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private DeviceDao deviceDao;
+        private DataDao dataDao;
 
         private PopulateDbAsyncTask(DeviceDatabase deviceDatabase){
-            deviceDao = deviceDatabase.deviceDao();
+            dataDao = deviceDatabase.dataDao();
 
         }
 

@@ -22,8 +22,8 @@ import dev.dazai.wol.databinding.DeviceQuestionDialogBinding;
 
 public class DevicePanelActivity extends AppCompatActivity {
     ActivityDevicePanelBinding activityBinding;
-    String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceGroup, deviceSecureOn;
-    int deviceId;
+    String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceSecureOn;
+    int deviceId, deviceGroup;
     boolean deviceReachable = false, isThisNewDevice = false;
     BottomSheetDialog bottomSheetDialog;
     DeviceDatabase deviceDatabase;
@@ -77,7 +77,7 @@ public class DevicePanelActivity extends AppCompatActivity {
                             deviceMacAddress = device.getDeviceMacAddress();
                             devicePort = device.getDeviceLanPort();
                             deviceIcon = device.getDeviceIcon();
-                            deviceGroup = device.getDeviceGroup();
+                            deviceGroup = device.getGroupId();
                             deviceSecureOn = device.getDeviceSecureOn();
                             fillFields();
 
@@ -301,7 +301,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         currentDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
         currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
         currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
-        currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+//        currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
         currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         devicePanelViewModel.insert(currentDevice);
 
@@ -320,7 +320,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.macTextInput.setText(deviceMacAddress);
         activityBinding.portText.setText(devicePort);
         activityBinding.iconShowField.setText(deviceIcon);
-        activityBinding.groupText.setText(deviceGroup);
+//        activityBinding.groupText.setText(deviceGroup);
         activityBinding.secureOnTextInput.setText(deviceSecureOn);
 
     }
@@ -389,9 +389,9 @@ public class DevicePanelActivity extends AppCompatActivity {
         if(!icon){
             currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
         }
-        if(!group){
-            currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
-        }
+//        if(!group){
+////            currentDevice.getGroupId(activityBinding.groupText.getText().toString().trim());
+//        }
         if(!secure){
             currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         }

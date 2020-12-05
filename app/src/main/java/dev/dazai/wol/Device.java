@@ -6,11 +6,10 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(indices = {@Index(value = {"device_name"},
-        unique = true)})
+@Entity(tableName = "device_table", indices = {@Index(value = {"device_name"},
+        unique = true), @Index(value = {"group_id"}, unique = true)})
 public class Device {
 
-    @NonNull
     @PrimaryKey(autoGenerate = true)
     public int deviceId;
 
@@ -33,8 +32,8 @@ public class Device {
     @ColumnInfo(name = "device_icon")
     public String deviceIcon;
 
-    @ColumnInfo(name = "device_group")
-    public String deviceGroup;
+    @ColumnInfo(name = "group_id")
+    public int groupId;
 
     @ColumnInfo(name = "device_secure_on")
     public String deviceSecureOn;
@@ -102,12 +101,12 @@ public class Device {
         this.deviceIcon = deviceIcon;
     }
 
-    public String getDeviceGroup() {
-        return deviceGroup;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setDeviceGroup(String deviceGroup) {
-        this.deviceGroup = deviceGroup;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public String getDeviceSecureOn() {

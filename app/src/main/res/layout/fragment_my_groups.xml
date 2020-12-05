@@ -4,10 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyGroupsFragment">
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="0dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/lato_regular"
+            android:text="Moje\nGrupy"
+            android:textColor="@android:color/white"
+            android:textSize="36sp"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 </FrameLayout>
