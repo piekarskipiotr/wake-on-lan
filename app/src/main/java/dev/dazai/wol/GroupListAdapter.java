@@ -52,17 +52,13 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
             arrowButton = itemView.groupCardArrowNavigation;
             devicesContainer = itemView.listOfDevicesContainer;
             this.onNavigationArrowClick = onNavigationArrowClick;
-
             arrowButton.setOnClickListener(this);
-
-
 
         }
 
         @Override
         public void onClick(View v) {
             onNavigationArrowClick.onNavigationArrow(mGroupList.get(getAdapterPosition()));
-            
 
         }
     }

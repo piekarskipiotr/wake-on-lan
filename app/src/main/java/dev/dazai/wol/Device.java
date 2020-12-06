@@ -7,7 +7,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "device_table", indices = {@Index(value = {"device_name"},
-        unique = true), @Index(value = {"group_id"}, unique = true)})
+        unique = true)})
 public class Device {
 
     @PrimaryKey(autoGenerate = true)

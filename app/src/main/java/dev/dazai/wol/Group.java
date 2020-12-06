@@ -8,10 +8,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "group_table", indices = {@Index(value = {"group_name"},
-        unique = true)}, foreignKeys = @ForeignKey(entity = Device.class,
-        parentColumns = "group_id",
-        childColumns = "group_id",
-        onDelete = ForeignKey.CASCADE))
+        unique = true)})
 
 public class Group {
 

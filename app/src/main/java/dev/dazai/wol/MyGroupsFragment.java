@@ -45,6 +45,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
 
     @Override
     public void onNavigationArrow(Group group) {
+        Toast.makeText(getContext(), group.getGroupName(), Toast.LENGTH_SHORT).show();
 
     }
 }
