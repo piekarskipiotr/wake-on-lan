@@ -1,0 +1,77 @@
+package dev.dazai.wol;
+
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
+import dev.dazai.wol.databinding.DeviceInGroupCardBinding;
+
+public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInGroupAdapter.MyViewHolder>{
+    private Context mContext;
+    protected List<Device> mDevicesList;
+    private onDeviceClick mOnDeviceListener;
+    private int size = 0;
+
+    public DeviceListInGroupAdapter(Context context, onDeviceClick onDeviceListener){
+        mContext = context;
+        mOnDeviceListener = onDeviceListener;
+
+    }
+
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        DeviceInGroupCardBinding itemBinding = DeviceInGroupCardBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        return new MyViewHolder(itemBinding, mOnDeviceListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Device device = mDevicesList.get(position);
+        holder.name.setText(device.getDeviceName());
+        if(device.getReachable())
+            ImageViewCompat.setImageTintList(holder.statusIcon, null);
+        else
+            ImageViewCompat.setImageTintList(holder.statusIcon, ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent)));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return size;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        onDeviceClick onDeviceListener;
+        TextView name;
+        ImageView statusIcon;
+        CardView itemContainer;
+        public MyViewHolder(@NonNull DeviceInGroupCardBinding itemView, onDeviceClick onDeviceListener) {
+            super(itemView.getRoot());
+            name = itemView.deviceCardName;
+            statusIcon = itemView.statusIcon;
+            itemContainer = itemView.itemContainer;
+
+            this.onDeviceListener = onDeviceListener;
+            itemContainer.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onDeviceListener.onDeviceCardClick(mDevicesList.get(getAdapterPosition()));
+        }
+    }
+
+    public interface onDeviceClick{
+        void onDeviceCardClick(Device device);
+    }
+}
