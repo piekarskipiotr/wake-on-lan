@@ -46,6 +46,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         onNavigationArrowClick onNavigationArrowClick;
+        GroupItemBinding mItemView;
         TextView groupName;
         ImageView arrowButton;
         LinearLayout devicesContainer;
@@ -54,6 +55,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
             groupName = itemView.groupCardName;
             arrowButton = itemView.groupCardArrowNavigation;
             devicesContainer = itemView.listOfDevicesContainer;
+            mItemView = itemView;
             this.onNavigationArrowClick = onNavigationArrowClick;
             arrowButton.setOnClickListener(this);
 
@@ -61,7 +63,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
 
         @Override
         public void onClick(View v) {
-            onNavigationArrowClick.onNavigationArrow(mGroupList.get(getAdapterPosition()), itemBinding);
+            onNavigationArrowClick.onNavigationArrow(mGroupList.get(getAdapterPosition()), mItemView);
 
         }
     }
