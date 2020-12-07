@@ -1,13 +1,11 @@
 package dev.dazai.wol;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -15,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.List;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.List;
+import java.util.Objects;
 import dev.dazai.wol.databinding.FragmentMyGroupsBinding;
+import dev.dazai.wol.databinding.GroupItemBinding;
+import dev.dazai.wol.databinding.MyGroupsNewGroupDialogBinding;
 
 public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNavigationArrowClick, DeviceListInGroupAdapter.onDeviceClick{
     FragmentMyGroupsBinding binding;
@@ -38,10 +40,6 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
         binding.groupRecyclerView.setAdapter(groupAdapter);
 
         myGroupsViewModel = ViewModelProviders.of(this).get(MyGroupsViewModel.class);
-        Group x = new Group();
-        x.setGroupId(1);
-        x.setGroupName("Moja pierwsza grupa");
-        myGroupsViewModel.insert(x);
         myGroupsViewModel.getAllGroups().observe(getViewLifecycleOwner(), new Observer<List<Group>>() {
             @Override
             public void onChanged(List<Group> groups) {
@@ -119,16 +117,6 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
             }
         });
 
-        myGroupsViewModel.getDevicesByGroupId(group.getGroupId()).observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
-            @Override
-            public void onChanged(List<Device> devices) {
-                deviceAdapter.setDevicesInGroup(devices);
-
-            }
-        });
-        itemView.DevicesInGroupRecyclerView.setAdapter(dadapter);
-
-        Toast.makeText(getContext(), group.getGroupName(), Toast.LENGTH_SHORT).show();
 
     }
 
