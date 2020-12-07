@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,16 +23,19 @@ import dev.dazai.wol.databinding.FragmentMyGroupsBinding;
 
 public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNavigationArrowClick, DeviceListInGroupAdapter.onDeviceClick{
     FragmentMyGroupsBinding binding;
-    GroupListAdapter adapter;
+    GroupListAdapter groupAdapter;
+    DeviceListInGroupAdapter deviceAdapter;
     MyGroupsViewModel myGroupsViewModel;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new GroupListAdapter(getContext(), MyGroupsFragment.this);
+        groupAdapter = new GroupListAdapter(getContext(), MyGroupsFragment.this);
+        deviceAdapter = new DeviceListInGroupAdapter(getContext(), MyGroupsFragment.this);
+
         binding.groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.groupRecyclerView.setHasFixedSize(true);
-        binding.groupRecyclerView.setAdapter(adapter);
+        binding.groupRecyclerView.setAdapter(groupAdapter);
 
         myGroupsViewModel = ViewModelProviders.of(this).get(MyGroupsViewModel.class);
         Group x = new Group();
@@ -40,7 +45,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
         myGroupsViewModel.getAllGroups().observe(getViewLifecycleOwner(), new Observer<List<Group>>() {
             @Override
             public void onChanged(List<Group> groups) {
-                adapter.setGroups(groups);
+                groupAdapter.setGroups(groups);
 
             }
         });
@@ -62,14 +67,27 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
 
     @Override
     public void onNavigationArrow(Group group, GroupItemBinding itemView) {
-        itemView.listOfDevicesContainer.setVisibility(View.VISIBLE);
+        if(Objects.equals(itemView.groupCardArrowNavigation.getDrawable().getConstantState(),
+                Objects.requireNonNull(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_baseline_arrow, null)).getConstantState())
+        ){
+            itemView.listOfDevicesContainer.setVisibility(View.GONE);
+            itemView.groupCardArrowNavigation.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_baseline_arrow_left, null));
+
+        }else{
+            itemView.listOfDevicesContainer.setVisibility(View.VISIBLE);
+            itemView.groupCardArrowNavigation.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_baseline_arrow, null));
+
+        }
+
         itemView.DevicesInGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         itemView.DevicesInGroupRecyclerView.setHasFixedSize(true);
-        final DeviceListInGroupAdapter dadapter = new DeviceListInGroupAdapter(getContext(), MyGroupsFragment.this);
-        myGroupsViewModel.getDevicesByGroupId(1).observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+        itemView.DevicesInGroupRecyclerView.setAdapter(deviceAdapter);
+
+        myGroupsViewModel.getDevicesByGroupId(group.getGroupId()).observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
-                dadapter.setDevicesInGroup(devices);
+                deviceAdapter.setDevicesInGroup(devices);
+
             }
         });
         itemView.DevicesInGroupRecyclerView.setAdapter(dadapter);

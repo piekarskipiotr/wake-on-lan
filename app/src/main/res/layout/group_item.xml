@@ -30,7 +30,10 @@
                     android:layout_marginBottom="15dp"
                     android:text="group_name"
                     android:textColor="@android:color/white"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:maxLines="1"/>
             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +41,7 @@
             android:orientation="horizontal"
             android:gravity="end|center">
             <androidx.cardview.widget.CardView
-                android:visibility="gone"
+
                 android:id="@+id/runAllGroupDevicesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
