@@ -22,6 +22,11 @@ public class MyGroupsViewModel extends AndroidViewModel {
         return allGroups;
     }
 
+    public LiveData<List<Device>> getDevicesByGroupId(int id){
+        return repository.getDevicesByGroupId(id);
+
+    }
+
     public void insert(Group group){
         repository.insert(group);
     }

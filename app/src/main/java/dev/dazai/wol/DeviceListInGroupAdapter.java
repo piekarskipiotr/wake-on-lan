@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -38,8 +40,9 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Device device = mDevicesList.get(position);
         holder.name.setText(device.getDeviceName());
+
         if(device.getReachable())
-            ImageViewCompat.setImageTintList(holder.statusIcon, null);
+            ImageViewCompat.setImageTintList(holder.statusIcon, ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorGreen)));
         else
             ImageViewCompat.setImageTintList(holder.statusIcon, ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent)));
 
@@ -68,7 +71,15 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
         @Override
         public void onClick(View v) {
             onDeviceListener.onDeviceCardClick(mDevicesList.get(getAdapterPosition()));
+
         }
+    }
+
+    public void setDevicesInGroup(List<Device> devices){
+        mDevicesList = devices;
+        size = mDevicesList.size();
+        notifyDataSetChanged();
+
     }
 
     public interface onDeviceClick{

@@ -301,7 +301,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         currentDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
         currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
         currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
-//        currentDevice.setDeviceGroup(activityBinding.groupText.getText().toString().trim());
+        currentDevice.setGroupId(1);
         currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         devicePanelViewModel.insert(currentDevice);
 
@@ -355,10 +355,10 @@ public class DevicePanelActivity extends AppCompatActivity {
         boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
         boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
         boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
-        boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
+//        boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
         boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
 
-        if(name && ipAddress && macAddress && port && icon && group && secure)
+        if(name && ipAddress && macAddress && port && icon && secure)//group &&
             return false;
         else
             return true;

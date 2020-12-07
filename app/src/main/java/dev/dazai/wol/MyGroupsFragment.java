@@ -19,7 +19,7 @@ import java.util.List;
 
 import dev.dazai.wol.databinding.FragmentMyGroupsBinding;
 
-public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNavigationArrowClick{
+public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNavigationArrowClick, DeviceListInGroupAdapter.onDeviceClick{
     FragmentMyGroupsBinding binding;
     GroupListAdapter adapter;
     MyGroupsViewModel myGroupsViewModel;
@@ -34,6 +34,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
 
         myGroupsViewModel = ViewModelProviders.of(this).get(MyGroupsViewModel.class);
         Group x = new Group();
+        x.setGroupId(1);
         x.setGroupName("Moja pierwsza grupa");
         myGroupsViewModel.insert(x);
         myGroupsViewModel.getAllGroups().observe(getViewLifecycleOwner(), new Observer<List<Group>>() {
@@ -43,11 +44,6 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
 
             }
         });
-
-
-
-
-
 
     }
 
@@ -65,8 +61,25 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
     }
 
     @Override
-    public void onNavigationArrow(Group group) {
+    public void onNavigationArrow(Group group, GroupItemBinding itemView) {
+        itemView.listOfDevicesContainer.setVisibility(View.VISIBLE);
+        itemView.DevicesInGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        itemView.DevicesInGroupRecyclerView.setHasFixedSize(true);
+        final DeviceListInGroupAdapter dadapter = new DeviceListInGroupAdapter(getContext(), MyGroupsFragment.this);
+        myGroupsViewModel.getDevicesByGroupId(1).observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+            @Override
+            public void onChanged(List<Device> devices) {
+                dadapter.setDevicesInGroup(devices);
+            }
+        });
+        itemView.DevicesInGroupRecyclerView.setAdapter(dadapter);
+
         Toast.makeText(getContext(), group.getGroupName(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onDeviceCardClick(Device device) {
 
     }
 }

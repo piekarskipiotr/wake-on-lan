@@ -28,6 +28,9 @@ public interface DataDao {
     @Query("SELECT * FROM device_table WHERE device_name LIKE :name")
     Device getByName(String name);
 
+    @Query("SELECT * FROM device_table WHERE group_id == :groupId")
+    LiveData<List<Device>> getDevicesByGroupId(int groupId);
+
     @Update
     void update(Device device);
 

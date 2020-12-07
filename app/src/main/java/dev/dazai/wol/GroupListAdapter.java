@@ -17,6 +17,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
     protected List<Group> mGroupList;
     private int size = 0;
     private onNavigationArrowClick mOnNavigationArrowClick;
+    private GroupItemBinding itemBinding;
 
     public GroupListAdapter(Context context, onNavigationArrowClick onNavigationArrowClick){
         mContext = context;
@@ -28,7 +29,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
     @NonNull
     @Override
     public GroupListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        GroupItemBinding itemBinding = GroupItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        itemBinding = GroupItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
         return new MyViewHolder(itemBinding, mOnNavigationArrowClick);
 
     }
@@ -58,7 +59,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
 
         @Override
         public void onClick(View v) {
-            onNavigationArrowClick.onNavigationArrow(mGroupList.get(getAdapterPosition()));
+            onNavigationArrowClick.onNavigationArrow(mGroupList.get(getAdapterPosition()), itemBinding);
 
         }
     }
@@ -76,7 +77,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
     }
 
     public interface onNavigationArrowClick{
-        void onNavigationArrow(Group group);
+        void onNavigationArrow(Group group, GroupItemBinding itemView);
 
     }
 

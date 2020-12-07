@@ -9,7 +9,6 @@ public class MyGroupsRepository {
     private DataDao dataDao;
     private LiveData<List<Group>> allGroups;
 
-
     public MyGroupsRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
         dataDao = deviceDatabase.dataDao();
@@ -21,6 +20,7 @@ public class MyGroupsRepository {
         return allGroups;
     }
 
+    public LiveData<List<Device>> getDevicesByGroupId(int id){ return dataDao.getDevicesByGroupId(id); }
 
     public void insert(Group group){
         new InsertGroupAsyncTask(dataDao).execute(group);
