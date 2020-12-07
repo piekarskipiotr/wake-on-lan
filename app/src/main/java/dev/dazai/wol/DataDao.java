@@ -45,6 +45,9 @@ public interface DataDao {
     @Query("SELECT * FROM group_table")
     LiveData<List<Group>> getAllGroups();
 
+    @Query("SELECT * FROM group_table WHERE group_id == :groupId")
+    LiveData<Group> getGroupById(int groupId);
+
     @Update
     void update(Group group);
 

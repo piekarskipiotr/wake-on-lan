@@ -5,15 +5,29 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
+
 public class DevicePanelRepository {
     private DataDao dataDao;
     private LiveData<Device> deviceById;
+    private LiveData<Group> groupById;
+    private LiveData<List<Group>> allGroups;
 
 
     public DevicePanelRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
         dataDao = deviceDatabase.dataDao();
+        allGroups = dataDao.getAllGroups();
         
+    }
+
+    public LiveData<Group> getGroupById(int id){
+        groupById = dataDao.getGroupById(id);
+        return groupById;
+    }
+
+    public LiveData<List<Group>> getAllGroups(){
+        return allGroups;
     }
 
     public LiveData<Device> getDeviceById(int id){

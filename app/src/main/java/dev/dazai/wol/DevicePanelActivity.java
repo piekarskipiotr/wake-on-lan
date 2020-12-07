@@ -4,26 +4,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.List;
+
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
+import dev.dazai.wol.databinding.ActionGroupChooseDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
 import dev.dazai.wol.databinding.ActionPortDialogBinding;
 import dev.dazai.wol.databinding.ActionRouterIpDialogBinding;
 import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
+import dev.dazai.wol.databinding.ChooseGroupItemBinding;
 import dev.dazai.wol.databinding.DeviceQuestionDialogBinding;
 
-public class DevicePanelActivity extends AppCompatActivity {
+public class DevicePanelActivity extends AppCompatActivity implements GroupChooseAdapter.OnGroupListener{
     ActivityDevicePanelBinding activityBinding;
-    String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceSecureOn;
-    int deviceId, deviceGroup;
+    String deviceName, deviceIpAddress, deviceMacAddress, devicePort, deviceIcon, deviceGroupName, deviceSecureOn;
+    int deviceGroup, deviceId;
     boolean deviceReachable = false, isThisNewDevice = false;
     BottomSheetDialog bottomSheetDialog;
     DeviceDatabase deviceDatabase;
@@ -37,6 +45,8 @@ public class DevicePanelActivity extends AppCompatActivity {
     MagicPacket magicPacket;
     Device currentDevice;
     DevicePanelViewModel devicePanelViewModel;
+    GroupChooseAdapter groupAdapter;
+    ActionGroupChooseDialogBinding actionGroupChooseDialogBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         actionRouterIpDialogBinding = ActionRouterIpDialogBinding.inflate(getLayoutInflater());
         actionGroupDialogBinding = ActionGroupDialogBinding.inflate(getLayoutInflater());
         deviceUpdateDialogBinding = DeviceQuestionDialogBinding.inflate(getLayoutInflater());
+        actionGroupChooseDialogBinding = ActionGroupChooseDialogBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         deviceDatabase = DeviceDatabase.getInstance(this);
@@ -66,7 +77,6 @@ public class DevicePanelActivity extends AppCompatActivity {
                 devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
 //                devicePanelViewModel = new ViewModelProvider(this).get(DevicePanelViewModel.class);
 
-
                 devicePanelViewModel.getDeviceById(deviceId).observe(this, new Observer<Device>() {
                     @Override
                     public void onChanged(Device device) {
@@ -79,6 +89,20 @@ public class DevicePanelActivity extends AppCompatActivity {
                             deviceIcon = device.getDeviceIcon();
                             deviceGroup = device.getGroupId();
                             deviceSecureOn = device.getDeviceSecureOn();
+
+                            if(deviceGroup == 0){
+                                activityBinding.groupText.setText(null);
+
+                            }else{
+                                devicePanelViewModel.getGroupById(deviceGroup).observe(DevicePanelActivity.this, new Observer<Group>() {
+                                    @Override
+                                    public void onChanged(Group group) {
+                                        deviceGroupName = group.getGroupName();
+                                        fillFields();
+                                    }
+                                });
+
+                            }
                             fillFields();
 
                         }
@@ -174,12 +198,34 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.groupContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(activityBinding.groupText.getText().toString().trim().isEmpty()){
+                bottomSheetDialog.setContentView(actionGroupDialogBinding.getRoot());
+                bottomSheetDialog.show();
 
-                }else{
-                    bottomSheetDialog.setContentView(actionGroupDialogBinding.getRoot());
-                    bottomSheetDialog.show();
-                }
+                if(deviceGroup == 0)
+                    actionGroupDialogBinding.groupName.setText("Ustaw grupę");
+                else
+                    actionGroupDialogBinding.groupName.setText(deviceGroupName);
+
+
+
+                actionGroupDialogBinding.groupButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.setContentView(actionGroupChooseDialogBinding.getRoot());
+                        devicePanelViewModel.getAllGroups().observe(DevicePanelActivity.this, new Observer<List<Group>>() {
+                            @Override
+                            public void onChanged(List<Group> groups) {
+                                groupAdapter = new GroupChooseAdapter(DevicePanelActivity.this, DevicePanelActivity.this);
+                                actionGroupChooseDialogBinding.groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                                actionGroupChooseDialogBinding.groupRecyclerView.setHasFixedSize(true);
+                                actionGroupChooseDialogBinding.groupRecyclerView.setAdapter(groupAdapter);
+                                groupAdapter.setGroups(groups);
+
+                            }
+                        });
+                    }
+                });
+
             }
         });
 
@@ -301,7 +347,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         currentDevice.setDeviceMacAddress(activityBinding.macTextInput.getText().toString().trim());
         currentDevice.setDeviceLanPort(activityBinding.portText.getText().toString().trim());
         currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
-        currentDevice.setGroupId(1);
+        currentDevice.setGroupId(deviceGroup);
         currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         devicePanelViewModel.insert(currentDevice);
 
@@ -320,7 +366,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         activityBinding.macTextInput.setText(deviceMacAddress);
         activityBinding.portText.setText(devicePort);
         activityBinding.iconShowField.setText(deviceIcon);
-//        activityBinding.groupText.setText(deviceGroup);
+        activityBinding.groupText.setText(deviceGroupName);
         activityBinding.secureOnTextInput.setText(deviceSecureOn);
 
     }
@@ -355,13 +401,10 @@ public class DevicePanelActivity extends AppCompatActivity {
         boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
         boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
         boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
-//        boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
+        boolean group = currentDevice.getGroupId() == deviceGroup;
         boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
 
-        if(name && ipAddress && macAddress && port && icon && secure)//group &&
-            return false;
-        else
-            return true;
+        return !name || !ipAddress || !macAddress || !port || !icon || !group || !secure;
 
     }
 
@@ -371,7 +414,7 @@ public class DevicePanelActivity extends AppCompatActivity {
         boolean macAddress = activityBinding.macTextInput.getText().toString().trim().equals(deviceMacAddress);
         boolean port = activityBinding.portText.getText().toString().trim().equals(devicePort);
         boolean icon = activityBinding.iconShowField.getText().toString().trim().equals(deviceIcon);
-        boolean group = activityBinding.groupText.getText().toString().trim().equals(deviceGroup);
+        boolean group = currentDevice.getGroupId() == deviceGroup;
         boolean secure = activityBinding.secureOnTextInput.getText().toString().trim().equals(deviceSecureOn);
 
         if(!name){
@@ -389,9 +432,9 @@ public class DevicePanelActivity extends AppCompatActivity {
         if(!icon){
             currentDevice.setDeviceIcon(activityBinding.iconShowField.getText().toString().trim());
         }
-//        if(!group){
-////            currentDevice.getGroupId(activityBinding.groupText.getText().toString().trim());
-//        }
+        if(!group){
+            currentDevice.setGroupId(deviceGroup);
+        }
         if(!secure){
             currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         }
@@ -430,8 +473,14 @@ public class DevicePanelActivity extends AppCompatActivity {
         else
             super.onBackPressed();
 
+    }
 
-
+    @Override
+    public void onGroupClick(Group group) {
+        deviceGroup = group.getGroupId();
+        deviceGroupName = group.getGroupName();
+        activityBinding.groupText.setText(deviceGroupName);
+        bottomSheetDialog.dismiss();
 
     }
 }

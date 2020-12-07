@@ -10,16 +10,25 @@ import java.util.List;
 
 public class DevicePanelViewModel extends AndroidViewModel {
     private DevicePanelRepository repository;
+    LiveData<List<Group>> allGroups;
 
     public DevicePanelViewModel(@NonNull Application application) {
         super(application);
         repository = new DevicePanelRepository(application);
+        allGroups = repository.getAllGroups();
 
+    }
+
+    public LiveData<Group> getGroupById(int id){
+        return repository.getGroupById(id);
+    }
+
+    public LiveData<List<Group>> getAllGroups(){
+        return allGroups;
     }
 
     public LiveData<Device> getDeviceById(int id){
         return repository.getDeviceById(id);
-
     }
 
     public void insert(Device device){

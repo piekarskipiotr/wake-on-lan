@@ -32,7 +32,6 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
         super.onViewCreated(view, savedInstanceState);
         groupAdapter = new GroupListAdapter(getContext(), MyGroupsFragment.this);
         deviceAdapter = new DeviceListInGroupAdapter(getContext(), MyGroupsFragment.this);
-        dialogBinding = MyGroupsNewGroupDialogBinding.inflate(getLayoutInflater());
 
         binding.groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.groupRecyclerView.setHasFixedSize(true);
@@ -55,6 +54,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
         binding.newGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogBinding = MyGroupsNewGroupDialogBinding.inflate(getLayoutInflater());
                 bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
                 bottomSheetDialog.setContentView(dialogBinding.getRoot());
                 bottomSheetDialog.show();
@@ -62,7 +62,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
                 dialogBinding.addGroup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(dialogBinding.groupTextInput.getText() == null){
+                        if(Objects.requireNonNull(dialogBinding.groupTextInput.getText()).toString().isEmpty()){
                             Toast.makeText(getContext(), "Pole nie może być puste!", Toast.LENGTH_SHORT).show();
                         }else{
                             Group nGroup = new Group();
@@ -75,6 +75,8 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
                 });
             }
         });
+
+
 
     }
 
@@ -108,6 +110,14 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
         itemView.DevicesInGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         itemView.DevicesInGroupRecyclerView.setHasFixedSize(true);
         itemView.DevicesInGroupRecyclerView.setAdapter(deviceAdapter);
+
+        myGroupsViewModel.getDevicesByGroupId(group.getGroupId()).observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+            @Override
+            public void onChanged(List<Device> devices) {
+                deviceAdapter.setDevicesInGroup(devices);
+
+            }
+        });
 
         myGroupsViewModel.getDevicesByGroupId(group.getGroupId()).observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
