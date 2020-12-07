@@ -4,14 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +24,15 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
     GroupListAdapter groupAdapter;
     DeviceListInGroupAdapter deviceAdapter;
     MyGroupsViewModel myGroupsViewModel;
+    BottomSheetDialog bottomSheetDialog;
+    MyGroupsNewGroupDialogBinding dialogBinding;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         groupAdapter = new GroupListAdapter(getContext(), MyGroupsFragment.this);
         deviceAdapter = new DeviceListInGroupAdapter(getContext(), MyGroupsFragment.this);
+        dialogBinding = MyGroupsNewGroupDialogBinding.inflate(getLayoutInflater());
 
         binding.groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.groupRecyclerView.setHasFixedSize(true);
@@ -47,6 +48,31 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
             public void onChanged(List<Group> groups) {
                 groupAdapter.setGroups(groups);
 
+            }
+        });
+
+
+        binding.newGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
+                bottomSheetDialog.setContentView(dialogBinding.getRoot());
+                bottomSheetDialog.show();
+
+                dialogBinding.addGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(dialogBinding.groupTextInput.getText() == null){
+                            Toast.makeText(getContext(), "Pole nie może być puste!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Group nGroup = new Group();
+                            nGroup.setGroupName(dialogBinding.groupTextInput.getText().toString().trim());
+                            myGroupsViewModel.insert(nGroup);
+                            bottomSheetDialog.dismiss();
+                        }
+
+                    }
+                });
             }
         });
 

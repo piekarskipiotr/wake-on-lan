@@ -40,7 +40,6 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Device device = mDevicesList.get(position);
         holder.name.setText(device.getDeviceName());
-
         if(device.getReachable())
             ImageViewCompat.setImageTintList(holder.statusIcon, ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorGreen)));
         else
