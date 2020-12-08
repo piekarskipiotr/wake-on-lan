@@ -5,33 +5,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.util.List;
 import java.util.Objects;
+import dev.dazai.wol.databinding.EditGroupNameBinding;
 import dev.dazai.wol.databinding.FragmentMyGroupsBinding;
 import dev.dazai.wol.databinding.GroupItemBinding;
 import dev.dazai.wol.databinding.MyGroupsNewGroupDialogBinding;
 
-public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNavigationArrowClick{
+public class MyGroupsFragment extends Fragment implements GroupListAdapter.onClickGroup {
     FragmentMyGroupsBinding binding;
     GroupListAdapter groupAdapter;
     MyGroupsViewModel myGroupsViewModel;
     BottomSheetDialog bottomSheetDialog;
     MyGroupsNewGroupDialogBinding dialogBinding;
+    EditGroupNameBinding editGroupNameBinding;
     List<GroupWithDevices> groupWithDevicesList;
 
     @Override
@@ -95,6 +92,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
                     d = devices.get(i);
                     d.setGroupId(0);
                     myGroupsViewModel.update(d);
+                    Toast.makeText(getContext(), "Usunięto grupę!", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -117,6 +115,28 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
 
         }
 
+    }
+
+    @Override
+    public void onLongClickCard(final Group group) {
+        editGroupNameBinding = EditGroupNameBinding.inflate(getLayoutInflater());
+        bottomSheetDialog.setContentView(editGroupNameBinding.getRoot());
+        bottomSheetDialog.show();
+
+        editGroupNameBinding.groupTextInput.setText(group.getGroupName());
+        editGroupNameBinding.saveGroupName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editGroupNameBinding.groupTextInput.getText().toString().trim().isEmpty()){
+                    Toast.makeText(getContext(), "Pole nie może być puste!", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    group.setGroupName(editGroupNameBinding.groupTextInput.getText().toString().trim());
+                    myGroupsViewModel.update(group);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+        });
     }
 
     @Override

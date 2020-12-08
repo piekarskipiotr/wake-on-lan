@@ -2,7 +2,6 @@ package dev.dazai.wol;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -21,13 +20,13 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
     private Context mContext;
     protected List<GroupWithDevices> mGroupWithDevicesList;
     private int size = 0;
-    private onNavigationArrowClick mOnNavigationArrowClick;
+    private onClickGroup mOnClickGroup;
     private GroupItemBinding itemBinding;
     DeviceListInGroupAdapter deviceAdapter;
 
-    public GroupListAdapter(Context context, onNavigationArrowClick onNavigationArrowClick){
+    public GroupListAdapter(Context context, onClickGroup onClickGroup){
         mContext = context;
-        mOnNavigationArrowClick = onNavigationArrowClick;
+        mOnClickGroup = onClickGroup;
 
     }
 
@@ -38,7 +37,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         itemBinding.DevicesInGroupRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         itemBinding.DevicesInGroupRecyclerView.setHasFixedSize(true);
 
-        return new MyViewHolder(itemBinding, mOnNavigationArrowClick);
+        return new MyViewHolder(itemBinding, mOnClickGroup);
 
     }
 
@@ -64,27 +63,36 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        onNavigationArrowClick onNavigationArrowClick;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        onClickGroup onClickGroup;
+        CardView groupCard;
         TextView groupName;
         GroupItemBinding mItemView;
         ImageView arrowButton;
         LinearLayout devicesContainer;
-        public MyViewHolder(@NonNull GroupItemBinding itemView, onNavigationArrowClick onNavigationArrowClick) {
+        public MyViewHolder(@NonNull GroupItemBinding itemView, onClickGroup onClickGroup) {
             super(itemView.getRoot());
+            groupCard = itemView.itemContainer;
             groupName = itemView.groupCardName;
             arrowButton = itemView.groupCardArrowNavigation;
             devicesContainer = itemView.listOfDevicesContainer;
             mItemView = itemView;
-            this.onNavigationArrowClick = onNavigationArrowClick;
+            this.onClickGroup = onClickGroup;
             arrowButton.setOnClickListener(this);
+            groupCard.setOnLongClickListener(this);
 
         }
 
         @Override
         public void onClick(View v) {
-            onNavigationArrowClick.onNavigationArrow(mItemView);
+            onClickGroup.onNavigationArrow(mItemView);
 
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onClickGroup.onLongClickCard(mGroupWithDevicesList.get(getAdapterPosition()).group);
+            return false;
         }
     }
 
@@ -104,10 +112,10 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         notifyDataSetChanged();
     }
 
-    public interface onNavigationArrowClick{
+    public interface onClickGroup {
         void onNavigationArrow(GroupItemBinding itemView);
+        void onLongClickCard(Group group);
 
     }
-
 
 }
