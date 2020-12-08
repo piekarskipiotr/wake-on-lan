@@ -201,10 +201,28 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                 bottomSheetDialog.setContentView(actionGroupDialogBinding.getRoot());
                 bottomSheetDialog.show();
 
-                if(deviceGroup == 0)
+                if(deviceGroup == 0){
                     actionGroupDialogBinding.groupName.setText("Ustaw grupę");
-                else
+                    actionGroupChooseDialogBinding.deleteDeviceFromGroup.setVisibility(View.GONE);
+
+                }else{
                     actionGroupDialogBinding.groupName.setText(deviceGroupName);
+
+                    actionGroupChooseDialogBinding.deleteDeviceFromGroup.setVisibility(View.VISIBLE);
+                    actionGroupChooseDialogBinding.deleteDeviceFromGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(currentDevice == null)
+                                deviceGroup = 0;
+                            else
+                                currentDevice.setGroupId(0);
+
+                            activityBinding.groupText.setText(null);
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+                }
+
 
 
 
@@ -223,7 +241,9 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
 
                             }
                         });
+
                     }
+
                 });
 
             }
