@@ -8,12 +8,18 @@ import java.util.List;
 public class MyGroupsRepository {
     private DataDao dataDao;
     private LiveData<List<Group>> allGroups;
+    private LiveData<List<GroupWithDevices>> allGroupsAndDevices;
 
     public MyGroupsRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
         dataDao = deviceDatabase.dataDao();
         allGroups = dataDao.getAllGroups();
+        allGroupsAndDevices = dataDao.getGroupWithDevices();
 
+    }
+
+    public LiveData<List<GroupWithDevices>> getAllGroupsAndDevices(){
+        return allGroupsAndDevices;
     }
 
     public LiveData<List<Group>> getAllGroups(){

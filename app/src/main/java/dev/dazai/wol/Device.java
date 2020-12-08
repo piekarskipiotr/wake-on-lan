@@ -32,7 +32,7 @@ public class Device {
     @ColumnInfo(name = "device_icon")
     public String deviceIcon;
 
-    @ColumnInfo(name = "group_id")
+    @ColumnInfo(name = "device_group_id")
     public int groupId;
 
     @ColumnInfo(name = "device_secure_on")

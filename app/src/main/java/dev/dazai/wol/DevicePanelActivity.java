@@ -468,10 +468,11 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
 
     @Override
     public void onBackPressed() {
-        if(isThereAnyChanges() && !isThisNewDevice)
-            updateDevice();
-        else
-            super.onBackPressed();
+        if(!isThisNewDevice){
+            if(isThereAnyChanges())
+                updateDevice();
+        }
+        super.onBackPressed();
 
     }
 

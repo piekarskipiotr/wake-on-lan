@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 import java.util.List;
 import static androidx.room.OnConflictStrategy.REPLACE;
@@ -28,7 +29,7 @@ public interface DataDao {
     @Query("SELECT * FROM device_table WHERE device_name LIKE :name")
     Device getByName(String name);
 
-    @Query("SELECT * FROM device_table WHERE group_id == :groupId")
+    @Query("SELECT * FROM device_table WHERE device_group_id == :groupId")
     LiveData<List<Device>> getDevicesByGroupId(int groupId);
 
     @Update
@@ -56,6 +57,10 @@ public interface DataDao {
 
     @Delete
     void delete(Group group);
+
+    @Transaction
+    @Query("SELECT * FROM group_table")
+    LiveData<List<GroupWithDevices>> getGroupWithDevices();
 
 
 
