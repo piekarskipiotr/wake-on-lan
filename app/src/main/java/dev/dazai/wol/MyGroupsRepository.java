@@ -7,13 +7,11 @@ import java.util.List;
 
 public class MyGroupsRepository {
     private DataDao dataDao;
-    private LiveData<List<Group>> allGroups;
     private LiveData<List<GroupWithDevices>> allGroupsAndDevices;
 
     public MyGroupsRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
         dataDao = deviceDatabase.dataDao();
-        allGroups = dataDao.getAllGroups();
         allGroupsAndDevices = dataDao.getGroupWithDevices();
 
     }
@@ -22,12 +20,6 @@ public class MyGroupsRepository {
         return allGroupsAndDevices;
     }
 
-    public LiveData<List<Group>> getAllGroups(){
-        return allGroups;
-    }
-
-    public LiveData<List<Device>> getDevicesByGroupId(int id){ return dataDao.getDevicesByGroupId(id); }
-
     public void insert(Group group){
         new InsertGroupAsyncTask(dataDao).execute(group);
 
@@ -35,6 +27,11 @@ public class MyGroupsRepository {
 
     public void update(Group group){
         new UpdateGroupAsyncTask(dataDao).execute(group);
+
+    }
+
+    public void update(Device device){
+        new UpdateDeviceAsyncTask(dataDao).execute(device);
 
     }
 
@@ -66,6 +63,20 @@ public class MyGroupsRepository {
         @Override
         protected Void doInBackground(Group... groups) {
             dataDao.update(groups[0]);
+            return null;
+        }
+
+    }
+
+    private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
+        private DataDao dataDao;
+        private UpdateDeviceAsyncTask(DataDao dataDao){
+            this.dataDao = dataDao;
+        }
+
+        @Override
+        protected Void doInBackground(Device... devices) {
+            dataDao.update(devices[0]);
             return null;
         }
 

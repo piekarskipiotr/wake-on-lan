@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
     MyGroupsViewModel myGroupsViewModel;
     BottomSheetDialog bottomSheetDialog;
     MyGroupsNewGroupDialogBinding dialogBinding;
+    List<GroupWithDevices> groupWithDevicesList;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
         myGroupsViewModel.getAllGroupsAndDevices().observe(getViewLifecycleOwner(), new Observer<List<GroupWithDevices>>() {
             @Override
             public void onChanged(List<GroupWithDevices> groupWithDevices) {
+                groupWithDevicesList = groupWithDevices;
                 groupAdapter.setGroupWithDevices(groupWithDevices);
 
             }
@@ -74,6 +78,28 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onNav
                 });
             }
         });
+
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                myGroupsViewModel.delete(groupAdapter.getGroup(viewHolder.getAdapterPosition()));
+                List<Device> devices = groupWithDevicesList.get(viewHolder.getAdapterPosition()).devices;
+                Device d;
+                for(int i = 0; i < devices.size(); i++){
+                    d = devices.get(i);
+                    d.setGroupId(0);
+                    myGroupsViewModel.update(d);
+                }
+
+
+            }
+        }).attachToRecyclerView(binding.groupRecyclerView);
 
     }
 

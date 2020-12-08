@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -36,6 +37,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         itemBinding = GroupItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
         itemBinding.DevicesInGroupRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         itemBinding.DevicesInGroupRecyclerView.setHasFixedSize(true);
+
         return new MyViewHolder(itemBinding, mOnNavigationArrowClick);
 
     }
@@ -89,6 +91,11 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
     @Override
     public int getItemCount() {
         return size;
+    }
+
+    public Group getGroup(int position){
+        return mGroupWithDevicesList.get(position).group;
+
     }
 
     public void setGroupWithDevices(List<GroupWithDevices> groupWithDevicesList){

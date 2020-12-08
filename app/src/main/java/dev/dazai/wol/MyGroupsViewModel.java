@@ -10,27 +10,16 @@ import java.util.List;
 
 public class MyGroupsViewModel extends AndroidViewModel {
     private MyGroupsRepository repository;
-    private LiveData<List<Group>> allGroups;
     private LiveData<List<GroupWithDevices>> allGroupsAndDevices;
 
     public MyGroupsViewModel(@NonNull Application application) {
         super(application);
         repository = new MyGroupsRepository(application);
-        allGroups = repository.getAllGroups();
         allGroupsAndDevices = repository.getAllGroupsAndDevices();
     }
 
     public LiveData<List<GroupWithDevices>> getAllGroupsAndDevices(){
         return allGroupsAndDevices;
-    }
-
-    public LiveData<List<Group>> getAllGroups(){
-        return allGroups;
-    }
-
-    public LiveData<List<Device>> getDevicesByGroupId(int id){
-        return repository.getDevicesByGroupId(id);
-
     }
 
     public void insert(Group group){
@@ -39,6 +28,10 @@ public class MyGroupsViewModel extends AndroidViewModel {
 
     public void update(Group group){
         repository.update(group);
+    }
+
+    public void update(Device device){
+        repository.update(device);
     }
 
     public void delete(Group group){
