@@ -35,7 +35,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         groupAdapter = new GroupListAdapter(getContext(), MyGroupsFragment.this);
-
+        bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
         binding.groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.groupRecyclerView.setHasFixedSize(true);
         binding.groupRecyclerView.setAdapter(groupAdapter);
@@ -55,7 +55,6 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onCli
             @Override
             public void onClick(View v) {
                 dialogBinding = MyGroupsNewGroupDialogBinding.inflate(getLayoutInflater());
-                bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
                 bottomSheetDialog.setContentView(dialogBinding.getRoot());
                 bottomSheetDialog.show();
 

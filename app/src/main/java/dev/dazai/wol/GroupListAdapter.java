@@ -2,6 +2,7 @@ package dev.dazai.wol;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,10 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
 
     @NonNull
     @Override
-    public GroupListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GroupListAdapter.MyViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         itemBinding = GroupItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
         itemBinding.DevicesInGroupRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         itemBinding.DevicesInGroupRecyclerView.setHasFixedSize(true);
-
         return new MyViewHolder(itemBinding, mOnClickGroup);
 
     }
@@ -44,13 +44,28 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull GroupListAdapter.MyViewHolder holder, int position) {
         Group group = mGroupWithDevicesList.get(position).group;
-        List<Device> deviceList = mGroupWithDevicesList.get(position).devices;
+        final List<Device> deviceList = mGroupWithDevicesList.get(position).devices;
         deviceAdapter = new DeviceListInGroupAdapter(mContext, GroupListAdapter.this);
-        itemBinding.DevicesInGroupRecyclerView.setAdapter(deviceAdapter);
+        holder.devicesInGroupRecyclerView.setAdapter(deviceAdapter);
 
         holder.groupName.setText(group.getGroupName());
         if(deviceList != null)
             deviceAdapter.setDevicesInGroup(deviceList);
+
+        holder.runAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MagicPacket magicPacket = new MagicPacket();
+                for(int i = 0; i < deviceList.size(); i++){
+                    String deviceIp = deviceList.get(i).getDeviceIpAddress();
+                    String deviceMac = deviceList.get(i).getDeviceMacAddress();
+                    int devicePort = Integer.parseInt(deviceList.get(i).getDeviceLanPort());
+                    magicPacket.send(deviceIp, deviceMac, devicePort);
+
+                }
+            }
+        });
+
 
     }
 
@@ -65,17 +80,20 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         onClickGroup onClickGroup;
-        CardView groupCard;
+        CardView groupCard, runAll;
         TextView groupName;
         GroupItemBinding mItemView;
         ImageView arrowButton;
         LinearLayout devicesContainer;
+        RecyclerView devicesInGroupRecyclerView;
         public MyViewHolder(@NonNull GroupItemBinding itemView, onClickGroup onClickGroup) {
             super(itemView.getRoot());
             groupCard = itemView.itemContainer;
             groupName = itemView.groupCardName;
             arrowButton = itemView.groupCardArrowNavigation;
             devicesContainer = itemView.listOfDevicesContainer;
+            devicesInGroupRecyclerView = itemView.DevicesInGroupRecyclerView;
+            runAll = itemView.runAllGroupDevicesButton;
             mItemView = itemView;
             this.onClickGroup = onClickGroup;
             arrowButton.setOnClickListener(this);
