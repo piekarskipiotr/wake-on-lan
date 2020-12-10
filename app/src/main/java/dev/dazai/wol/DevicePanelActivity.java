@@ -157,6 +157,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                     @Override
                     public void onClick(View v) {
                         activityBinding.portText.setText(getTextContent(v));
+                        devicePort = getTextContent(v);
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -165,6 +166,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                     @Override
                     public void onClick(View v) {
                         activityBinding.portText.setText(getTextContent(v));
+                        devicePort = getTextContent(v);
                         bottomSheetDialog.dismiss();
                     }
                 });

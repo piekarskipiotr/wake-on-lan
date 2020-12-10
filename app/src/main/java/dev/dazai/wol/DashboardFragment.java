@@ -42,7 +42,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     DeviceDatabase deviceDatabase;
     private DeviceViewModel deviceViewModel;
     private DeviceReachableHandler deviceReachableHandler;
-    private Handler handler = new Handler();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -160,7 +159,6 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                handler.removeCallbacks(runReachableCheck);
                 runReachableCheck.run();
                 binding.swipeRefresh.setRefreshing(false);
 
@@ -175,7 +173,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         public void run() {
             deviceReachableHandler = new DeviceReachableHandler(DashboardFragment.this, allDevices);
             deviceReachableHandler.execute();
-            
+
         }
     };
 
