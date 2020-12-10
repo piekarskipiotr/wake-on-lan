@@ -10,6 +10,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <ImageView
             android:id="@+id/menuButton"
             android:layout_width="36dp"
@@ -19,10 +23,6 @@
             android:layout_marginEnd="30dp"
             android:src="@drawable/ic_sharp_menu"
             android:contentDescription="menu" />
-        <FrameLayout
-            android:id="@+id/fragmentContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
     </RelativeLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
