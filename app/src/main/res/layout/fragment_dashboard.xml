@@ -35,14 +35,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/lato_regular"
-                    android:text="Aktywne urządzenia"
-                    android:textColor="@android:color/white"
-                    android:textSize="26sp"/>
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="Aktywne urządzenia"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="end">
+                        <ImageView
+                            android:id="@+id/listOfAllActiveButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_sharp_menu"/>
+                    </LinearLayout>
+
+                </LinearLayout>
                 <ProgressBar
                     android:id="@+id/activeDevicesProgressBar"
                     android:layout_width="match_parent"
@@ -66,14 +84,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/lato_regular"
-                    android:text="Dostępne urządzenia"
-                    android:textColor="@android:color/white"
-                    android:textSize="26sp"/>
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="Dostępne urządzenia"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="end">
+                        <ImageView
+                            android:id="@+id/listOfAllSavedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_sharp_menu"/>
+                    </LinearLayout>
+                </LinearLayout>
+
                 <ProgressBar
                     android:id="@+id/devicesProgressBar"
                     android:layout_width="match_parent"

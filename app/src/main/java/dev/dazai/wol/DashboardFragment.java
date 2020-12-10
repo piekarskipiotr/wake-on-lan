@@ -175,10 +175,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         public void run() {
             deviceReachableHandler = new DeviceReachableHandler(DashboardFragment.this, allDevices);
             deviceReachableHandler.execute();
-
-            //repeat every 5 minutes ^
-            handler.postDelayed(this, 300000);
-
+            
         }
     };
 
