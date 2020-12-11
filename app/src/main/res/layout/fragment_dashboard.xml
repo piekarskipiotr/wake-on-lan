@@ -54,6 +54,7 @@
                         android:layout_marginEnd="15dp"
                         android:gravity="end">
                         <ImageView
+                            android:clickable="false"
                             android:id="@+id/listOfAllActiveButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -103,6 +104,7 @@
                         android:layout_marginEnd="15dp"
                         android:gravity="end">
                         <ImageView
+                            android:clickable="false"
                             android:id="@+id/listOfAllSavedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

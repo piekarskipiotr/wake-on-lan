@@ -10,20 +10,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
@@ -162,6 +155,26 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                 runReachableCheck.run();
                 binding.swipeRefresh.setRefreshing(false);
 
+            }
+        });
+
+        binding.listOfAllActiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ListOfDevicesActivity.class);
+                i.putExtra("listOfDevices", true);
+                startActivity(i);
+
+
+            }
+        });
+
+        binding.listOfAllSavedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ListOfDevicesActivity.class);
+                i.putExtra("listOfDevices", false);
+                startActivity(i);
             }
         });
 
