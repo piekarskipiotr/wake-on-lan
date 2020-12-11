@@ -162,7 +162,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ListOfDevicesActivity.class);
-                i.putExtra("listOfDevices", true);
+                i.putExtra("STATE", true);
                 startActivity(i);
 
 
@@ -173,7 +173,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ListOfDevicesActivity.class);
-                i.putExtra("listOfDevices", false);
+                i.putExtra("STATE", false);
                 startActivity(i);
             }
         });
