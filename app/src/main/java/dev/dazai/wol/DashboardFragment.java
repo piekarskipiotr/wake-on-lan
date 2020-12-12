@@ -91,6 +91,8 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                     public void onClick(View v) {
                         bottomSheetDialog.dismiss();
                         Intent i = new Intent(getActivity(), DevicePanelActivity.class);
+                        i.putExtra("MANUAL", true);
+                        i.putExtra("EXTRA_MANUAL", true);
                         startActivity(i);
                     }
                 });
@@ -121,9 +123,12 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                         dialogNetworkScanningBinding.manualInputNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                bottomSheetDialog.dismiss();
-                                Intent i = new Intent(getActivity(), DevicePanelActivity.class);
-                                startActivity(i);
+//                                bottomSheetDialog.dismiss();
+                                Boolean x = true;
+                                Intent intent = new Intent(requireActivity(), DevicePanelActivity.class);
+                                intent.putExtra("MANUAL", x);
+                                intent.putExtra("MANUAL1", x);
+                                startActivity(intent);
                             }
                         });
 

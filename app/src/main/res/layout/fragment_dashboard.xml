@@ -58,7 +58,7 @@
                             android:id="@+id/listOfAllActiveButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_sharp_menu"/>
+                            android:src="@drawable/ic_baseline_arrow_forward"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -108,7 +108,7 @@
                             android:id="@+id/listOfAllSavedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_sharp_menu"/>
+                            android:src="@drawable/ic_baseline_arrow_forward"/>
                     </LinearLayout>
                 </LinearLayout>
 

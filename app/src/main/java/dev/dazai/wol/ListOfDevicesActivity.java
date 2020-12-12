@@ -40,10 +40,12 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
                 @Override
                 public void onChanged(List<Device> devices) {
                     aAdapter.setActiveDevices(devices);
+
                 }
             });
 
         }else{
+            Log.d("CHUJ", extras.getBoolean("STATE")+"x");
             binding.devicesStateText.setText("Dostępne\nurządzenia");
             sAdapter = new SavedDevicesListAdapter(getApplicationContext(), this);
             binding.listOfDevicesRecycleView.setAdapter(sAdapter);

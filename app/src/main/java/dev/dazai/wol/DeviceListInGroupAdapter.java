@@ -41,9 +41,9 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
         Device device = mDevicesList.get(position);
         holder.name.setText(device.getDeviceName());
         if(device.getReachable())
-            ImageViewCompat.setImageTintList(holder.statusIcon, ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorGreen)));
+            holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_circle));
         else
-            ImageViewCompat.setImageTintList(holder.statusIcon, ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent)));
+            holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_circle_red));
 
     }
 

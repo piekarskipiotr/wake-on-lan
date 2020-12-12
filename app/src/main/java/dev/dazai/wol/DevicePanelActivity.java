@@ -10,9 +10,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -71,9 +74,6 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         if(extras != null){
             if(extras.size() == 1){
                 deviceId = extras.getInt("ID");
-                activityBinding.deleteDeviceButton.setVisibility(View.VISIBLE);
-                activityBinding.saveDeviceButton.setVisibility(View.GONE);
-                activityBinding.turnOnDeviceButton.setVisibility(View.VISIBLE);
                 devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
 //                devicePanelViewModel = new ViewModelProvider(this).get(DevicePanelViewModel.class);
 
@@ -111,17 +111,23 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                 });
 
             }else{
-                deviceName = extras.getString("DEVICE_NAME");
-                deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
-                deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
-                deviceReachable = true;
+                if(!extras.getBoolean("MANUAL", false)){
+                    deviceName = extras.getString("DEVICE_NAME");
+                    deviceIpAddress = extras.getString("DEVICE_IP_ADDRESS");
+                    deviceMacAddress = extras.getString("DEVICE_MAC_ADDRESS");
+
+                    deviceReachable = true;
+                    fillFields();
+                }
+
+                activityBinding.saveDeviceButton.setLayoutParams(new LinearLayout.LayoutParams(
+                        (int)getApplicationContext().getResources().getDimension(R.dimen.deleteTextWidth),  LinearLayout.LayoutParams.MATCH_PARENT));
+                activityBinding.deleteDeviceButton.setVisibility(View.GONE);
+
                 isThisNewDevice = true;
                 devicePanelViewModel = ViewModelProviders.of(this).get(DevicePanelViewModel.class);
-                fillFields();
 
             }
-
-
         }
 
         activityBinding.ipContainer.setOnClickListener(new View.OnClickListener() {
@@ -268,11 +274,19 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         activityBinding.saveDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(deviceValid()){
-                    addDeviceToDatabase();
-                    onBackPressed();
+                if(isThisNewDevice){
+                    if(deviceValid()){
+                        addDeviceToDatabase();
+                        onBackPressed();
+                    }
+
+
+                }else{
+                    if(deviceValid() && isThereAnyChanges())
+                        updateDevice();
 
                 }
+
 
 
             }
@@ -337,7 +351,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
 
     private boolean portValid(){
         if(activityBinding.portText.getText().toString().trim().isEmpty()){
-            activityBinding.portText.setHintTextColor(Color.RED);
+            activityBinding.portText.setHintTextColor(getResources().getColor(R.color.colorRed));
             return false;
         }else{
             activityBinding.portText.setHintTextColor(getResources().getColor(R.color.colorPrimaryLight));
@@ -348,7 +362,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     }
 
     private boolean deviceValid(){
-        if(deviceNameValid() && ipAddressValid() && macAddressValid() && portValid())
+        if(deviceNameValid() | ipAddressValid() | macAddressValid() | portValid())
             return true;
         else
             return false;

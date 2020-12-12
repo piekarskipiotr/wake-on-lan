@@ -44,9 +44,7 @@
                 android:layout_height="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:src="@drawable/ic_circle"
-                app:tint="@color/colorAccent"
-                android:contentDescription="active" />
+                android:src="@drawable/ic_circle_red"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
