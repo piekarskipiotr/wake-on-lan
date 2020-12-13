@@ -1,6 +1,7 @@
 package dev.dazai.wol;
 
 import android.content.Context;
+import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.text.format.Formatter;
@@ -10,8 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
@@ -45,8 +48,9 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
 
         //quick fix for network, it's for ping every IP in our mask so arp can get it
         WifiManager wifiManager = (WifiManager)
-                weakReference.get().getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                weakReference.get().requireContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         String ip = Formatter.formatIpAddress(wifiManager.getDhcpInfo().serverAddress);
+
         ip = ip.substring(0, ip.lastIndexOf(".")+1);
         for(int i = 1; i < 255; i++){
             try {

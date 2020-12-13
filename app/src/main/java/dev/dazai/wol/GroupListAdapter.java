@@ -60,7 +60,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
                     String deviceIp = deviceList.get(i).getDeviceIpAddress();
                     String deviceMac = deviceList.get(i).getDeviceMacAddress();
                     int devicePort = Integer.parseInt(deviceList.get(i).getDeviceLanPort());
-                    magicPacket.send(deviceIp, deviceMac, devicePort);
+                    magicPacket.send(deviceMac, devicePort, mContext);
 
                 }
             }

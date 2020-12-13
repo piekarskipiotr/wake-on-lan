@@ -105,7 +105,8 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                         dialogNetworkScanningBinding = DialogNetworkScanningBinding.inflate(getLayoutInflater());
                         bottomSheetDialog.setContentView(dialogNetworkScanningBinding.getRoot());
                         nAdapter = new NetworkScannerListAdapter(getContext(), devicesInNetworkList, DashboardFragment.this);
-                        dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                        dialogNetworkScanningBinding.devicesScanRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                                LinearLayoutManager.VERTICAL, false));
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setHasFixedSize(true);
                         dialogNetworkScanningBinding.devicesScanRecyclerView.setAdapter(nAdapter);
 

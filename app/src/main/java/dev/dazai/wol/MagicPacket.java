@@ -1,14 +1,18 @@
 package dev.dazai.wol;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 import android.util.Log;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 public class MagicPacket {
     private static final String TAG = "MagicPacket: ";
 
-    public void send(String ipAddress, String macAddress, int port){
+    public void send(String macAddress, int port, Context context){
         try {
             byte[] macBytes = getMacBytes(macAddress);
             byte[] bytes = new byte[6 + 16 * macBytes.length];
@@ -17,9 +21,14 @@ public class MagicPacket {
             }
             for (int i = 6; i < bytes.length; i += macBytes.length) {
                 System.arraycopy(macBytes, 0, bytes, i, macBytes.length);
+
             }
 
-            DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(ipAddress), port);
+            WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            int broadcastInteger = (wifiManager.getDhcpInfo().ipAddress & wifiManager.getDhcpInfo().netmask) | ~wifiManager.getDhcpInfo().netmask;
+            String broadcast = Formatter.formatIpAddress(broadcastInteger);
+
+            DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(broadcast), port);
             DatagramSocket socket = new DatagramSocket();
             socket.send(packet);
             socket.close();

@@ -264,7 +264,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
             public void onClick(View v) {
                 if(deviceValid()){
                     Toast.makeText(getApplicationContext(), "Uruchamianie...", Toast.LENGTH_SHORT).show();
-                    magicPacket.send(deviceIpAddress, deviceMacAddress, Integer.parseInt(devicePort));
+                    magicPacket.send(deviceMacAddress, Integer.parseInt(devicePort), getApplicationContext());
 
                 }
 
