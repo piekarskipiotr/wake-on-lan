@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import dev.dazai.wol.databinding.RunDeviceDialogBinding;
 
 public class RunDeviceDialog extends AppCompatDialogFragment {
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

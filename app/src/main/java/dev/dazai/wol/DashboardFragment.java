@@ -255,9 +255,10 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
     @Override
     public void onDeviceCardClick(Device device) {
-        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
-        i.putExtra("ID", device.getDeviceId());
-        startActivity(i);
+        new RunDeviceDialog().show(getParentFragmentManager(), "dailog");
+//        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
+//        i.putExtra("ID", device.getDeviceId());
+//        startActivity(i);
 
     }
 
