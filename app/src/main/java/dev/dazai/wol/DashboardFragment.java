@@ -1,5 +1,7 @@
 package dev.dazai.wol;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import java.util.List;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
+import dev.dazai.wol.databinding.RunDeviceDialogBinding;
 
 public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.onDeviceClick, ActiveDevicesListAdapter.onDeviceClick{
     ArrayList<DeviceInNetwork> devicesInNetworkList = new ArrayList<>();
