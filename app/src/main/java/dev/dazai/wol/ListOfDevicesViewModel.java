@@ -29,4 +29,6 @@ public class ListOfDevicesViewModel extends AndroidViewModel {
         return activeDevices;
 
     }
+
+
 }

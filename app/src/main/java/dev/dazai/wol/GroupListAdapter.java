@@ -57,7 +57,6 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
             public void onClick(View v) {
                 MagicPacket magicPacket = new MagicPacket();
                 for(int i = 0; i < deviceList.size(); i++){
-                    String deviceIp = deviceList.get(i).getDeviceIpAddress();
                     String deviceMac = deviceList.get(i).getDeviceMacAddress();
                     int devicePort = Integer.parseInt(deviceList.get(i).getDeviceLanPort());
                     magicPacket.send(deviceMac, devicePort, mContext);
@@ -75,6 +74,11 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         Intent i = new Intent(mContext, DevicePanelActivity.class);
         i.putExtra("ID", device.getDeviceId());
         mContext.startActivity(i);
+
+    }
+
+    @Override
+    public void onDeviceCardLongClick(Device device) {
 
     }
 
@@ -110,7 +114,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         @Override
         public boolean onLongClick(View v) {
             onClickGroup.onLongClickCard(mGroupWithDevicesList.get(getAdapterPosition()).group);
-            return false;
+            return true;
         }
     }
 

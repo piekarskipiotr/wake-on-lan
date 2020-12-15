@@ -7,15 +7,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import java.util.List;
 
-public class DeviceViewModel extends AndroidViewModel {
-    private DeviceRepository repository;
+public class DashboardViewModel extends AndroidViewModel {
+    private DashboardRepository repository;
     private LiveData<List<Device>> allDevices;
     private LiveData<List<Device>> savedDevices;
     private LiveData<List<Device>> activeDevices;
 
-    public DeviceViewModel(@NonNull Application application) {
+    public DashboardViewModel(@NonNull Application application) {
         super(application);
-        repository = new DeviceRepository(application);
+        repository = new DashboardRepository(application);
         allDevices = repository.getAllDevices();
         savedDevices = repository.getNonActive();
         activeDevices = repository.getActive();

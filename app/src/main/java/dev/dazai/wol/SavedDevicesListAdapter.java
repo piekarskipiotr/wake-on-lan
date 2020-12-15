@@ -51,7 +51,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         onDeviceClick onDeviceListener;
         TextView name, icon;
         CardView itemContainer;
@@ -63,6 +63,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
             this.onDeviceListener = onDeviceListener;
 
             itemContainer.setOnClickListener(this);
+            itemContainer.setOnLongClickListener(this);
 
         }
 
@@ -70,6 +71,12 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
         public void onClick(View v) {
             onDeviceListener.onDeviceCardClick(mDevicesList.get(getAdapterPosition()));
 
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onDeviceListener.onDeviceCardLongClick(mDevicesList.get(getAdapterPosition()));
+            return true;
         }
     }
 
@@ -82,6 +89,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
 
     public interface onDeviceClick{
         void onDeviceCardClick(Device device);
+        void onDeviceCardLongClick(Device device);
 
     }
 

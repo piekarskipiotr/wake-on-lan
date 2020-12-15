@@ -52,7 +52,7 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
         return size;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         onDeviceClick onDeviceListener;
         TextView name;
         ImageView statusIcon;
@@ -65,12 +65,20 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
 
             this.onDeviceListener = onDeviceListener;
             itemContainer.setOnClickListener(this);
+            itemContainer.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             onDeviceListener.onDeviceCardClick(mDevicesList.get(getAdapterPosition()));
 
+        }
+
+
+        @Override
+        public boolean onLongClick(View v) {
+            onDeviceListener.onDeviceCardLongClick(mDevicesList.get(getAdapterPosition()));
+            return true;
         }
     }
 
@@ -83,5 +91,6 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
 
     public interface onDeviceClick{
         void onDeviceCardClick(Device device);
+        void onDeviceCardLongClick(Device device);
     }
 }

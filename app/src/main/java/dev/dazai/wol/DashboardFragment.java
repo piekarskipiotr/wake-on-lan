@@ -1,7 +1,5 @@
 package dev.dazai.wol;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +20,6 @@ import java.util.List;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
-import dev.dazai.wol.databinding.RunDeviceDialogBinding;
 
 public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.onDeviceClick, ActiveDevicesListAdapter.onDeviceClick{
     ArrayList<DeviceInNetwork> devicesInNetworkList = new ArrayList<>();
@@ -36,7 +33,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
     SavedDevicesListAdapter sAdapter;
     ActiveDevicesListAdapter aAdapter;
     DeviceDatabase deviceDatabase;
-    private DeviceViewModel deviceViewModel;
+    private DashboardViewModel dashboardViewModel;
     private DeviceReachableHandler deviceReachableHandler;
 
     @Override
@@ -46,10 +43,10 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
         setSavedDevicesAdapter();
         setActiveDevicesAdapter();
 
-        deviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel.class);
+        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         //deviceViewModel = ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
-        deviceViewModel.getAllDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+        dashboardViewModel.getAllDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 if(devices != null){
@@ -61,7 +58,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
-        deviceViewModel.getSavedDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+        dashboardViewModel.getSavedDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 sAdapter.setSavedDevices(devices);
@@ -70,7 +67,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
             }
         });
 
-        deviceViewModel.getActiveDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
+        dashboardViewModel.getActiveDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 aAdapter.setActiveDevices(devices);
@@ -127,11 +124,10 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
                         dialogNetworkScanningBinding.manualInputNetworkScanningButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                bottomSheetDialog.dismiss();
-                                Boolean x = true;
+                                bottomSheetDialog.dismiss();
                                 Intent intent = new Intent(requireActivity(), DevicePanelActivity.class);
-                                intent.putExtra("MANUAL", x);
-                                intent.putExtra("MANUAL1", x);
+                                intent.putExtra("MANUAL", true);
+                                intent.putExtra("MANUAL_EXTRA", true);
                                 startActivity(intent);
                             }
                         });
@@ -255,15 +251,20 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
     @Override
     public void onDeviceCardClick(Device device) {
-        new RunDeviceDialog().show(getParentFragmentManager(), "dailog");
-//        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
-//        i.putExtra("ID", device.getDeviceId());
-//        startActivity(i);
+        Intent i = new Intent(getActivity(), DevicePanelActivity.class);
+        i.putExtra("ID", device.getDeviceId());
+        startActivity(i);
+
+    }
+
+    @Override
+    public void onDeviceCardLongClick(Device device) {
+        new RunDeviceDialog(device).show(getParentFragmentManager(), "RunDeviceDialog");
 
     }
 
     public void updateDeviceReachableStatus(Device device){
-        deviceViewModel.update(device);
+        dashboardViewModel.update(device);
 
     }
 

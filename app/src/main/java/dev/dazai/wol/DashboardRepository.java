@@ -5,13 +5,13 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import java.util.List;
 
-public class DeviceRepository {
+public class DashboardRepository {
     private DataDao dataDao;
     private LiveData<List<Device>> allDevices;
     private LiveData<List<Device>> nonReachableDevices;
     private LiveData<List<Device>> reachableDevices;
 
-    public DeviceRepository(Application application){
+    public DashboardRepository(Application application){
         DeviceDatabase deviceDatabase = DeviceDatabase.getInstance(application);
         dataDao = deviceDatabase.dataDao();
         allDevices = dataDao.getAll();
@@ -35,7 +35,7 @@ public class DeviceRepository {
     }
 
     public void update(Device device){
-        new DeviceRepository.UpdateDeviceAsyncTask(dataDao).execute(device);
+        new DashboardRepository.UpdateDeviceAsyncTask(dataDao).execute(device);
 
     }
 

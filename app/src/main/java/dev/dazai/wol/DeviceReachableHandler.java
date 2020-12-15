@@ -45,10 +45,7 @@ public class DeviceReachableHandler extends AsyncTask<Void, Void, Void> {
                     preDeviceReachableStatus = device.getReachable();
                 }else{
                     try {
-                        if(InetAddress.getByName(device.getDeviceIpAddress()).isReachable(500))
-                            currentDeviceReachableStatus = true;
-                        else
-                            currentDeviceReachableStatus = false;
+                        currentDeviceReachableStatus = InetAddress.getByName(device.getDeviceIpAddress()).isReachable(500);
 
                         device.setReachable(currentDeviceReachableStatus);
                         weakReference.get().updateDeviceReachableStatus(device);
@@ -60,10 +57,7 @@ public class DeviceReachableHandler extends AsyncTask<Void, Void, Void> {
                 }
 
                 try {
-                    if(InetAddress.getByName(device.getDeviceIpAddress()).isReachable(500))
-                        currentDeviceReachableStatus = true;
-                    else
-                        currentDeviceReachableStatus = false;
+                    currentDeviceReachableStatus = InetAddress.getByName(device.getDeviceIpAddress()).isReachable(500);
 
                     if(preDeviceReachableStatus != currentDeviceReachableStatus){
                         device.setReachable(currentDeviceReachableStatus);

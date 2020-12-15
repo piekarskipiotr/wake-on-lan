@@ -45,7 +45,6 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
             });
 
         }else{
-            Log.d("CHUJ", extras.getBoolean("STATE")+"x");
             binding.devicesStateText.setText("Dostępne\nurządzenia");
             sAdapter = new SavedDevicesListAdapter(getApplicationContext(), this);
             binding.listOfDevicesRecycleView.setAdapter(sAdapter);
@@ -74,5 +73,10 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
         i.putExtra("ID", device.getDeviceId());
         startActivity(i);
 
+    }
+
+    @Override
+    public void onDeviceCardLongClick(Device device) {
+        new RunDeviceDialog(device).show(getSupportFragmentManager(), "RunDeviceDialog");
     }
 }

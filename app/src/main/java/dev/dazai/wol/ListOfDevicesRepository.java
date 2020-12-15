@@ -1,6 +1,7 @@
 package dev.dazai.wol;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
