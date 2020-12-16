@@ -2,6 +2,7 @@ package dev.dazai.wol;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,6 +26,7 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
     private Device mDevice;
     AlertDialog.Builder builder;
     RunDeviceListAdapter adapter;
+    private ReachableChecker reachableChecker;
     public RunDeviceDialog(List<Device> deviceList){
         mDeviceList = deviceList;
 
@@ -45,6 +47,7 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
         builder.setView(binding.getRoot());
         alertDialog = builder.create();
 
+
         binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.devicesRecyclerView.setHasFixedSize(true);
         binding.devicesRecyclerView.setAdapter(adapter);
@@ -60,11 +63,13 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
                     @Override
                     public void run() {
                         new MagicPacket().send(device.deviceMacAddress, Integer.parseInt(device.getDeviceLanPort()), getContext());
-                        new ReachableChecker(RunDeviceDialog.this, device, runDeviceDialogViewModel).execute();
+
                     }
                 },2000);
 
             }
+            reachableChecker = new ReachableChecker(RunDeviceDialog.this, mDeviceList, runDeviceDialogViewModel);
+            reachableChecker.execute();
 
         }else{
             adapter.setDevice(mDevice);
@@ -73,19 +78,35 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
                 @Override
                 public void run() {
                     new MagicPacket().send(mDevice.deviceMacAddress, Integer.parseInt(mDevice.deviceLanPort), getContext());
-                    new ReachableChecker(RunDeviceDialog.this, mDevice, runDeviceDialogViewModel).execute();
+                    reachableChecker = new ReachableChecker(RunDeviceDialog.this, mDevice, runDeviceDialogViewModel);
+                    reachableChecker.execute();
                 }
             },1000);
         }
+
 
         binding.doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
+
+            }
+        });
+
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                reachableChecker.cancel(true);
             }
         });
 
 
         return alertDialog;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }
