@@ -49,8 +49,16 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         holder.devicesInGroupRecyclerView.setAdapter(deviceAdapter);
 
         holder.groupName.setText(group.getGroupName());
-        if(deviceList != null)
+        if(deviceList != null){
             deviceAdapter.setDevicesInGroup(deviceList);
+            holder.runAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new RunDeviceDialog(deviceList).show(((FragmentActivity) mContext).getSupportFragmentManager(), "RunDeviceDialog");
+                }
+            });
+        }
+
 
         holder.runAll.setOnClickListener(new View.OnClickListener() {
             @Override

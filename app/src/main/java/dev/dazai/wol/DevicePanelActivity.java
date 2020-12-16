@@ -262,9 +262,8 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         activityBinding.turnOnDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(deviceValid()){
-                    Toast.makeText(getApplicationContext(), "Uruchamianie...", Toast.LENGTH_SHORT).show();
-                    magicPacket.send(deviceMacAddress, Integer.parseInt(devicePort), getApplicationContext());
+                if(deviceValid() && !deviceReachable){
+                    new RunDeviceDialog(currentDevice).show(getSupportFragmentManager(), "RunDeviceDialog");
 
                 }
 
