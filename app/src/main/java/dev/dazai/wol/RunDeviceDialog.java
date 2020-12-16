@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.dazai.wol.databinding.RunDeviceDialogBinding;
@@ -22,9 +24,9 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
     private RunDeviceDialogViewModel runDeviceDialogViewModel;
     AlertDialog alertDialog;
     RunDeviceDialogBinding binding;
-    private List<Device> mDeviceList;
+    private List<Device> mDeviceList, mNonReachableDeviceList = new ArrayList<>();
     private Device mDevice;
-    AlertDialog.Builder builder;
+    private AlertDialog.Builder builder;
     RunDeviceListAdapter adapter;
     private ReachableChecker reachableChecker;
     public RunDeviceDialog(List<Device> deviceList){
@@ -46,11 +48,13 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
         builder = new AlertDialog.Builder(getContext());
         builder.setView(binding.getRoot());
         alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
 
 
         binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.devicesRecyclerView.setHasFixedSize(true);
         binding.devicesRecyclerView.setAdapter(adapter);
+
         if(mDeviceList != null){
             adapter.setDevices(mDeviceList);
             for(int i = 0; i < mDeviceList.size(); i++){
@@ -58,6 +62,7 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
                 if(device.getReachable()){
                     continue;
                 }
+                mNonReachableDeviceList.add(device);
                 binding.headerText.setText("Uruchamianie: "+device.getDeviceName());
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -68,7 +73,7 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
                 },2000);
 
             }
-            reachableChecker = new ReachableChecker(RunDeviceDialog.this, mDeviceList, runDeviceDialogViewModel);
+            reachableChecker = new ReachableChecker(RunDeviceDialog.this, mNonReachableDeviceList, runDeviceDialogViewModel);
             reachableChecker.execute();
 
         }else{
@@ -88,18 +93,11 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
         binding.doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                reachableChecker.cancel(true);
                 alertDialog.dismiss();
 
             }
         });
-
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                reachableChecker.cancel(true);
-            }
-        });
-
 
         return alertDialog;
     }

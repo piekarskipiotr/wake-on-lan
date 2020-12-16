@@ -16,7 +16,6 @@ public class RunDeviceListAdapter extends RecyclerView.Adapter<RunDeviceListAdap
     private List<Device> mDevicesList;
     private Device mDevice;
     private Context mContext;
-    RunDeviceDialogItemBinding binding;
 
     public RunDeviceListAdapter(Context context){
         mContext = context;
@@ -25,7 +24,7 @@ public class RunDeviceListAdapter extends RecyclerView.Adapter<RunDeviceListAdap
     @NonNull
     @Override
     public RunDeviceListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = RunDeviceDialogItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        RunDeviceDialogItemBinding binding = RunDeviceDialogItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
         return new MyViewHolder(binding);
     }
 

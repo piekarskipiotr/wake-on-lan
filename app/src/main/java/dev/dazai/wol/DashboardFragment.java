@@ -259,7 +259,7 @@ public class DashboardFragment extends Fragment implements NetworkScannerListAda
 
     @Override
     public void onDeviceCardLongClick(Device device) {
-        new RunDeviceDialog(device).show(getParentFragmentManager(), "RunDeviceDialog");
+        new RunDeviceDialog(device).show(getActivity().getSupportFragmentManager(), "RunDeviceDialog");
 
     }
 

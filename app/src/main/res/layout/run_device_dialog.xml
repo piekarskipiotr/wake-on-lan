@@ -45,7 +45,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/doneButton"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:layout_width="match_parent"

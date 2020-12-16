@@ -31,6 +31,7 @@ public class MyGroupsFragment extends Fragment implements GroupListAdapter.onCli
     EditGroupNameBinding editGroupNameBinding;
     List<GroupWithDevices> groupWithDevicesList;
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

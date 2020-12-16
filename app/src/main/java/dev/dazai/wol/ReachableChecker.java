@@ -23,7 +23,6 @@ import dev.dazai.wol.databinding.HeaderBinding;
 public class ReachableChecker extends AsyncTask<Void, Integer, Void> {
     private Device mDevice;
     private List<Device> mDevices;
-    private int size = 1;
     private static final int REACHABLE_INT = -1;
     private RunDeviceDialogViewModel runDeviceDialogViewModel;
     private WeakReference<RunDeviceDialog> weakReference;
@@ -45,37 +44,75 @@ public class ReachableChecker extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        weakReference.get().binding.doneButton.setClickable(true);
         weakReference.get().binding.headerText.setText("Sprawdzanie połączenia");
     }
 
 
     @Override
     protected Void doInBackground(Void... voids) {
-        if(mDevices != null)
-            size = mDevices.size();
+        if(mDevices != null){
+            int size = mDevices.size();
+            for(int i = 0; i < size; i++) {
+                if (mDevices.get(i).getReachable() != null) {
+                    preDeviceReachableStatus = mDevice.getReachable();
+                }
+                for(int ii = 1; ii <= 50; ii++) {
+                    if(ii == 1)
+                        publishProgress(ii);
 
-        for(int i = 0; i < size; i++){
-            if(mDevice.getReachable() != null){
+                    if(ii % 10 == 0)
+                        publishProgress(ii / 10 + 1);
+
+                    try{
+                        if(isCancelled()){
+                            break;
+                        }
+
+                        currentDeviceReachableStatus = InetAddress.getByName(mDevices.get(i).getDeviceIpAddress()).isReachable(1000);
+                        if (currentDeviceReachableStatus) {
+                            publishProgress(REACHABLE_INT);
+                            if(size - 1 == i)
+                                break;
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        }else{
+            if (mDevice.getReachable() != null) {
                 preDeviceReachableStatus = mDevice.getReachable();
             }
-            for(int ii = 1; ii <= 100; ii++){
-                try {
-                    if(isCancelled()){
-                       break;
-                    }
+            for (int ii = 1; ii <= 50; ii++) {
+                if(ii == 1)
                     publishProgress(ii);
+
+                if(ii % 10 == 0)
+                    publishProgress(ii / 10 + 1);
+
+                try {
+                    if(isCancelled()) {
+                        break;
+                    }
+
                     currentDeviceReachableStatus = InetAddress.getByName(mDevice.getDeviceIpAddress()).isReachable(1000);
-                    if(currentDeviceReachableStatus){
+                    if (currentDeviceReachableStatus) {
                         publishProgress(REACHABLE_INT);
                         break;
                     }
 
 
-                }catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+
 
         return null;
     }
@@ -88,7 +125,7 @@ public class ReachableChecker extends AsyncTask<Void, Integer, Void> {
             runDeviceDialogViewModel.update(mDevice);
             weakReference.get().adapter.setDevice(mDevice);
         }else
-            weakReference.get().binding.headerText.setText("Sprawdzanie połączenia: próba "+integers[0]+"/100");
+            weakReference.get().binding.headerText.setText("Sprawdzanie połączenia: próba "+integers[0]+"/5");
 
     }
 
@@ -106,6 +143,7 @@ public class ReachableChecker extends AsyncTask<Void, Integer, Void> {
 
                     }
                     public void onFinish() {
+                        weakReference.get().binding.doneButton.setClickable(false);
                         weakReference.get().alertDialog.dismiss();
 
                     }
