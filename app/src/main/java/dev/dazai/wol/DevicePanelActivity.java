@@ -349,6 +349,18 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         }
     }
 
+    private boolean secureOnValid(){
+        String secureOn = activityBinding.secureOnTextInput.getText().toString().trim();
+        String[] hex = secureOn.split("(\\:|\\-)");
+        if(hex.length != 6 && !secureOn.isEmpty()){
+            activityBinding.secureOnTextInputLayout.setError("SecureOn jest niepoprawny!");
+            return false;
+        }else{
+            activityBinding.secureOnTextInput.setError(null);
+            return true;
+        }
+    }
+
     private boolean portValid(){
         if(activityBinding.portText.getText().toString().trim().isEmpty()){
             activityBinding.portText.setHintTextColor(getResources().getColor(R.color.colorRed));
@@ -362,10 +374,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     }
 
     private boolean deviceValid(){
-        if(deviceNameValid() | ipAddressValid() | macAddressValid() | portValid())
-            return true;
-        else
-            return false;
+        return deviceNameValid() | ipAddressValid() | macAddressValid() | portValid() | secureOnValid();
 
     }
 

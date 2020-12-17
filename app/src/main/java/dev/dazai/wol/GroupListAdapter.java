@@ -63,13 +63,8 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyVi
         holder.runAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MagicPacket magicPacket = new MagicPacket();
-                for(int i = 0; i < deviceList.size(); i++){
-                    String deviceMac = deviceList.get(i).getDeviceMacAddress();
-                    int devicePort = Integer.parseInt(deviceList.get(i).getDeviceLanPort());
-                    magicPacket.send(deviceMac, devicePort, mContext);
+                new RunDeviceDialog(deviceList).show(((FragmentActivity) mContext).getSupportFragmentManager(), "RunDeviceDialog");
 
-                }
             }
         });
 

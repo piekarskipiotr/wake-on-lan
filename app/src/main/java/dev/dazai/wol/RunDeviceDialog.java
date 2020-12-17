@@ -67,7 +67,15 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        new MagicPacket().send(device.deviceMacAddress, Integer.parseInt(device.getDeviceLanPort()), getContext());
+                        String secureOn;
+                        if(device.getDeviceSecureOn().isEmpty())
+                            secureOn = "00:00:00:00:00:00";
+                        else
+                            secureOn = device.getDeviceSecureOn();
+
+
+
+                        new MagicPacket().send(device.deviceMacAddress, Integer.parseInt(device.getDeviceLanPort()), secureOn, getContext());
 
                     }
                 },2000);
@@ -82,7 +90,14 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    new MagicPacket().send(mDevice.deviceMacAddress, Integer.parseInt(mDevice.deviceLanPort), getContext());
+                    String secureOn;
+                    if(mDevice.getDeviceSecureOn().isEmpty())
+                        secureOn = "00:00:00:00:00:00";
+                    else
+                        secureOn = mDevice.getDeviceSecureOn();
+
+
+                    new MagicPacket().send(mDevice.deviceMacAddress, Integer.parseInt(mDevice.deviceLanPort), secureOn, getContext());
                     reachableChecker = new ReachableChecker(RunDeviceDialog.this, mDevice, runDeviceDialogViewModel);
                     reachableChecker.execute();
                 }
