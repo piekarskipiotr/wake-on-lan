@@ -16,11 +16,11 @@ import java.util.List;
 
 import dev.dazai.wol.databinding.ActivityListOfDevicesBinding;
 
-public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDevicesListAdapter.onDeviceClick, SavedDevicesListAdapter.onDeviceClick {
+public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDevicesGridListAdapter.onDeviceClick, SavedDevicesGridListAdapter.onDeviceClick {
     ActivityListOfDevicesBinding binding;
     ListOfDevicesViewModel listOfDevicesViewModel;
-    ActiveDevicesListAdapter aAdapter;
-    SavedDevicesListAdapter sAdapter;
+    ActiveDevicesGridListAdapter aAdapter;
+    SavedDevicesGridListAdapter sAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
         Bundle extras = getIntent().getExtras();
         if(extras.getBoolean("STATE")){
             binding.devicesStateText.setText("Aktywne\nurządzenia");
-            aAdapter = new ActiveDevicesListAdapter(getApplicationContext(), this);
+            aAdapter = new ActiveDevicesGridListAdapter(getApplicationContext(), this);
             binding.listOfDevicesRecycleView.setAdapter(aAdapter);
             listOfDevicesViewModel.getActiveDevices().observe(this, new Observer<List<Device>>() {
                 @Override
@@ -46,7 +46,7 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
 
         }else{
             binding.devicesStateText.setText("Dostępne\nurządzenia");
-            sAdapter = new SavedDevicesListAdapter(getApplicationContext(), this);
+            sAdapter = new SavedDevicesGridListAdapter(getApplicationContext(), this);
             binding.listOfDevicesRecycleView.setAdapter(sAdapter);
             listOfDevicesViewModel.getSavedDevices().observe(this, new Observer<List<Device>>() {
                 @Override

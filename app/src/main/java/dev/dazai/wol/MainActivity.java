@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.groups:
                 fragment = new MyGroupsFragment();
                 break;
-            case R.id.events:
-                fragment = new EventsFragment();
-                break;
             case R.id.help:
                 fragment = new HelpFragment();
                 break;

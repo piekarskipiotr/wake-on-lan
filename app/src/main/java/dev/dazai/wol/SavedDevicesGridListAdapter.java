@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import dev.dazai.wol.databinding.DeviceListItemBinding;
+import dev.dazai.wol.databinding.DeviceGridListItemBinding;
 
 
-public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesListAdapter.MyViewHolder>  {
+public class SavedDevicesGridListAdapter extends RecyclerView.Adapter<SavedDevicesGridListAdapter.MyViewHolder>  {
     private Context mContext;
     protected List<Device> mDevicesList;
     private onDeviceClick mOnDeviceListener;
     private int size = 0;
 
-    public SavedDevicesListAdapter(Context context, onDeviceClick onDeviceListener){
+    public SavedDevicesGridListAdapter(Context context, onDeviceClick onDeviceListener){
         mContext = context;
         mOnDeviceListener = onDeviceListener;
 
@@ -26,15 +26,15 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
 
     @NonNull
     @Override
-    public SavedDevicesListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        DeviceListItemBinding itemBinding = DeviceListItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+    public SavedDevicesGridListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        DeviceGridListItemBinding itemBinding = DeviceGridListItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
         return new MyViewHolder(itemBinding, mOnDeviceListener);
 
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SavedDevicesListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SavedDevicesGridListAdapter.MyViewHolder holder, int position) {
         Device device = mDevicesList.get(position);
         holder.name.setText(device.getDeviceName());
         holder.icon.setText(device.getDeviceIcon());
@@ -53,7 +53,7 @@ public class SavedDevicesListAdapter extends RecyclerView.Adapter<SavedDevicesLi
         onDeviceClick onDeviceListener;
         TextView name, icon;
         CardView itemContainer;
-        public MyViewHolder(@NonNull DeviceListItemBinding itemView, onDeviceClick onDeviceListener) {
+        public MyViewHolder(@NonNull DeviceGridListItemBinding itemView, onDeviceClick onDeviceListener) {
             super(itemView.getRoot());
             name = itemView.name;
             icon = itemView.icon;

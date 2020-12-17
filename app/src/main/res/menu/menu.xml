@@ -10,10 +10,6 @@
             android:icon="@drawable/card_grouped"
             android:title="Moje grupy"/>
         <item
-            android:id="@+id/events"
-            android:icon="@drawable/clock"
-            android:title="Zaplanowane"/>
-        <item
             android:id="@+id/help"
             android:icon="@drawable/guide_dog"
             android:title="Pomoc"/>
