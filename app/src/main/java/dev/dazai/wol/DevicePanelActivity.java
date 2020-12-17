@@ -89,6 +89,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                             deviceIcon = device.getDeviceIcon();
                             deviceGroup = device.getGroupId();
                             deviceSecureOn = device.getDeviceSecureOn();
+                            deviceReachable = device.getReachable();
 
                             if(deviceGroup == 0){
                                 activityBinding.groupText.setText(null);
