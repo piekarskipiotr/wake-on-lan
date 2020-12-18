@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ListOfDevicesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="0dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@android:color/white"
+            android:textSize="36sp"
+            android:text="Konfiguracja\nurządzenia"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:text="1. Ustawienia BIOS"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Przejdź do BIOS-u(podczas uruchamiania komputera naciśnij klawisz Delete, Escape, F2 lub coś innego (ekran startowy wyświetli instrukcje, jaki klawisz nacisnąć, aby wejść do setupu). "/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Teraz należy odszukać opcję Wake-On-Lan i ją włączyć. Występuje ona w różnych wariantach zależnie od płyty głównej; Opcja ta kryć się może pod postacią (Power on by PCIE / PCI), szukać jej należy w opcjach zasilania lub w zaawansowanych."
+                           />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:text="2. Ustawienia karty sieciowej (Windows 10)"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Wchodzimy w menu Start, wpisujemy: Menedżer urządzeń.\nPrzechodzimy do zakładki Adaptery sieciowe i klikając prawym przyciskiem myszy na naszą kartę wybieramy właściwości."/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="W zakładce Zarządzanie energią, zaznacz wszystkie pozycje."
+                            />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/windows_configuration_1"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="W zakładce Zaawansowane, wyszukaj w liście pozycję: Pakiet wybudzania Magic Packet i włącz ją." />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/windows_configuration_2"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:text="3. Ustawienie portu oraz statycznego IP"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Musimy zalogować się do naszego routera. W tym celu wpisujemy w pasku adresu (domyślnie) 192.168.1.1, jeżeli nie uda się to należy sprawadzić po routerem informacje odnośnie logowania."/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Po zalogowaniu się, przechodzimy do zakładki DHCP(może znajdować się w Zaawansowanych). Ustawiamy tutaj statyczny adres IP naszego urządzenia."/>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/router_configuration_1"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Teraz przechodzimy do zakładki NAT/PAT. Wybieramy nasze urządzenie i ustawiamy port na 7 lub 9 oraz protokół na TCP/UDP."/>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/router_configuration_2"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ic_sharp_arrow_back"/>
+
+
+</RelativeLayout>
+
