@@ -57,7 +57,7 @@ public class ReachableChecker extends AsyncTask<Void, Integer, Void> {
                 if (mDevices.get(i).getReachable() != null) {
                     preDeviceReachableStatus = mDevice.getReachable();
                 }
-                for(int ii = 1; ii <= 50; ii++) {
+                for(int ii = 1; ii < 50; ii++) {
                     if(ii == 1)
                         publishProgress(ii);
 
@@ -88,7 +88,7 @@ public class ReachableChecker extends AsyncTask<Void, Integer, Void> {
             if (mDevice.getReachable() != null) {
                 preDeviceReachableStatus = mDevice.getReachable();
             }
-            for (int ii = 1; ii <= 50; ii++) {
+            for (int ii = 1; ii < 50; ii++) {
                 if(ii == 1)
                     publishProgress(ii);
 

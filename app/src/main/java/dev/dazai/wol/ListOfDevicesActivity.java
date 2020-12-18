@@ -12,15 +12,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.List;
 
 import dev.dazai.wol.databinding.ActivityListOfDevicesBinding;
+import dev.dazai.wol.databinding.NoInternetConnectionDailogBinding;
 
 public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDevicesGridListAdapter.onDeviceClick, SavedDevicesGridListAdapter.onDeviceClick {
     ActivityListOfDevicesBinding binding;
     ListOfDevicesViewModel listOfDevicesViewModel;
     ActiveDevicesGridListAdapter aAdapter;
     SavedDevicesGridListAdapter sAdapter;
+    private NetworkConnectionChecker networkConnectionChecker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +33,10 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
         setContentView(binding.getRoot());
         binding.listOfDevicesRecycleView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         binding.listOfDevicesRecycleView.setHasFixedSize(true);
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ListOfDevicesActivity.this, R.style.BottomSheetDialogTheme);
+        NoInternetConnectionDailogBinding networkBinding = NoInternetConnectionDailogBinding.inflate(getLayoutInflater());
+        networkConnectionChecker = new NetworkConnectionChecker(ListOfDevicesActivity.this, networkBinding, bottomSheetDialog);
 
         listOfDevicesViewModel = ViewModelProviders.of(this).get(ListOfDevicesViewModel.class);
 
@@ -78,5 +87,11 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
     @Override
     public void onDeviceCardLongClick(Device device) {
         new RunDeviceDialog(device).show(getSupportFragmentManager(), "RunDeviceDialog");
+    }
+
+    @Override
+    protected void onDestroy() {
+        networkConnectionChecker.unRegister();
+        super.onDestroy();
     }
 }

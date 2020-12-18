@@ -4,23 +4,34 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import dev.dazai.wol.databinding.ActivityMainBinding;
+import dev.dazai.wol.databinding.NoInternetConnectionDailogBinding;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    ActivityMainBinding binding;
-    NavigationView navigationView;
+    private ActivityMainBinding binding;
+    private NetworkConnectionChecker networkConnectionChecker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        navigationView = binding.navigationView;
+
+        NavigationView navigationView = binding.navigationView;
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.BottomSheetDialogTheme);
+        NoInternetConnectionDailogBinding networkBinding = NoInternetConnectionDailogBinding.inflate(getLayoutInflater());
+        networkConnectionChecker = new NetworkConnectionChecker(MainActivity.this, networkBinding, bottomSheetDialog);
 
         if(savedInstanceState == null){
             navigationView.setCheckedItem(navigationView.getMenu().getItem(0));
@@ -75,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    protected void onDestroy() {
+        networkConnectionChecker.unRegister();
+        super.onDestroy();
+    }
 }
 
 

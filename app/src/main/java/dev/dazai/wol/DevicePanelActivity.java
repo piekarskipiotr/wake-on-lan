@@ -30,6 +30,7 @@ import dev.dazai.wol.databinding.ActionRouterIpDialogBinding;
 import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
 import dev.dazai.wol.databinding.ChooseGroupItemBinding;
 import dev.dazai.wol.databinding.DeviceQuestionDialogBinding;
+import dev.dazai.wol.databinding.NoInternetConnectionDailogBinding;
 
 public class DevicePanelActivity extends AppCompatActivity implements GroupChooseAdapter.OnGroupListener{
     ActivityDevicePanelBinding activityBinding;
@@ -50,6 +51,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     DevicePanelViewModel devicePanelViewModel;
     GroupChooseAdapter groupAdapter;
     ActionGroupChooseDialogBinding actionGroupChooseDialogBinding;
+    private NetworkConnectionChecker networkConnectionChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,9 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         magicPacket = new MagicPacket();
         deviceDatabase = DeviceDatabase.getInstance(getApplicationContext());
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
+
+        NoInternetConnectionDailogBinding networkBinding = NoInternetConnectionDailogBinding.inflate(getLayoutInflater());
+        networkConnectionChecker = new NetworkConnectionChecker(DevicePanelActivity.this, networkBinding, bottomSheetDialog);
 
 
         Bundle extras = getIntent().getExtras();
@@ -512,6 +517,15 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     }
 
     @Override
+    public void onGroupClick(Group group) {
+        deviceGroup = group.getGroupId();
+        deviceGroupName = group.getGroupName();
+        activityBinding.groupText.setText(deviceGroupName);
+        bottomSheetDialog.dismiss();
+
+    }
+
+    @Override
     public void onBackPressed() {
         if(!isThisNewDevice){
             if(isThereAnyChanges())
@@ -525,11 +539,9 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     }
 
     @Override
-    public void onGroupClick(Group group) {
-        deviceGroup = group.getGroupId();
-        deviceGroupName = group.getGroupName();
-        activityBinding.groupText.setText(deviceGroupName);
-        bottomSheetDialog.dismiss();
-
+    protected void onDestroy() {
+        networkConnectionChecker.unRegister();
+        super.onDestroy();
     }
+
 }

@@ -2,6 +2,7 @@ package dev.dazai.wol;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,7 +50,6 @@ public class RunDeviceDialog extends AppCompatDialogFragment {
         builder.setView(binding.getRoot());
         alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(false);
-
 
         binding.devicesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.devicesRecyclerView.setHasFixedSize(true);
