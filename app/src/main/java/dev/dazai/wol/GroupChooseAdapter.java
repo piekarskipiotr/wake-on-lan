@@ -41,7 +41,6 @@ public class GroupChooseAdapter extends RecyclerView.Adapter<GroupChooseAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Group group = mGroupList.get(position);
-        holder.itemContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale));
         holder.groupName.setText(group.getGroupName());
 
 

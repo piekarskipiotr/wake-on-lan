@@ -87,18 +87,19 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                     public void onChanged(Device device) {
                         if(device != null){
                             currentDevice = device;
-                            deviceName = device.getDeviceName();
-                            deviceIpAddress = device.getDeviceIpAddress();
-                            deviceMacAddress = device.getDeviceMacAddress();
-                            devicePort = device.getDeviceLanPort();
-                            deviceIcon = device.getDeviceIcon();
-                            deviceGroup = device.getGroupId();
-                            deviceSecureOn = device.getDeviceSecureOn();
-                            deviceReachable = device.getReachable();
+                            deviceName = currentDevice.getDeviceName();
+                            deviceIpAddress = currentDevice.getDeviceIpAddress();
+                            deviceMacAddress = currentDevice.getDeviceMacAddress();
+                            devicePort = currentDevice.getDeviceLanPort();
+                            deviceIcon = currentDevice.getDeviceIcon();
+                            deviceGroup = currentDevice.getGroupId();
+                            deviceSecureOn = currentDevice.getDeviceSecureOn();
+                            deviceReachable = currentDevice.getReachable();
 
                             if(deviceGroup == 0){
-                                activityBinding.groupText.setText(null);
-
+                                deviceGroupName = null;
+                                activityBinding.groupText.setText(deviceGroupName);
+                                fillFields();
                             }else{
                                 devicePanelViewModel.getGroupById(deviceGroup).observe(DevicePanelActivity.this, new Observer<Group>() {
                                     @Override
@@ -109,7 +110,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                                 });
 
                             }
-                            fillFields();
+
 
                         }
 
@@ -169,7 +170,6 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                     @Override
                     public void onClick(View v) {
                         activityBinding.portText.setText(getTextContent(v));
-                        devicePort = getTextContent(v);
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -178,7 +178,6 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                     @Override
                     public void onClick(View v) {
                         activityBinding.portText.setText(getTextContent(v));
-                        devicePort = getTextContent(v);
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -226,11 +225,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                     actionGroupChooseDialogBinding.deleteDeviceFromGroup.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(currentDevice == null)
-                                deviceGroup = 0;
-                            else
-                                currentDevice.setGroupId(0);
-
+                            deviceGroup = 0;
                             activityBinding.groupText.setText(null);
                             bottomSheetDialog.dismiss();
                         }
@@ -271,7 +266,9 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                 if(deviceValid() && !deviceReachable){
                     new RunDeviceDialog(currentDevice).show(getSupportFragmentManager(), "RunDeviceDialog");
 
-                }
+                }else if(isThereAnyChanges())
+                    Toast.makeText(getApplicationContext(), "Przed uruchumieniem zapisz urządzenie!", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -282,18 +279,11 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                 if(isThisNewDevice){
                     if(deviceValid()){
                         addDeviceToDatabase();
-                        onBackPressed();
                     }
-
-
                 }else{
                     if(deviceValid() && isThereAnyChanges())
-                        updateDevice();
-
+                        updateDevice(false);
                 }
-
-
-
             }
         });
 
@@ -490,7 +480,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         }
     }
 
-    private void updateDevice(){
+    private void updateDevice(final boolean toExit){
         bottomSheetDialog.setContentView(deviceUpdateDialogBinding.getRoot());
         bottomSheetDialog.show();
         deviceUpdateDialogBinding.headerText.setText("Zapisać zmiany?");
@@ -501,7 +491,8 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                 setNewData();
                 devicePanelViewModel.update(currentDevice);
                 bottomSheetDialog.dismiss();
-                DevicePanelActivity.this.finish();
+                if(toExit)
+                    DevicePanelActivity.this.finish();
 
             }
         });
@@ -510,7 +501,8 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
-                DevicePanelActivity.this.finish();
+                if(toExit)
+                    DevicePanelActivity.this.finish();
             }
         });
 
@@ -529,7 +521,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     public void onBackPressed() {
         if(!isThisNewDevice){
             if(isThereAnyChanges())
-                updateDevice();
+                updateDevice(true);
             else
                 super.onBackPressed();
         }else
