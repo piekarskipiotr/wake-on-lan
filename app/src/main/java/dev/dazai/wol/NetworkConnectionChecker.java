@@ -13,13 +13,15 @@ public class NetworkConnectionChecker {
     private final ConnectivityManager connectivityManager;
     private final ConnectivityManager.NetworkCallback connectivityCallback;
 
-    public NetworkConnectionChecker(Context context, NoInternetConnectionDailogBinding binding, BottomSheetDialog bottomSheetDialog){
-        mBottomSheetDialog = bottomSheetDialog;
+    public NetworkConnectionChecker(Context context, NoInternetConnectionDailogBinding binding){
+        NetworkRequest request = new NetworkRequest.Builder().build();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        mBottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
         mBottomSheetDialog.setContentView(binding.getRoot());
         mBottomSheetDialog.setCancelable(false);
         mBottomSheetDialog.setCanceledOnTouchOutside(false);
-        NetworkRequest request = new NetworkRequest.Builder().build();
-        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
         connectivityCallback = new ConnectivityManager.NetworkCallback(){
 
             @Override

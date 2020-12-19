@@ -29,9 +29,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.BottomSheetDialogTheme);
         NoInternetConnectionDailogBinding networkBinding = NoInternetConnectionDailogBinding.inflate(getLayoutInflater());
-        networkConnectionChecker = new NetworkConnectionChecker(MainActivity.this, networkBinding, bottomSheetDialog);
+        networkConnectionChecker = new NetworkConnectionChecker(MainActivity.this, networkBinding);
 
         if(savedInstanceState == null){
             navigationView.setCheckedItem(navigationView.getMenu().getItem(0));

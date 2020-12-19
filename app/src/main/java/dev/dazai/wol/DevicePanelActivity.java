@@ -72,7 +72,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         bottomSheetDialog = new BottomSheetDialog(DevicePanelActivity.this, R.style.BottomSheetDialogTheme);
 
         NoInternetConnectionDailogBinding networkBinding = NoInternetConnectionDailogBinding.inflate(getLayoutInflater());
-        networkConnectionChecker = new NetworkConnectionChecker(DevicePanelActivity.this, networkBinding, bottomSheetDialog);
+        networkConnectionChecker = new NetworkConnectionChecker(DevicePanelActivity.this, networkBinding);
 
 
         Bundle extras = getIntent().getExtras();

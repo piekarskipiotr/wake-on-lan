@@ -34,9 +34,8 @@ public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDe
         binding.listOfDevicesRecycleView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         binding.listOfDevicesRecycleView.setHasFixedSize(true);
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ListOfDevicesActivity.this, R.style.BottomSheetDialogTheme);
         NoInternetConnectionDailogBinding networkBinding = NoInternetConnectionDailogBinding.inflate(getLayoutInflater());
-        networkConnectionChecker = new NetworkConnectionChecker(ListOfDevicesActivity.this, networkBinding, bottomSheetDialog);
+        networkConnectionChecker = new NetworkConnectionChecker(ListOfDevicesActivity.this, networkBinding);
 
         listOfDevicesViewModel = ViewModelProviders.of(this).get(ListOfDevicesViewModel.class);
 
