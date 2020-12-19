@@ -25,11 +25,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="device_name"
                     android:textColor="@android:color/white"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:maxEms="10"
+                    android:maxLines="1"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

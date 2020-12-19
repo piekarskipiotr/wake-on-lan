@@ -39,7 +39,11 @@ public class DeviceListInGroupAdapter extends RecyclerView.Adapter<DeviceListInG
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Device device = mDevicesList.get(position);
-        holder.name.setText(device.getDeviceName());
+        if(device.getDeviceIcon() == null)
+            holder.name.setText(device.getDeviceName());
+        else
+            holder.name.setText(device.getDeviceIcon() + device.getDeviceName());
+
         if(device.getReachable())
             holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_circle));
         else
