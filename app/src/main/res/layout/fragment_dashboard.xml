@@ -37,7 +37,7 @@
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
                     <TextView
@@ -50,7 +50,7 @@
                         android:textSize="26sp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="15dp"
                         android:gravity="end">
                         <ImageView
@@ -58,6 +58,7 @@
                             android:id="@+id/listOfAllActiveButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:src="@drawable/ic_baseline_arrow_forward"/>
                     </LinearLayout>
 
@@ -87,7 +88,7 @@
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
                     <TextView
@@ -100,7 +101,7 @@
                         android:textSize="26sp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="15dp"
                         android:gravity="end">
                         <ImageView
@@ -108,6 +109,7 @@
                             android:id="@+id/listOfAllSavedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:src="@drawable/ic_baseline_arrow_forward"/>
                     </LinearLayout>
                 </LinearLayout>
