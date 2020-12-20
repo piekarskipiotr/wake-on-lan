@@ -9,7 +9,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
         android:layout_marginTop="0dp">
 
@@ -20,119 +20,118 @@
             android:paddingStart="30dp"
             android:paddingEnd="0dp"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="30dp"
                 android:fontFamily="@font/lato_regular"
                 android:text="Panel\nNawigacyjny"
                 android:textColor="@android:color/white"
                 android:textSize="36sp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="5dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="Aktywne urządzenia"
-                        android:textColor="@android:color/white"
-                        android:textSize="26sp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="15dp"
-                        android:gravity="end">
-                        <ImageView
-                            android:clickable="false"
-                            android:id="@+id/listOfAllActiveButton"
-                            android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="5dp"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="Aktywne urządzenia"
+                                android:textColor="@android:color/white"
+                                android:textSize="26sp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="15dp"
+                                android:gravity="end">
+                                <ImageView
+                                    android:clickable="false"
+                                    android:id="@+id/listOfAllActiveButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_baseline_arrow_forward"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <ProgressBar
+                            android:id="@+id/activeDevicesProgressBar"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_baseline_arrow_forward"/>
+                            android:layout_marginTop="40dp"
+                            android:layout_marginBottom="40dp"/>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:visibility="gone"
+                            android:id="@+id/activeDevicesRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+
                     </LinearLayout>
 
-                </LinearLayout>
-                <ProgressBar
-                    android:id="@+id/activeDevicesProgressBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginBottom="40dp"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/activeDevicesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:orientation="horizontal">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="5dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="Dostępne urządzenia"
-                        android:textColor="@android:color/white"
-                        android:textSize="26sp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="15dp"
-                        android:gravity="end">
-                        <ImageView
-                            android:clickable="false"
-                            android:id="@+id/listOfAllSavedButton"
-                            android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="5dp"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="Dostępne urządzenia"
+                                android:textColor="@android:color/white"
+                                android:textSize="26sp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="15dp"
+                                android:gravity="end">
+                                <ImageView
+                                    android:clickable="false"
+                                    android:id="@+id/listOfAllSavedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_baseline_arrow_forward"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/devicesProgressBar"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_baseline_arrow_forward"/>
+                            android:layout_marginTop="40dp"
+                            android:layout_marginBottom="40dp"/>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:visibility="gone"
+                            android:id="@+id/devicesRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
                     </LinearLayout>
-                </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/devicesProgressBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginBottom="40dp"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/devicesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:orientation="horizontal">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-            </LinearLayout>
-
         </LinearLayout>
+
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -168,4 +167,5 @@
                 android:textSize="20sp"/>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
+
 </RelativeLayout>
