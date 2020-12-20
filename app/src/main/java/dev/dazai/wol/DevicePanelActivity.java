@@ -279,6 +279,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
                 if(isThisNewDevice){
                     if(deviceValid()){
                         addDeviceToDatabase();
+                        DevicePanelActivity.this.finish();
                     }
                 }else{
                     if(deviceValid() && isThereAnyChanges())
@@ -390,8 +391,6 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         currentDevice.setGroupId(deviceGroup);
         currentDevice.setDeviceSecureOn(activityBinding.secureOnTextInput.getText().toString().trim());
         devicePanelViewModel.insert(currentDevice);
-
-        Toast.makeText(getApplicationContext(), "Urządzenie zostało dodane!", Toast.LENGTH_SHORT).show();
 
     }
 
