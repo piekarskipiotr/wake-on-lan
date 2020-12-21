@@ -15,6 +15,9 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="device_name"
+                android:ellipsize="end"
+                android:maxEms="8"
+                android:maxLines="1"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"/>
         </LinearLayout>
