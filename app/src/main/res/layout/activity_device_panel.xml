@@ -54,7 +54,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -326,9 +326,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="30dp"
-        android:layout_below="@+id/main"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
