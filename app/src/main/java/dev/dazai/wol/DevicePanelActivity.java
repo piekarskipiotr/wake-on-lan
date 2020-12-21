@@ -263,10 +263,10 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
         activityBinding.turnOnDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(deviceValid() && !deviceReachable){
+                if(deviceValid() && !deviceReachable && !isThisNewDevice)
                     new RunDeviceDialog(currentDevice).show(getSupportFragmentManager(), "RunDeviceDialog");
 
-                }else if(isThereAnyChanges())
+                else if(isThisNewDevice || isThereAnyChanges())
                     Toast.makeText(getApplicationContext(), "Przed uruchumieniem zapisz urządzenie!", Toast.LENGTH_SHORT).show();
 
 
@@ -370,7 +370,7 @@ public class DevicePanelActivity extends AppCompatActivity implements GroupChoos
     }
 
     private boolean deviceValid(){
-        return deviceNameValid() | ipAddressValid() | macAddressValid() | portValid() | secureOnValid();
+        return deviceNameValid() && ipAddressValid() && macAddressValid() && portValid() && secureOnValid();
 
     }
 
