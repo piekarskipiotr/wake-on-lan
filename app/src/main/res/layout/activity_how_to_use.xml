@@ -22,6 +22,68 @@
             android:textColor="@android:color/white"
             android:textSize="36sp"
             android:text="Obsługa\naplikacji"/>
+         <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:text="1. Uruchamianie"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Urządzenie można uruchomić bez wchodzenia do jego panelu po przez przytrzymanie klikniecia na jego karte."/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:text="2. Usuwanie grupy"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:text="Grupę można usunąć po przez przesunięcie karty grupy w prawą stronę."/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
     <ImageView
         android:id="@+id/backButton"
