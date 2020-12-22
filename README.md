@@ -1,10 +1,11 @@
 # WakeOnLAN
 Wake On LAN application for android devices. Turn on your devices in network and get informations about thier status.
+Dashboard                  |  Dashboard2               |  DevicePanle              |  Running the device       |     
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+![](assets/1.png)          |         ![](assets/2.png) |         ![](assets/3.png) | ![](assets/4.png)         |
 
-![1](https://github.com/piekarskipiotr/WakeOnLAN/tree/master/assets/1.png)
-![2](https://github.com/piekarskipiotr/WakeOnLAN/tree/master/assets/2.png)
-![3](https://github.com/piekarskipiotr/WakeOnLAN/tree/master/assets/3.png)
-![4](https://github.com/piekarskipiotr/WakeOnLAN/tree/master/assets/4.png)
+
+
 
 ### 📚Libraries:
 - [ROOM](https://developer.android.com/jetpack/androidx/releases/room)
