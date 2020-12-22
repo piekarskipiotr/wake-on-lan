@@ -1,20 +1,17 @@
 package dev.dazai.wol;
 
-import android.content.Context;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
@@ -38,28 +35,25 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
 
     @Override
     protected List<String> doInBackground(Integer... integers) {
-//        int TIME_OUT = integers[0];
-        //used to be reachableDevices list
         List<String> availableDevices = new ArrayList<>();
         InetAddress inetAddress;
         String ipAddress;
         String macAddress;
         String deviceName;
 
-        //quick fix for network, it's for ping every IP in our mask so arp can get it
-        WifiManager wifiManager = (WifiManager)
-                weakReference.get().requireContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        String ip = Formatter.formatIpAddress(wifiManager.getDhcpInfo().serverAddress);
-
-        ip = ip.substring(0, ip.lastIndexOf(".")+1);
-        for(int i = 1; i < 255; i++){
-            try {
-                InetAddress.getByName(ip+i).isReachable(1);
-            } catch (IOException e) {
-                e.printStackTrace();
+        //fix for network, it's for get ip addresses by get
+        try {
+            Enumeration networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while(networkInterfaces.hasMoreElements())
+            {
+                NetworkInterface networkInterface = (NetworkInterface) networkInterfaces.nextElement();
+                Enumeration networkInterfaceInetAddresses = networkInterface.getInetAddresses();
+                while (networkInterfaceInetAddresses.hasMoreElements())
+                {
+                    networkInterfaceInetAddresses.nextElement();
+                }
             }
-
-        }
+        } catch (SocketException ignored) {}
 
         try {
             Scanner fileReader = new Scanner(new File("/proc/net/arp"));
@@ -75,15 +69,11 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
                         deviceName = inetAddress.getCanonicalHostName();
                         deviceName = deviceName.substring(0, deviceName.lastIndexOf("."));
 
-//                        boolean reachable = inetAddress.isReachable(TIME_OUT);
-
-//                        if(reachable){
                         availableDevices.add(deviceName);
                         availableDevices.add(macAddress);
                         availableDevices.add(ipAddress);
                         publishProgress(deviceName, macAddress, ipAddress);
 
-//                        }
                     }
                 }
             }
@@ -99,7 +89,6 @@ public class NetworkScanner extends AsyncTask<Integer, String, List<String>> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-//        Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ") is reachable and has been added to the list!");
         Log.i(TAG, values[0] + "[" + values[1] + "] (" + values[2] + ")");
         weakReference.get().insertDevice(values[0], values[2], values[1]);
 

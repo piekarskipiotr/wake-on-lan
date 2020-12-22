@@ -14,10 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HowToUseActivity"/>
-        <activity android:name=".HowToConfigDeviceActivty" />
-        <activity android:name=".ListOfDevicesActivity" />
-        <activity android:name=".DevicePanelActivity" />
+        <activity android:name=".HowToUseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HowToConfigDeviceActivty"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ListOfDevicesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DevicePanelActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
