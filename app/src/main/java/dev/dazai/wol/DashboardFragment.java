@@ -17,18 +17,28 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.dazai.wol.adapters.ActiveDevicesListAdapter;
+import dev.dazai.wol.adapters.NetworkScannerListAdapter;
+import dev.dazai.wol.adapters.SavedDevicesListAdapter;
+import dev.dazai.wol.data.Device;
+import dev.dazai.wol.data.DeviceDatabase;
 import dev.dazai.wol.databinding.DashboardNewDeviceDialogBinding;
 import dev.dazai.wol.databinding.DialogNetworkScanningBinding;
 import dev.dazai.wol.databinding.FragmentDashboardBinding;
+import dev.dazai.wol.network.DeviceInNetwork;
+import dev.dazai.wol.network.DeviceReachableHandler;
+import dev.dazai.wol.network.NetworkScanner;
+import dev.dazai.wol.utilities.RunDeviceDialog;
+import dev.dazai.wol.viewmodels.DashboardViewModel;
 
 public class DashboardFragment extends Fragment implements NetworkScannerListAdapter.OnDeviceListener, SavedDevicesListAdapter.onDeviceClick, ActiveDevicesListAdapter.onDeviceClick{
     ArrayList<DeviceInNetwork> devicesInNetworkList = new ArrayList<>();
     List<Device> allDevices;
     NetworkScanner networkScanner;
     BottomSheetDialog bottomSheetDialog;
-    FragmentDashboardBinding binding;
+    public FragmentDashboardBinding binding;
     DashboardNewDeviceDialogBinding dialogBinding;
-    DialogNetworkScanningBinding dialogNetworkScanningBinding;
+    public DialogNetworkScanningBinding dialogNetworkScanningBinding;
     NetworkScannerListAdapter nAdapter;
     SavedDevicesListAdapter sAdapter;
     ActiveDevicesListAdapter aAdapter;

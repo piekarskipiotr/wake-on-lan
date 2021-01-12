@@ -2,22 +2,23 @@ package dev.dazai.wol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
+import dev.dazai.wol.adapters.ActiveDevicesGridListAdapter;
+import dev.dazai.wol.adapters.SavedDevicesGridListAdapter;
+import dev.dazai.wol.data.Device;
 import dev.dazai.wol.databinding.ActivityListOfDevicesBinding;
 import dev.dazai.wol.databinding.NoInternetConnectionDailogBinding;
+import dev.dazai.wol.network.NetworkConnectionChecker;
+import dev.dazai.wol.utilities.RunDeviceDialog;
+import dev.dazai.wol.viewmodels.ListOfDevicesViewModel;
 
 public class ListOfDevicesActivity extends AppCompatActivity implements ActiveDevicesGridListAdapter.onDeviceClick, SavedDevicesGridListAdapter.onDeviceClick {
     ActivityListOfDevicesBinding binding;

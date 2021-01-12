@@ -7,12 +7,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -22,15 +18,23 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
+import dev.dazai.wol.adapters.GroupChooseAdapter;
+import dev.dazai.wol.data.Device;
+import dev.dazai.wol.data.DeviceDatabase;
+import dev.dazai.wol.data.Group;
 import dev.dazai.wol.databinding.ActionChooseIconDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupChooseDialogBinding;
 import dev.dazai.wol.databinding.ActionGroupDialogBinding;
 import dev.dazai.wol.databinding.ActionPortDialogBinding;
 import dev.dazai.wol.databinding.ActionRouterIpDialogBinding;
 import dev.dazai.wol.databinding.ActivityDevicePanelBinding;
-import dev.dazai.wol.databinding.ChooseGroupItemBinding;
 import dev.dazai.wol.databinding.DeviceQuestionDialogBinding;
 import dev.dazai.wol.databinding.NoInternetConnectionDailogBinding;
+import dev.dazai.wol.network.MagicPacket;
+import dev.dazai.wol.network.NetworkConnectionChecker;
+import dev.dazai.wol.utilities.IpAddressValidator;
+import dev.dazai.wol.utilities.RunDeviceDialog;
+import dev.dazai.wol.viewmodels.DevicePanelViewModel;
 
 public class DevicePanelActivity extends AppCompatActivity implements GroupChooseAdapter.OnGroupListener{
     ActivityDevicePanelBinding activityBinding;

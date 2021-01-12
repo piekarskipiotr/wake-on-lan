@@ -17,10 +17,16 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.List;
 import java.util.Objects;
+
+import dev.dazai.wol.adapters.GroupListAdapter;
+import dev.dazai.wol.data.Device;
+import dev.dazai.wol.data.Group;
+import dev.dazai.wol.data.GroupWithDevices;
 import dev.dazai.wol.databinding.EditGroupNameBinding;
 import dev.dazai.wol.databinding.FragmentMyGroupsBinding;
 import dev.dazai.wol.databinding.GroupItemBinding;
 import dev.dazai.wol.databinding.MyGroupsNewGroupDialogBinding;
+import dev.dazai.wol.viewmodels.MyGroupsViewModel;
 
 public class MyGroupsFragment extends Fragment implements GroupListAdapter.onClickGroup {
     FragmentMyGroupsBinding binding;
