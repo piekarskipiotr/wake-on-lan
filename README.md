@@ -1,4 +1,4 @@
-# WakeOnLAN
+# 🥱 WakeOnLAN
 Wake On LAN application for android devices. Turn on your devices in network and get informations about thier status.
 
 Dashboard                  |  Dashboard 2              |  Device panle             |  Running the device       |     
