@@ -7,9 +7,9 @@ Dashboard                  |  Dashboard 2              |  Device panle          
 
 
 ## 🔍 Table of contents
-* [General info](#general-info)
-* [Technologies](#technologies)
-* [Features](#features)
+* [General info](#-general-info)
+* [Technologies](#-technologies)
+* [Features](#-features)
 
 ## 📝 General info
 The application is used to run devices through WOL technologies and get informations about thier status, it will be useful to anyone who likes to start a computer from the bed level.
