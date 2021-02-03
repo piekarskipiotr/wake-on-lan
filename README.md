@@ -30,3 +30,6 @@ Project is created with **Java**.
 
 #### 🎯 TO DO:
 * Scheduled launch
+
+## ☄ Download
+<a href="https://play.google.com/store/apps/details?id=dev.dazai.wol"><img src="assets/google_play_download.png" width="20%"/></a>
