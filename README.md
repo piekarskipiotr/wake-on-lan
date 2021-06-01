@@ -1,10 +1,12 @@
 # 🥱 Wake on LAN
 Turn on your devices in network and get informations about thier status.
 
-Dashboard                  |  Dashboard 2              |  Device panle             |  Running the device       |     
-:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-![](assets/1.png)          |         ![](assets/2.png) |         ![](assets/3.png) | ![](assets/4.png)         |
-
+<p float="left" align="center">
+	<img src="assets/1.png" width="24%" />
+	<img src="assets/2.png" width="24%" /> 
+	<img src="assets/3.png" width="24%"/>
+	<img src="assets/4.png" width="24%"/>
+</p>
 
 ## 🔍 Table of contents
 * [General info](#-general-info)
